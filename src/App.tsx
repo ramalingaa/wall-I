@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SpeechSegment, stateToString, useSpeechContext } from '@speechly/react-client';
+import { useAppSelector, useAppDispatch } from './hooks/redux'
+import { QuestionAnswer, addQuestionAnswer, addQuestionAnswerFeedback } from './redux/reducer';
 
 function App() {
   const [speechSegments, setSpeechSegments] = useState<SpeechSegment[]>([]);
@@ -15,9 +17,12 @@ interface currentQuestionAll {
   const [transcribedText, setTranscribedText] = useState<string>("")
         const synth = window.speechSynthesis;
   const currentQuestionIndex = useRef<number>(0)
-  const [allInData, setAllInData] = useState<currentQuestionAll[]>([])
-  const [isInterviewCompleted, setIsInterviewCompleted] = useState<Boolean>(false)
-
+  const [isInterviewCompleted, setIsInterviewCompleted] = useState<boolean | undefined>(false)
+  const [isInterviewStarted, setIsInterviewStarted] = useState<boolean | undefined>(false)
+  const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean | undefined>(false)
+  const [isTimerOn, setIsTimerOn] = useState<boolean | undefined>(false)
+  const [timer, setTimer] = useState<number>(0)
+  const [failedFeedbackQnIdx, setFailedFeedbackQnIdx] = useState<string[]>([])
   const {
     client,
     clientState,
@@ -29,11 +34,14 @@ interface currentQuestionAll {
     stop,
   } = useSpeechContext();
 
+  const dispatch = useAppDispatch()
+  const { allQuestionAnswerData, allQuestionAnswerFeedbackData } = useAppSelector((state) => state.counter)
+  const updateCounter = useRef(0)
   useEffect(() => {
     if (segment) {
       const text = segment.words.map((w) => w.value).join(' ');
       setTentative(text);
-      if (segment.isFinal) {
+      if (segment.isFinal && updateCounter.current === 0) {
         setTentative('');
         setSpeechSegments((current) => {
           const finalText = [...current, segment]
@@ -42,12 +50,20 @@ interface currentQuestionAll {
               return word.value
             }).join(" ")
           }).join("")
+          const payload: QuestionAnswer = {
+            question: questionData[currentQuestionIndex.current],
+            answer: finalTextResult
+          }
+          dispatch(addQuestionAnswer(payload))
+          updateCounter.current = 1
+          segment.isFinal = false
           setTranscribedText(finalTextResult)
           return [...current, segment]
         });
       }
     }
-  }, [segment]);
+  }, [segment?.isFinal]);
+
   useEffect(() => {
     if(voices.length === 0){
 
@@ -66,7 +82,29 @@ interface currentQuestionAll {
     setVoices(voiceList)
     }
   },[voices])
-
+const intervalId = useRef<ReturnType<typeof setInterval> | undefined>();
+//timer function to display timer
+  useEffect(() => {
+    if(isTimerOn && timer === 10){
+      generatorFunction?.current?.next()
+      intervalId.current = setInterval(() => {
+       
+          setTimer((prev) => {
+            if(prev === 0){
+              clearInterval(intervalId.current)
+              setIsTimerOn(false)
+              setTimer(0)
+              handleNextQuestion()
+              return prev
+            }
+            else {
+             return --prev
+            }
+          })
+        
+      }, 1000)
+    }
+  }, [isTimerOn])
   const handleMicPress = async () => {
     if (listening) {
       await stop();
@@ -78,73 +116,86 @@ interface currentQuestionAll {
 
 const questionData = ['What are Promises in Javascript', 'What is event loop in Javascript']
 const handlerStartInterview = () => {
+  setIsInterviewStarted(true)
+  if(failedFeedbackQnIdx.length > 0){
+   const dataToSendForFeedbackCall = allQuestionAnswerData.find((ele) => ele.question === failedFeedbackQnIdx[0])
+   handleAPIFeedbackCall(dataToSendForFeedbackCall)
+  }
+  if(currentQuestionIndex.current > 0){
+    setIsAnswerSubmitted(false)
+  }
   const utterThis = new SpeechSynthesisUtterance(questionData[currentQuestionIndex.current]);
   utterThis.voice = voices[10];
     utterThis.rate = 1;
     utterThis.pitch = 1;
     synth.speak(utterThis);
+
     utterThis.onend = () => handleMicPress()
 }
  
 const handlerStopAnswer = async() => {
   await stop();
+  setIsAnswerSubmitted(true)
+  updateCounter.current = 0
 }
 const handleNextQuestion = () => {
-    
   currentQuestionIndex.current = currentQuestionIndex.current + 1
-
-  console.log(currentQuestionIndex.current)
-  if(currentQuestionIndex.current < questionData.length) {
-    setSpeechSegments(() => [])
-    setTranscribedText("")
-    
-    setTimeout(() => {
-      handlerStartInterview()
-    }, 5000)
-
-    
-
-  }else {
-    setIsInterviewCompleted(true)
-    setTimeout(() => {
-      console.log("interview is completed")
-      console.log(allInData)
-          }, 5000)
-   
-  }
+    if(currentQuestionIndex.current < questionData.length) {
+      setSpeechSegments(() => [])
+      setTranscribedText("")
+        handlerStartInterview()
+  
+    }else {
+      setIsInterviewCompleted(true)
+        console.log("interview is completed")   
+    }
+  
   
 }
-  const handleClearPress = async() => {
-    try {
-      const response = await fetch("http://localhost:8080/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ answer: transcribedText, question: questionData[currentQuestionIndex.current] }),
-      });
+const handleTimer = () => {
+  setIsTimerOn(true)
+  setTimer(10)
+}
+const handleAPIFeedbackCall = async(dataToSendForFeedbackCall?:QuestionAnswer) => {
+  const bodyPayload = {
+    question:questionData[currentQuestionIndex.current],
+    answer:transcribedText
+  }
+  const bodyPayloadForFailedCall = {
+    question: dataToSendForFeedbackCall?.question,
+    answer: dataToSendForFeedbackCall?.answer
+  }
+  const apiFeedbackPayload = dataToSendForFeedbackCall?.question ? bodyPayloadForFailedCall : bodyPayload;
+  try {
+    const response = await fetch("http://localhost:8080/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(apiFeedbackPayload),
+    });
 
-      const responseData = await response.json();
-      if (response.status !== 200) {
-        throw responseData.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      console.log(responseData)
-      const currentQuestionAllData = {
-        question: questionData[currentQuestionIndex.current],
-        answer: transcribedText,
-        feedback:responseData.result
-      }
-      setAllInData((prev) => [...prev,currentQuestionAllData])
-
-    } catch(error) {
-      // Consider implementing your own error handling logic here
-      console.error(error);
-      
+    const responseData = await response.json();
+    if (response.status !== 200) {
+      throw responseData.error || new Error(`Request failed with status ${response.status}`);
     }
-    finally {
-      handleNextQuestion()
-    }
+    dispatch(addQuestionAnswerFeedback(responseData.result))
+
+  } catch(error) {
+    // Consider implementing your own error handling logic here
+    console.error(error);
+    setFailedFeedbackQnIdx((prev) => [...prev, questionData[currentQuestionIndex.current]])
+  }
+}
+ function*generator(){
+  yield handleTimer()
+  yield handleAPIFeedbackCall()
+}
+const generatorFunction = useRef<Generator<void | Promise<void>, void, unknown> | undefined>()
+  const handleNextQuestionPress = async() => {
+    generatorFunction.current = generator()
+    generatorFunction?.current?.next()
+   
   };
  
 
@@ -162,18 +213,24 @@ const handleNextQuestion = () => {
           </code>
         </div>
         <div className="toolbar">
-          <button onClick = {handlerStartInterview}>Start the Interview</button>
-          <button onClick = {handlerStopAnswer}>Submit answer for this question</button>
-          <button onClick={handleClearPress} disabled={!speechSegments.length && !tentative}>
-            Next Question
+          <button onClick = {handlerStartInterview} disabled = {isInterviewStarted}>Start the Interview</button>
+          <button onClick = {handlerStopAnswer} disabled = { (currentQuestionIndex.current>0 ? isAnswerSubmitted : (!isInterviewStarted || isAnswerSubmitted))}>Submit answer for this question</button>
+          <button onClick={handleNextQuestionPress} disabled={!isAnswerSubmitted}>
+            {
+              currentQuestionIndex.current === (questionData.length - 1) ? "Get the feedback" : "Next Question"
+            }
           </button>
         </div>
-      
+          <div className = "timer">
+            {
+              isTimerOn && <p>{timer}</p>
+            }
+          </div>
         <div>
           {
             isInterviewCompleted &&<div>
               {
-                allInData.map((singleInstance) => {
+                allQuestionAnswerFeedbackData.map((singleInstance) => {
                   return (<div key = {singleInstance.feedback}>
                     <p><b>Question:</b>{singleInstance.question}</p>
                     <p><b>Your Answer:</b>{singleInstance.answer}</p>
@@ -186,11 +243,11 @@ const handleNextQuestion = () => {
         </div>
       </div>
       <div className = "right">
-          {/* <div>
+          <div>
           {
-            transcribedText && transcribedText
+            tentative && tentative
           }
-        </div> */}
+        </div>
       </div>
     </div>
   );

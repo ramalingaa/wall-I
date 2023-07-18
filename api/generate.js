@@ -40,7 +40,12 @@ app.post("/api/generate", async (req, res) => {
           max_tokens: 2900
         });
         console.log(completion.data.choices);
-        res.status(200).json({ result: completion.data.choices[0].text });
+        const result = {
+          question: question,
+          answer: answer,
+          feedback:completion.data.choices[0].text
+        }
+        res.status(200).json({ result: result });
       } catch(error) {
         // Consider adjusting the error handling logic for your use case
         if (error.response) {
