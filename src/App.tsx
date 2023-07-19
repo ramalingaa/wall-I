@@ -167,7 +167,7 @@ const handleAPIFeedbackCall = async(dataToSendForFeedbackCall?:QuestionAnswer) =
   }
   const apiFeedbackPayload = dataToSendForFeedbackCall?.question ? bodyPayloadForFailedCall : bodyPayload;
   try {
-    const response = await fetch("http://localhost:8080/api/generate", {
+    const response = await fetch("https://4f44-49-206-45-133.ngrok-free.app/api/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
