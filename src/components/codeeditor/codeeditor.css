@@ -1,7 +1,7 @@
 .editor-parent {
+    display: flex;
+    gap: 1rem;
     margin: 1rem;
-    width: 50%;
-    position: right;
 }
 .editor-container {
     display: flex;
@@ -9,19 +9,29 @@
     gap: 1rem;
     height: 90vh;
 }
-.editor-code {
+.editor-main, .output-container {
+    width: 100%;
+}
+.border-black {
     border: 1px solid var(--black-color);
+
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.editor-code {
     height: 100%;
 }
 .editor-console {
     border: 1px solid var(--black-color);
     height: 100%; 
 }
-.code-halfview {
-    height: 50%;
-}
+
 .console-error {
     color: var(--primary-color-red);
+}
+.resize-output-editor {
+    height: 50%;
 }
 .editor-header {
     display:flex;
