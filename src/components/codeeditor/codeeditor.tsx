@@ -33,7 +33,7 @@ const CodeEditor = () => {
         value: "console.log('Hello World!')"
     })
 
-    const langOptionHandler = (e:any) => {
+    const langOptionHandler = (e:React.ChangeEvent<HTMLSelectElement>) => {
         console.log("onchange", e.target.value)
         const langObject = files[e.target.value]
         setCurrentLang(langObject)
