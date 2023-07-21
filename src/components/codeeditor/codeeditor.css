@@ -9,8 +9,11 @@
     gap: 1rem;
     height: 90vh;
 }
+.output-container {
+    padding: 2rem 0 1rem 0
+}
 .editor-main, .output-container {
-    width: 100%;
+    width: 90%;
 }
 .border-black {
     border: 1px solid var(--black-color);

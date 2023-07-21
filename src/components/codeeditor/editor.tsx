@@ -12,11 +12,6 @@ const SingleEditor = (props:any) => {
     const handleEditorMount = (editor:any, monaco:any) => {
         editorRef.current = editor
     }
-    function handleErrors(...args:any) {
-        // const errorMessage = args.map((arg:any) => String(arg)).join(' ');
-        
-    
-      }
     const editorChangeHandler = () => {
         setEditorData((prev:editorData) => ({
             ...prev,
@@ -38,6 +33,7 @@ const SingleEditor = (props:any) => {
     return(
 
         <div className="editor-code">
+            {/* <p>{language}</p> */}
             <Editor
                     height="100%"
                     width="100%"
@@ -47,6 +43,7 @@ const SingleEditor = (props:any) => {
                     path={name}
                     defaultValue={value}
                     onChange={editorChangeHandler}
+                    
                     />
         </div>
     )
