@@ -3,7 +3,9 @@ import Editor from "@monaco-editor/react"
 import { useEffect, useRef, useState } from "react"
 import * as monaco from 'monaco-editor';
 import "./codeeditor.css"
-import SingleEditor from "./editor";
+import SingleEditor from "./singleeditor";
+import { Allotment } from "allotment";
+import "allotment/dist/style.css";
 export interface LanguageData {
     name: string;
     language: string;
@@ -35,7 +37,6 @@ const CodeEditor = () => {
 
     const [consoleError, setConsoleError] = useState<string>("")
     const[isAutoRunEnabled, setIsAutoRunEnabled] = useState<boolean>(false)
-    const [ isConsoleOpen, setIsConsoleOpen] = useState<boolean>(false)
     const [editorData, setEditorData] = useState<editorData>({html:"", css:"", javascript:""})
     const [srcDoc, setSrcDoc] = useState<string>("")
     
@@ -70,38 +71,55 @@ const CodeEditor = () => {
     }
     return(
         <div className="editor-parent">
+            
           <div className = "editor-main">
-            <div className = "editor-header">
+          <div className = "editor-header">
                     <button  className = "btn primary" onClick = {runCodeClickHandler}>Run</button>
                     <div className="autorun-checkbox">
                         <input type = "checkbox" id = "auto-run" onChange = {autoRunCheckBoxHandler}/>
-                        <label  htmlFor = "auto-run">Auto Run</label>
+                        <label  htmlFor = "auto-run">Auto Reload</label>
                     </div>
             </div>
-            <div className = "editor-container">
-                <SingleEditor editorDataValue = {files["html"]} setEditorData = {setEditorData}/>
-                <SingleEditor editorDataValue = {files["css"]} setEditorData = {setEditorData}/>
-                <SingleEditor editorDataValue = {files["javascript"]} setEditorData = {setEditorData} setConsoleError = {setConsoleError}/>
-            </div>
+           <Allotment vertical = {false}>
+                <div className = "editor-container">
+                        <Allotment vertical = {true} separator = {true}>
+                            <Allotment.Pane >
+                                <SingleEditor editorDataValue = {files["html"]} setEditorData = {setEditorData}/>
+
+                            </Allotment.Pane>
+                            <Allotment.Pane>
+                                <SingleEditor editorDataValue = {files["css"]} setEditorData = {setEditorData}/>
+
+                            </Allotment.Pane>
+                            <Allotment.Pane>
+                                <SingleEditor editorDataValue = {files["javascript"]} setEditorData = {setEditorData} setConsoleError = {setConsoleError}/>
+
+                            </Allotment.Pane>
+                        </Allotment>
+                    </div>
+                    <Allotment vertical = {true} separator = {true} defaultSizes={[90,10]}>
+                        <Allotment.Pane minSize = {100}>
+                                <p className = "console-header">Preview</p>
+                                <iframe 
+                                    srcDoc={srcDoc}
+                                    title="output"
+                                    sandbox="allow-scripts"
+                                    width="100%"
+                                    height="100%"
+                                    />
+                        </Allotment.Pane>
+                        <Allotment.Pane minSize = {50}>
+                            <div className="editor-console">
+                                <p className = "console-header">Console</p>
+                                <div className = "console-error">{consoleError}</div>
+                            </div>
+                        </Allotment.Pane>
+                                
+                    </Allotment>
+           </Allotment>
           </div>
-          <div className = "output-container">
-           <div className = {`border-black ${isConsoleOpen ?"resize-output-editor":"editor-code"}`}>
-            <iframe 
-                srcDoc={srcDoc}
-                title="output"
-                sandbox="allow-scripts"
-                width="100%"
-                height="100%"
-                
-                />
-           </div>
-            <h3 onClick = {() => setIsConsoleOpen(prev => !prev)} className="cursor-pointer">Console</h3>
-            {
-                isConsoleOpen && <div className = {`resize-output-editor border-black`}>
-                    <div className = "console-error">{consoleError}</div>
-                </div>
-            }
-          </div>
+
+          
         </div>
     )
 }

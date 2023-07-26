@@ -2,75 +2,76 @@ import React, { useEffect, useRef, useState } from 'react';
 import { SpeechSegment, stateToString, useSpeechContext } from '@speechly/react-client';
 import { useAppSelector, useAppDispatch } from '../hooks/redux'
 import { QuestionAnswer, addQuestionAnswer, addQuestionAnswerFeedback } from '../redux/reducer';
+import NonCodeInterviewDisplay from '../components/interview/noncodeinterviewdisplay';
+import CodingInterviewDisplay from '../components/interview/codinginterviewdisplay';
+
+
+export const questionData = ['What are Promises in Javascript', 'What is event loop in Javascript']
+
+
 
 const Interview = () => {
-    const [speechSegments, setSpeechSegments] = useState<SpeechSegment[]>([]);
-    const initialState: SpeechSynthesisVoice[] = [];
-  
-  interface currentQuestionAll {
-    question: string;
-    answer: string;
-    feedback: string;
-  }
-    const [tentative, setTentative] = useState('');
-    const [voices, setVoices] = useState<SpeechSynthesisVoice[]>(initialState);
-    const [transcribedText, setTranscribedText] = useState<string>("")
-          const synth = window.speechSynthesis;
-    const currentQuestionIndex = useRef<number>(0)
-    const [isInterviewCompleted, setIsInterviewCompleted] = useState<boolean | undefined>(false)
-    const [isInterviewStarted, setIsInterviewStarted] = useState<boolean | undefined>(false)
-    const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean | undefined>(false)
-    const [isTimerOn, setIsTimerOn] = useState<boolean | undefined>(false)
-    const [timer, setTimer] = useState<number>(0)
-    const [failedFeedbackQnIdx, setFailedFeedbackQnIdx] = useState<string[]>([])
-    const {
-      client,
-      clientState,
-      listening,
-      microphoneState,
-      segment,
-      attachMicrophone,
-      start,
-      stop,
-    } = useSpeechContext();
-    console.log("failedFeedbackQnIdx" , failedFeedbackQnIdx)
-    const dispatch = useAppDispatch()
-    const { allQuestionAnswerData, allQuestionAnswerFeedbackData } = useAppSelector((state) => state.counter)
-    const updateCounter = useRef(0)
-    useEffect(() => {
-      if (segment) {
-        const text = segment.words.map((w) => w.value).join(' ');
-        setTentative(text);
-        if (segment.isFinal && updateCounter.current === 0) {
-          setTentative('');
-          setSpeechSegments((current) => {
-            const finalText = [...current, segment]
-            const finalTextResult = finalText.map((singleInstance) => {
-              return singleInstance.words.map((word) => {
-                return word.value
-              }).join(" ")
-            }).join("")
-            const payload: QuestionAnswer = {
-              question: questionData[currentQuestionIndex.current],
-              answer: finalTextResult
-            }
-            dispatch(addQuestionAnswer(payload))
-            updateCounter.current = 1
-            segment.isFinal = false
-            setTranscribedText(finalTextResult)
-            return [...current, segment]
-          });
-        }
+  const [speechSegments, setSpeechSegments] = useState<SpeechSegment[]>([]);
+  const initialState: SpeechSynthesisVoice[] = [];
+  const [tentative, setTentative] = useState('');
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>(initialState);
+  const [transcribedText, setTranscribedText] = useState<string>("")
+  const synth = window.speechSynthesis;
+  const currentQuestionIndex = useRef<number>(0)
+  const [isInterviewCompleted, setIsInterviewCompleted] = useState<boolean | undefined>(false)
+  const [isInterviewStarted, setIsInterviewStarted] = useState<boolean | undefined>(false)
+  const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean | undefined>(false)
+  const [isTimerOn, setIsTimerOn] = useState<boolean | undefined>(false)
+  const [timer, setTimer] = useState<number>(0)
+  const [failedFeedbackQnIdx, setFailedFeedbackQnIdx] = useState<string[]>([])
+  const {
+    client,
+    clientState,
+    listening,
+    microphoneState,
+    segment,
+    attachMicrophone,
+    start,
+    stop,
+  } = useSpeechContext();
+  console.log("failedFeedbackQnIdx", failedFeedbackQnIdx)
+  const dispatch = useAppDispatch()
+  const { allQuestionAnswerData, allQuestionAnswerFeedbackData } = useAppSelector((state) => state.counter)
+  const updateCounter = useRef(0)
+  useEffect(() => {
+    if (segment) {
+      const text = segment.words.map((w) => w.value).join(' ');
+      setTentative(text);
+      if (segment.isFinal && updateCounter.current === 0) {
+        setTentative('');
+        setSpeechSegments((current) => {
+          const finalText = [...current, segment]
+          const finalTextResult = finalText.map((singleInstance) => {
+            return singleInstance.words.map((word) => {
+              return word.value
+            }).join(" ")
+          }).join("")
+          const payload: QuestionAnswer = {
+            question: questionData[currentQuestionIndex.current],
+            answer: finalTextResult
+          }
+          dispatch(addQuestionAnswer(payload))
+          updateCounter.current = 1
+          segment.isFinal = false
+          setTranscribedText(finalTextResult)
+          return [...current, segment]
+        });
       }
-    }, [segment?.isFinal]);
-  
-    useEffect(() => {
-      if(voices.length === 0){
-  
-     const voiceList = synth.getVoices().sort(function (a, b) {
+    }
+  }, [segment?.isFinal]);
+
+  useEffect(() => {
+    if (voices.length === 0) {
+
+      const voiceList = synth.getVoices().sort(function (a, b) {
         const firstVoice = a.name.toUpperCase();
         const secondVoice = b.name.toUpperCase();
-    
+
         if (firstVoice < secondVoice) {
           return -1;
         } else if (firstVoice === secondVoice) {
@@ -80,33 +81,34 @@ const Interview = () => {
         }
       });
       setVoices(voiceList)
-      }
-    },[voices])
+    }
+  }, [voices])
   const intervalId = useRef<ReturnType<typeof setInterval> | undefined>();
   //timer function to display timer
-    useEffect(() => {
-      if(isTimerOn && timer === 10){
-        generatorFunction?.current?.next()
-        intervalId.current = setInterval(() => {
-         
-            setTimer((prev) => {
-              if(prev === 0){
-                clearInterval(intervalId.current)
-                setIsTimerOn(false)
-                setTimer(0)
-                handleNextQuestion()
-                return prev
-              }
-              else {
-               return --prev
-              }
-            })
-          
-        }, 1000)
-      }
-    }, [isTimerOn])
+  useEffect(() => {
+    if (isTimerOn && timer === 10) {
+      generatorFunction?.current?.next()
+      intervalId.current = setInterval(() => {
 
-    const handleMicPress = async () => {
+        setTimer((prev) => {
+          if (prev === 0) {
+            clearInterval(intervalId.current)
+            setIsTimerOn(false)
+            setTimer(0)
+            handleNextQuestion()
+            return prev
+          }
+          else {
+            return --prev
+          }
+        })
+
+      }, 1000)
+    }
+  }, [isTimerOn])
+
+  const
+    handleMicPress = async () => {
       if (listening) {
         await stop();
       } else {
@@ -115,60 +117,70 @@ const Interview = () => {
       }
     };
   const failedFeedbackQnLength = useRef<string[]>([])
-  const questionData = ['What are Promises in Javascript', 'What is event loop in Javascript']
   const handlerStartInterview = () => {
-    console.log("next question", failedFeedbackQnLength.current)
-    setIsInterviewStarted(true)
-    
-    if(failedFeedbackQnLength.current.length > 0){
-        // TODO add case where set of failed api calls are to be made after the last question.
-     const dataToSendForFeedbackCall = allQuestionAnswerData.find((ele) => ele.question === failedFeedbackQnLength.current[0])
-     handleAPIFeedbackCall(dataToSendForFeedbackCall)
-     
+    if (currentQuestionIndex.current === 0) {
+      setIsInterviewStarted(true)
     }
-    if(currentQuestionIndex.current > 0){
+    // calling feedback API for failed calls
+    if (failedFeedbackQnLength.current.length > 0) {
+      // TODO add case where set of failed api calls are to be made after the last question.
+      const dataToSendForFeedbackCall = allQuestionAnswerData.find((ele) => ele.question === failedFeedbackQnLength.current[0])
+      handleAPIFeedbackCall(dataToSendForFeedbackCall)
+
+    }
+    //resetting the submitted answer state value
+    if (currentQuestionIndex.current > 0) {
       setIsAnswerSubmitted(false)
     }
-    const utterThis = new SpeechSynthesisUtterance(questionData[currentQuestionIndex.current]);
-    utterThis.voice = voices[10];
-      utterThis.rate = 1;
-      utterThis.pitch = 1;
-      synth.speak(utterThis);
-  
-      utterThis.onend = () => handleMicPress()
+    if (!questionData[currentQuestionIndex.current].startsWith("code:")) {
+      callQuestionWOCode(questionData, currentQuestionIndex, voices, synth, handleMicPress);
+    }
+
+    if (currentQuestionIndex.current > 0 && questionData[currentQuestionIndex.current].startsWith("code")) {
+      //set the question display
+      //display editor based on the question choice
+      //allow user to code the problem
+      //start the timer from start to end of question till submit answer
+      //store the timer along with answer for answer
+      //collect the answer string i.e, code in string which can be read
+      //send this to feedback to Agent
+      //collect feedback and store it in the data.
+
+
+    }
   }
-   
-  const handlerStopAnswer = async() => {
+
+  const handlerStopAnswer = async () => {
     await stop();
     setIsAnswerSubmitted(true)
     updateCounter.current = 0
   }
   const handleNextQuestion = () => {
     currentQuestionIndex.current = currentQuestionIndex.current + 1
-      if(currentQuestionIndex.current < questionData.length) {
-        setSpeechSegments(() => [])
-        setTranscribedText("")
-          handlerStartInterview()
-    
-      }else {
-        setIsInterviewCompleted(true)
-          console.log("interview is completed")   
-      }
-    
-    
+    if (currentQuestionIndex.current < questionData.length) {
+      setSpeechSegments(() => [])
+      setTranscribedText("")
+      handlerStartInterview()
+
+    } else {
+      setIsInterviewCompleted(true)
+      console.log("interview is completed")
+    }
+
+
   }
   const handleTimer = () => {
     setIsTimerOn(true)
     setTimer(10)
   }
-  const handleAPIFeedbackCall = async(dataToSendForFeedbackCall?:QuestionAnswer) => {
+  const handleAPIFeedbackCall = async (dataToSendForFeedbackCall?: QuestionAnswer) => {
     console.log("API")
     const bodyPayload = {
-      question:questionData[currentQuestionIndex.current],
-      answer:transcribedText
+      question: questionData[currentQuestionIndex.current],
+      answer: transcribedText
     }
-    if(dataToSendForFeedbackCall?.question){
-        console.log("Called for failed")
+    if (dataToSendForFeedbackCall?.question) {
+      console.log("Called for failed")
     }
     const bodyPayloadForFailedCall = {
       question: dataToSendForFeedbackCall?.question,
@@ -176,98 +188,63 @@ const Interview = () => {
     }
     const apiFeedbackPayload = dataToSendForFeedbackCall?.question ? bodyPayloadForFailedCall : bodyPayload;
     try {
-    //   const response = await fetch("https://4f44-49-206-45-133.ngrok-free.app/api/generate", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(apiFeedbackPayload),
-    //   });
-  
-    //   const responseData = await response.json();
-    //   if (response.status !== 200) {
-    //     throw responseData.error || new Error(`Request failed with status ${response.status}`);
-    //   }
-    //   dispatch(addQuestionAnswerFeedback(responseData.result))
-    //   if(dataToSendForFeedbackCall?.question){
-    //     setFailedFeedbackQnIdx((prev) => {
-    //         return prev.filter((ele, index) => index !== 0)
-    //     })
-    //   }
-    throw Error
-  
-    } catch(error) {
+        const response = await fetch("https://4f44-49-206-45-133.ngrok-free.app/api/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(apiFeedbackPayload),
+        });
+
+        const responseData = await response.json();
+        if (response.status !== 200) {
+          throw responseData.error || new Error(`Request failed with status ${response.status}`);
+        }
+        dispatch(addQuestionAnswerFeedback(responseData.result))
+        if(dataToSendForFeedbackCall?.question){
+          setFailedFeedbackQnIdx((prev) => {
+              return prev.filter((ele, index) => index !== 0)
+          })
+        }
+    } catch (error) {
       // Consider implementing your own error handling logic here
       console.error(error);
       const isFailedQuestionExists = failedFeedbackQnIdx.some((ele) => ele === questionData[currentQuestionIndex.current])
-      if(!isFailedQuestionExists) failedFeedbackQnLength.current = [...failedFeedbackQnLength.current, questionData[currentQuestionIndex.current]]
-       
+      if (!isFailedQuestionExists) failedFeedbackQnLength.current = [...failedFeedbackQnLength.current, questionData[currentQuestionIndex.current]]
+
     }
   }
-   function*generator(){
+  //generator function is to allow timer to start at the first and to make api call once timer is started without needing to complete the function call.
+  function* generator() {
     yield handleTimer()
     yield handleAPIFeedbackCall()
   }
   const generatorFunction = useRef<Generator<void | Promise<void>, void, unknown> | undefined>()
-    const handleNextQuestionPress = async() => {
-      generatorFunction.current = generator()
-      generatorFunction?.current?.next()
-     
-    };
-   
-  
-    return (
-      <div className="app">
-        <div className="left">
-          <h1 className="title">Your Interview Assistant: Wall-E</h1>
-          <div className="status">
-            <code>
-              Client: <span>{stateToString(clientState)}</span>
-            </code>
-            <code> &middot; </code>
-            <code>
-              Microphone: <span>{microphoneState}</span>
-            </code>
-          </div>
-          <div className="toolbar">
-            <button onClick = {handlerStartInterview} disabled = {isInterviewStarted}>Start the Interview</button>
-            <button onClick = {handlerStopAnswer} disabled = { (currentQuestionIndex.current>0 ? isAnswerSubmitted : (!isInterviewStarted || isAnswerSubmitted))}>Submit answer for this question</button>
-            <button onClick={handleNextQuestionPress} disabled={!isAnswerSubmitted}>
-              {
-                currentQuestionIndex.current === (questionData.length - 1) ? "Get the feedback" : "Next Question"
-              }
-            </button>
-          </div>
-            <div className = "timer">
-              {
-                isTimerOn && <p>{timer}</p>
-              }
-            </div>
-          <div>
-            {
-              isInterviewCompleted &&<div>
-                {
-                  allQuestionAnswerFeedbackData.map((singleInstance) => {
-                    return (<div key = {singleInstance.feedback}>
-                      <p><b>Question:</b>{singleInstance.question}</p>
-                      <p><b>Your Answer:</b>{singleInstance.answer}</p>
-                      <p><b>Agent Feedback:</b>{singleInstance.feedback}</p>
-                    </div>)
-                  })
-                }
-              </div>
-            }
-          </div>
-        </div>
-        <div className = "right">
-            <div>
-            {
-              tentative && tentative
-            }
-          </div>
-        </div>
-      </div>
-    );
-  
+  const handleNextQuestionPress = async () => {
+    generatorFunction.current = generator()
+    generatorFunction?.current?.next()
+
+  };
+
+
+  return (
+    <div className="app">
+      {!questionData[currentQuestionIndex.current].startsWith("codeDSA") ?
+        <NonCodeInterviewDisplay tentative={tentative} currentQuestionIndex={currentQuestionIndex} isInterviewCompleted={isInterviewCompleted} isInterviewStarted={isInterviewStarted} isAnswerSubmitted={isAnswerSubmitted} isTimerOn={isTimerOn} timer={timer} clientState={clientState} microphoneState={microphoneState} handlerStartInterview={handlerStartInterview} handlerStopAnswer={handlerStopAnswer} handleNextQuestionPress={handleNextQuestionPress}></NonCodeInterviewDisplay> : 
+        <CodingInterviewDisplay currentQuestionIndex={currentQuestionIndex} handleNextQuestionPress={handleNextQuestionPress}/>}
+    </div>
+  );
+
 }
 export default Interview
+
+function callQuestionWOCode(questionData: string[], currentQuestionIndex: React.MutableRefObject<number>, voices: SpeechSynthesisVoice[], synth: SpeechSynthesis, handleMicPress: () => Promise<void>) {
+  const utterThis = new SpeechSynthesisUtterance(questionData[currentQuestionIndex.current]);
+  utterThis.voice = voices[10];
+  utterThis.rate = 1;
+  utterThis.pitch = 1;
+  synth.speak(utterThis);
+
+  utterThis.onend = () => handleMicPress();
+
+}

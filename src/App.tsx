@@ -6,9 +6,8 @@ import CodeEditor from './components/codeeditor/codeeditor';
 
 function App() {
   return(
-    <div>
-      {/* <Interview /> */}
-      <CodeEditor />
+    <div className = "App">
+      <Interview />
     </div>
   )
  }

@@ -7,7 +7,7 @@ export interface QuestionAnswer {
     question: string
     answer: string
 }
-interface QuestionAnswerFeedback extends QuestionAnswer {
+export interface QuestionAnswerFeedback extends QuestionAnswer {
     feedback: string
 }
 interface QuestionAnswerState {
