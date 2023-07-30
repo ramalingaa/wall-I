@@ -65,8 +65,15 @@ app.post("/api/generate", async (req, res) => {
 
 
 function generatePrompt(answer, question) {
-  return `You are an expert interviewer and you are best at analyzing at providing detailed feedback to users. The feedback should be in 1000 characters and should not exceed this limit in any given circumstance.Now I will give you question and answer mentioned by user. For this provide me with detailed accuracy and correctness of the answer with respect to question. Suggest better way of answering the question.
-Question: ${question}
-Answer: ${answer}
-`
+  if(question.startsWith('codeDSA:')){
+    return `You are an expert code analyzer and can provide feedback by comparing coding question in javascript with the answer which is in JavaScript. Provide feedback on answer with respect to question. The feedback should be based on how accurate the answer i.e, whether given answer produce satisfied output for the question, second give suggestion on how it can be improved. For an incorrect answer you can tell why it is incorrect and suggest ways of solving the question using javascript.In Any case you should provide code example for feedback.
+    Question: ${question}
+    Answer: ${answer}
+    `
+  }else {
+    return `You are an expert interviewer and you are best at analyzing at providing detailed feedback to users. The feedback should be in 1000 characters and should not exceed this limit in any given circumstance.Now I will give you question and answer mentioned by user. For this provide me with detailed accuracy and correctness of the answer with respect to question. Suggest better way of answering the question.
+    Question: ${question}
+    Answer: ${answer}
+    `
+  }
 }

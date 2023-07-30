@@ -1,50 +1,36 @@
 import { SpeechSegment, stateToString, useSpeechContext } from '@speechly/react-client';
 import { QuestionAnswerFeedback } from '../../redux/reducer';
+import "./noncoding.css"
 import { useAppSelector } from '../../hooks/redux';
 import { questionData } from '../../pages/interview';
-
+import "./noncoding.css"
 const NonCodeInterviewDisplay = (props:any) => {
     const { allQuestionAnswerData, allQuestionAnswerFeedbackData } = useAppSelector((state) => state.counter)
-
-    return (<div>
-      <div className="left">
-        <h1 className="title">Your Interview Assistant: Wall-E</h1>
-        <div className="status">
+    const btnStatusArray = [props.isInterviewStarted, props.currentQuestionIndex.current > 0 ? props.isAnswerSubmitted : !props.isInterviewStarted || props.isAnswerSubmitted, !props.isAnswerSubmitted]
+    console.log(props.microphoneState)
+    return (
+      <div className="noncoding-container">
+        <div className="">
           <code>
-            Client: <span>{stateToString(props.clientState)}</span>
+            Your Device: <span className= { stateToString(props.clientState) === 'Connected' ? "connected" : "notconnected"}>{stateToString(props.clientState)}</span>
           </code>
-          <code> &middot; </code>
+          <code> &middot; | &middot; </code>
           <code>
-            Microphone: <span>{props.microphoneState}</span>
+            Microphone: <span className= {props.microphoneState === "Started" ? 'connected' : 'notconnected'}>{props.microphoneState}</span>
           </code>
-        </div>
-        <div className="toolbar">
-          <button onClick={props.handlerStartInterview} disabled={props.isInterviewStarted}>Start the Interview</button>
-          <button onClick={props.handlerStopAnswer} disabled={props.currentQuestionIndex.current > 0 ? props.isAnswerSubmitted : !props.isInterviewStarted || props.isAnswerSubmitted}>Submit answer for this question</button>
-          <button onClick={props.handleNextQuestionPress} disabled={!props.isAnswerSubmitted}>
-            {props.currentQuestionIndex.current === questionData.length - 1 ? "Get the feedback" : "Next Question"}
-          </button>
-        </div>
-        <div className="timer">
-          {props.isTimerOn && <p>{props.timer}</p>}
         </div>
         <div>
-          {props.isInterviewCompleted && <div>
-            {allQuestionAnswerFeedbackData.map((singleInstance:QuestionAnswerFeedback) => {
-              return <div key={singleInstance.feedback}>
-                <p><b>Question:</b>{singleInstance.question}</p>
-                <p><b>Your Answer:</b>{singleInstance.answer}</p>
-                <p><b>Agent Feedback:</b>{singleInstance.feedback}</p>
-              </div>;
-            })}
-          </div>}
+            <p className="current-qn-text">{questionData[props.currentQuestionIndex.current]}</p>
         </div>
-      </div>
-      <div className="right">
-        <div>
-          {props.tentative && props.tentative}
+        <div className="noncoding-button-container">
+            <button onClick={props.handlerStartInterview} disabled={props.isInterviewStarted} className= {`btn ${btnStatusArray[0] ? "": " btn-active"}`}>Start the Interview</button>
+            <button onClick={props.handlerStopAnswer} disabled={btnStatusArray[1]} className={`btn ${btnStatusArray[1] ? "": " btn-active"}`}>Submit answer for this question</button>
+            <button onClick={props.handleNextQuestionPress} disabled={btnStatusArray[2]} className={`btn ${btnStatusArray[2] ? "": " btn-active"}`}>
+              {props.currentQuestionIndex.current === questionData.length - 1 ? "Get the feedback" : "Next Question"}
+            </button>
         </div>
+        
       </div>
-    </div>);
+  );
   }
   export default NonCodeInterviewDisplay

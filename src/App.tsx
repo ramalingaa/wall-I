@@ -5,9 +5,11 @@ import CodeEditor from './components/codeeditor/codeeditor';
 
 
 function App() {
+  const [isInterviewCompleted, setIsInterviewCompleted] = useState<boolean | undefined>(false)
+
   return(
     <div className = "App">
-      <Interview />
+      <Interview setIsInterviewCompleted = { setIsInterviewCompleted} />
     </div>
   )
  }

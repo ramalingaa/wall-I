@@ -3,15 +3,17 @@ import * as monaco from 'monaco-editor';
 
 import { useRef } from "react"
 import { LanguageData, editorData } from "./codeeditor";
+import { useAppDispatch } from "../../hooks/redux";
 
 const SingleEditor = (props:any) => {
     const { name, language, value} = props?.editorDataValue
-    const { setEditorData, setConsoleError, setConsoleOutput } = props
-    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
+    const { setEditorData, setConsoleError, setConsoleOutput, editorRef } = props
+    // const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
 
     const handleEditorMount = (editor:any, monaco:any) => {
         editorRef.current = editor
     }
+    const dispatch = useAppDispatch()
 
     const editorChangeHandler = () => {
         setEditorData((prev:editorData) => ({

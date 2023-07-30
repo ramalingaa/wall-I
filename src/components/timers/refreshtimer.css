@@ -1,0 +1,11 @@
+.refreshtimer-container {
+    background-color: #332b47;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.refreshtimer-text {
+    color: var(--text-color-whitesmoke);
+    font-size: 3rem;
+}

@@ -1,4 +1,15 @@
-.noncode-qcontainer {
-    display:flex;
-    gap:2rem;
+.coding-container-parent {
+    height: 100vh;
+    padding: 1rem;
+}
+.coding-container-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.coding-btn-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
 }

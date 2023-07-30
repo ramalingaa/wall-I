@@ -4,6 +4,7 @@ import SingleEditor from "./singleeditor"
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import "./codeeditor.css"
+import { useAppDispatch } from "../../hooks/redux";
 
 
 interface JSEditorData {
@@ -17,11 +18,14 @@ const files: { [key: string]: LanguageData } = {
     },
     
 }
-const CodeEditorJS = () => {
+const CodeEditorJS = (props:any) => {
+    const { editorRef } = props
     const [editorData, setEditorData] = useState<JSEditorData>({javascript:""})
     const [consoleError, setConsoleError] = useState<string>("")
     const[isAutoRunEnabled, setIsAutoRunEnabled] = useState<boolean>(false)
     const [consoleOutput, setConsoleOutput] = useState<string>("")
+    const dispatch = useAppDispatch()
+
     const autoRunCheckBoxHandler = (e:any) => {
         if(e.target.checked) {
             setIsAutoRunEnabled(true)
@@ -38,7 +42,6 @@ const CodeEditorJS = () => {
     setConsoleOutput(value); // Update the state with the log value
     console.log(...args); // Call the original console.log() to print to the console
   };
-  console.log(consoleOutput)
     const runCodeClickHandler = () => {
         try {
             const runJSCode = new Function('console',editorData['javascript'])
@@ -50,7 +53,6 @@ const CodeEditorJS = () => {
         }
 
     }
-    console.log(consoleOutput)
     return (
         <div>
             <div>
@@ -63,9 +65,9 @@ const CodeEditorJS = () => {
                 </div>
             </div>
             <div className = "editor-parent">
-                <Allotment vertical = {false} separator = {true} defaultSizes={[90,10]}>
+                <Allotment vertical = {true} separator = {true} defaultSizes={[95,5]}>
                             <Allotment.Pane minSize = {100}>
-                                <SingleEditor editorDataValue = {files["javascript"]} setEditorData = {setEditorData} setConsoleError = {setConsoleError} setConsoleOutput = {setConsoleOutput}/>
+                                <SingleEditor editorRef = { editorRef }editorDataValue = {files["javascript"]} setEditorData = {setEditorData} setConsoleError = {setConsoleError} setConsoleOutput = {setConsoleOutput}/>
    
                             </Allotment.Pane>
                             <Allotment.Pane minSize = {50}>
