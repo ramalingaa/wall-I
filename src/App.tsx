@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import LandingPage from './pages/landingpage';
 import Interview from './pages/interview';
 import CodeEditor from './components/codeeditor/codeeditor';
+import FeedbackDisplay from './components/feedback/feedbackdisplay';
 
 
 function App() {
@@ -9,7 +10,9 @@ function App() {
 
   return(
     <div className = "App">
-      <Interview setIsInterviewCompleted = { setIsInterviewCompleted} />
+     {
+      isInterviewCompleted ? <FeedbackDisplay /> : <Interview setIsInterviewCompleted = { setIsInterviewCompleted} />
+     }
     </div>
   )
  }

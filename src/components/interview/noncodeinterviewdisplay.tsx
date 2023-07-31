@@ -1,13 +1,9 @@
 import { SpeechSegment, stateToString, useSpeechContext } from '@speechly/react-client';
-import { QuestionAnswerFeedback } from '../../redux/reducer';
 import "./noncoding.css"
-import { useAppSelector } from '../../hooks/redux';
 import { questionData } from '../../pages/interview';
 import "./noncoding.css"
 const NonCodeInterviewDisplay = (props:any) => {
-    const { allQuestionAnswerData, allQuestionAnswerFeedbackData } = useAppSelector((state) => state.counter)
     const btnStatusArray = [props.isInterviewStarted, props.currentQuestionIndex.current > 0 ? props.isAnswerSubmitted : !props.isInterviewStarted || props.isAnswerSubmitted, !props.isAnswerSubmitted]
-    console.log(props.microphoneState)
     return (
       <div className="noncoding-container">
         <div className="">
@@ -28,8 +24,7 @@ const NonCodeInterviewDisplay = (props:any) => {
             <button onClick={props.handleNextQuestionPress} disabled={btnStatusArray[2]} className={`btn ${btnStatusArray[2] ? "": " btn-active"}`}>
               {props.currentQuestionIndex.current === questionData.length - 1 ? "Get the feedback" : "Next Question"}
             </button>
-        </div>
-        
+        </div>     
       </div>
   );
   }

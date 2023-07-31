@@ -7,13 +7,15 @@ import CodingInterviewDisplay from '../components/interview/codinginterviewdispl
 import * as monaco from 'monaco-editor';
 import RefreshTimer from '../components/timers/refreshtimer';
 
+// 'What are closures? Give examples/applications.','List some new features introduced in ES6.', 'How many data types are there in JS? ', 'Null vs undefined', 'what are first-class functions? ',
 
 
-export const questionData = ['codeDSA:Briefly explain Promises in Javascript', 'codeDSA:Write a program to find factorial of a given number using javascript.', 'What is event loop in javascript']
+export const questionData = ['What is hoisting? Which out of let, var, and const are hoisted', 'what is a callback function?', 'codeDSA: write a function to find maximum and minimum of given array']
 
 
 
 const Interview = (props:any) => {
+  const { setIsInterviewCompleted } = props
 
   const [speechSegments, setSpeechSegments] = useState<SpeechSegment[]>([]);
   const initialState: SpeechSynthesisVoice[] = [];
@@ -22,7 +24,6 @@ const Interview = (props:any) => {
   const [transcribedText, setTranscribedText] = useState<string>("")
   const synth = window.speechSynthesis;
   const currentQuestionIndex = useRef<number>(0)
-  const [isInterviewCompleted, setIsInterviewCompleted] = useState<boolean | undefined>(false)
   const [isInterviewStarted, setIsInterviewStarted] = useState<boolean | undefined>(false)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean | undefined>(false)
   const [isTimerOn, setIsTimerOn] = useState<boolean | undefined>(false)
@@ -167,9 +168,15 @@ const Interview = (props:any) => {
       question: questionData[currentQuestionIndex.current],
       answer: codeAnswer
     }
+    setIsAnswerSubmitted(true)
+
      dispatch(addQuestionAnswer(payload))
   }
-
+useEffect(() => {
+  if(currentQuestionIndex.current === questionData.length){
+    setIsInterviewCompleted(true)
+  }
+}, [currentQuestionIndex.current])
   const handleNextQuestion = () => {
     currentQuestionIndex.current = currentQuestionIndex.current + 1
     if (currentQuestionIndex.current < questionData.length) {
@@ -178,7 +185,6 @@ const Interview = (props:any) => {
       handlerStartInterview()
 
     } else {
-      setIsInterviewCompleted(true)
       console.log("interview is completed")
     }
 
@@ -200,32 +206,32 @@ const Interview = (props:any) => {
     }
     const apiFeedbackPayload = dataToSendForFeedbackCall?.question ? bodyPayloadForFailedCall : bodyPayload;
     console.log(apiFeedbackPayload)
-    // try {
-    //     const response = await fetch("http://localhost:8080/api/generate", {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(apiFeedbackPayload),
-    //     });
+    try {
+        const response = await fetch("http://localhost:8080/api/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(apiFeedbackPayload),
+        });
 
-    //     const responseData = await response.json();
-    //     if (response.status !== 200) {
-    //       throw responseData.error || new Error(`Request failed with status ${response.status}`);
-    //     }
-    //     dispatch(addQuestionAnswerFeedback(responseData.result))
-    //     if(dataToSendForFeedbackCall?.question){
-    //       setFailedFeedbackQnIdx((prev) => {
-    //           return prev.filter((ele, index) => index !== 0)
-    //       })
-    //     }
-    // } catch (error) {
-    //   // Consider implementing your own error handling logic here
-    //   console.error(error);
-    //   const isFailedQuestionExists = failedFeedbackQnIdx.some((ele) => ele === questionData[currentQuestionIndex.current])
-    //   if (!isFailedQuestionExists) failedFeedbackQnLength.current = [...failedFeedbackQnLength.current, questionData[currentQuestionIndex.current]]
+        const responseData = await response.json();
+        if (response.status !== 200) {
+          throw responseData.error || new Error(`Request failed with status ${response.status}`);
+        }
+        dispatch(addQuestionAnswerFeedback(responseData.result))
+        if(dataToSendForFeedbackCall?.question){
+          setFailedFeedbackQnIdx((prev) => {
+              return prev.filter((ele, index) => index !== 0)
+          })
+        }
+    } catch (error) {
+      // Consider implementing your own error handling logic here
+      console.error(error);
+      const isFailedQuestionExists = failedFeedbackQnIdx.some((ele) => ele === questionData[currentQuestionIndex.current])
+      if (!isFailedQuestionExists) failedFeedbackQnLength.current = [...failedFeedbackQnLength.current, questionData[currentQuestionIndex.current]]
 
-    // }
+    }
   }
   //generator function is to allow timer to start at the first and to make api call once timer is started without needing to complete the function call.
   function* generator() {
@@ -246,7 +252,7 @@ const Interview = (props:any) => {
       isTimerOn ? <RefreshTimer timer = { timer } /> :
        <div>
       {questionData[currentQuestionIndex.current] && !questionData[currentQuestionIndex.current].startsWith("codeDSA") ?
-        <NonCodeInterviewDisplay tentative={tentative} currentQuestionIndex={currentQuestionIndex} isInterviewCompleted={isInterviewCompleted} isInterviewStarted={isInterviewStarted} isAnswerSubmitted={isAnswerSubmitted} isTimerOn={isTimerOn} timer={timer} clientState={clientState} microphoneState={microphoneState} handlerStartInterview={handlerStartInterview} handlerStopAnswer={handlerStopAnswer} handleNextQuestionPress={handleNextQuestionPress}></NonCodeInterviewDisplay> : 
+        <NonCodeInterviewDisplay tentative={tentative} currentQuestionIndex={currentQuestionIndex} isInterviewStarted={isInterviewStarted} isAnswerSubmitted={isAnswerSubmitted} isTimerOn={isTimerOn} timer={timer} clientState={clientState} microphoneState={microphoneState} handlerStartInterview={handlerStartInterview} handlerStopAnswer={handlerStopAnswer} handleNextQuestionPress={handleNextQuestionPress}></NonCodeInterviewDisplay> : 
         <CodingInterviewDisplay currentQuestionIndex={currentQuestionIndex} handleNextQuestionPress={handleNextQuestionPress} setTimeTakenToSolveCodingQn = {setTimeTakenToSolveCodingQn} editorRef = {editorRef} handleSubmitAnswer = {handleSubmitAnswerForCodingQn} setIsAnswerSubmitted = { setIsAnswerSubmitted } isAnswerSubmitted = {isAnswerSubmitted}/>}
         
       </div>
