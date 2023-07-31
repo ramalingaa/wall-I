@@ -1,7 +1,29 @@
+.App {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
 
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
 .logo {
   font-family: 'Tektur', cursive;
   letter-spacing:5px;
   color: var(--primary-color-blue);
   font-weight: bold;
+}
+.btn-active {
+  background-color:var(--primary-color-green);
+  color: var(--white-color)
 }

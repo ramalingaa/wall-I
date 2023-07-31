@@ -6,19 +6,22 @@ import type { RootState } from './store'
 export interface QuestionAnswer {
     question: string
     answer: string
+    time?: number
 }
-interface QuestionAnswerFeedback extends QuestionAnswer {
+export interface QuestionAnswerFeedback extends QuestionAnswer {
     feedback: string
 }
 interface QuestionAnswerState {
   allQuestionAnswerData: QuestionAnswer[];
-  allQuestionAnswerFeedbackData: QuestionAnswerFeedback[]
+  allQuestionAnswerFeedbackData: QuestionAnswerFeedback[];
+  currentEditorData:String;
 }
 
 
 const initialState: QuestionAnswerState = {
     allQuestionAnswerData: [],
-    allQuestionAnswerFeedbackData: []
+    allQuestionAnswerFeedbackData: [],
+    currentEditorData:"",
 
 };
 
@@ -35,6 +38,9 @@ const counterSlice = createSlice({
     },
     addQuestionAnswerFeedback(state, payload){
         state.allQuestionAnswerFeedbackData = [...state.allQuestionAnswerFeedbackData, payload.payload]
+    },
+    updateCurrentEditorData(state, payload){
+      state.currentEditorData = payload.payload;
     }
 
   },

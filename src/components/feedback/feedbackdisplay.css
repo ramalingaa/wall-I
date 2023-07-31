@@ -1,0 +1,15 @@
+.feedback-container-parent {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    gap: 2rem;
+
+}
+.feedback-single-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    width: 50%;
+}

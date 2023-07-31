@@ -1,0 +1,33 @@
+.noncoding-container {
+    margin:2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 2rem;
+    height: 98vh;
+    
+}
+.connected {
+    color: var(--primary-color-green);
+    font-weight: bold;
+}
+.notconnected {
+    color: var(--primary-color-red);
+    font-weight: bold;
+}
+.noncoding-button-container {
+    display: flex;
+    gap: 1rem;
+}
+.btn-active {
+    background-color:var(--primary-color-green);
+    color: var(--white-color)
+}
+.current-qn-text {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.current-qn-text::before {
+    content: "Question: ";
+}

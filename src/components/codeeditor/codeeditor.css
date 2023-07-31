@@ -1,7 +1,5 @@
 .editor-parent {
-    display: flex;
-    gap: 1rem;
-    margin: 1rem;
+    height: 90vh;
 }
 .editor-container {
     display: flex;
@@ -10,13 +8,13 @@
     height: 90vh;
 }
 .output-container {
-    padding: 2rem 0 1rem 0
+    height: 90%;
 }
-.editor-main, .output-container {
+.editor-main{
     width: 90%;
 }
 .border-black {
-    border: 1px solid var(--black-color);
+    border: 1px solid var(--grey-color);
 
 }
 .cursor-pointer {
@@ -24,17 +22,22 @@
 }
 .editor-code {
     height: 100%;
+    width: 100%;
 }
 .editor-console {
-    border: 1px solid var(--black-color);
-    height: 100%; 
+    border: 1px solid var(--grey-color);
+    height: 100%;
 }
 
 .console-error {
     color: var(--primary-color-red);
 }
+.console-header {
+    background-color: var(--black-color);
+    color: var(--white-color);
+}
 .resize-output-editor {
-    height: 50%;
+    min-height: 3rem;
 }
 .editor-header {
     display:flex;
@@ -54,4 +57,7 @@
     padding: 0.2rem;
     border-radius: 0.3rem;
     border: 1px solid grey;
+}
+.sash-horizontal{
+    cursor:col-resize
 }

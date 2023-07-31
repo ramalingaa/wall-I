@@ -3,15 +3,18 @@ import * as monaco from 'monaco-editor';
 
 import { useRef } from "react"
 import { LanguageData, editorData } from "./codeeditor";
+import { useAppDispatch } from "../../hooks/redux";
 
 const SingleEditor = (props:any) => {
     const { name, language, value} = props?.editorDataValue
-    const { setEditorData, setConsoleError } = props
-    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
+    const { setEditorData, setConsoleError, setConsoleOutput, editorRef } = props
+    // const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
 
     const handleEditorMount = (editor:any, monaco:any) => {
         editorRef.current = editor
     }
+    const dispatch = useAppDispatch()
+
     const editorChangeHandler = () => {
         setEditorData((prev:editorData) => ({
             ...prev,
@@ -19,10 +22,17 @@ const SingleEditor = (props:any) => {
           }));
           if(language === "javascript"){
             const userCode = editorRef?.current ? editorRef?.current.getValue(): "";
-
             try {
-                const codeExecutionFunction = new Function(userCode);
-                codeExecutionFunction();
+                const oldConsoleLog = console.log;
+            const consoleOutput:any = [];
+            console.log = (...args) => {
+              oldConsoleLog(...args);
+              consoleOutput.push(args.map(arg => JSON.stringify(arg)).join(' '));
+            };
+            const codeOutputValue = new Function(userCode)
+            codeOutputValue()
+            setConsoleOutput(consoleOutput.join('\n'))
+            setConsoleError("")
             } catch(error:any){
                 const errorMessage = 'Error: ' + error?.message 
                 setConsoleError(errorMessage)
@@ -33,7 +43,6 @@ const SingleEditor = (props:any) => {
     return(
 
         <div className="editor-code">
-            {/* <p>{language}</p> */}
             <Editor
                     height="100%"
                     width="100%"
@@ -43,6 +52,7 @@ const SingleEditor = (props:any) => {
                     path={name}
                     defaultValue={value}
                     onChange={editorChangeHandler}
+                
                     
                     />
         </div>
