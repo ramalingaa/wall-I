@@ -10,9 +10,10 @@ function App() {
 
   return(
     <div className = "App">
-     {
+     {/* {
       isInterviewCompleted ? <FeedbackDisplay /> : <Interview setIsInterviewCompleted = { setIsInterviewCompleted} />
-     }
+     } */}
+     <LandingPage />
     </div>
   )
  }

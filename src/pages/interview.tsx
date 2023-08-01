@@ -8,9 +8,10 @@ import * as monaco from 'monaco-editor';
 import RefreshTimer from '../components/timers/refreshtimer';
 
 // 'What are closures? Give examples/applications.','List some new features introduced in ES6.', 'How many data types are there in JS? ', 'Null vs undefined', 'what are first-class functions? ',
+// , 'what is a callback function?', 'codeDSA: write a function to find maximum and minimum of given array'
 
 
-export const questionData = ['What is hoisting? Which out of let, var, and const are hoisted', 'what is a callback function?', 'codeDSA: write a function to find maximum and minimum of given array']
+export const questionData = ['What is hoisting? Which out of let, var, and const are hoisted']
 
 
 
@@ -46,33 +47,17 @@ const Interview = (props:any) => {
 
   const dispatch = useAppDispatch()
   const { allQuestionAnswerData, allQuestionAnswerFeedbackData } = useAppSelector((state) => state.counter)
-  const updateCounter = useRef(0)
   useEffect(() => {
     if (segment) {
-      const text = segment.words.map((w) => w.value).join(' ');
-      setTentative(text);
-      if (segment.isFinal && updateCounter.current === 0) {
-        setTentative('');
-        setSpeechSegments((current) => {
-          const finalText = [...current, segment]
-          const finalTextResult = finalText.map((singleInstance) => {
-            return singleInstance.words.map((word) => {
-              return word.value
-            }).join(" ")
-          }).join("")
-          const payload: QuestionAnswer = {
-            question: questionData[currentQuestionIndex.current],
-            answer: finalTextResult
-          }
-          dispatch(addQuestionAnswer(payload))
-          updateCounter.current = 1
-          segment.isFinal = false
-          setTranscribedText(finalTextResult)
-          return [...current, segment]
-        });
+     
+      if (segment.isFinal) {
+        const text = segment.words.map((w) => w.value).join(' ');
+         setTranscribedText((prev) => prev + text)
+   
       }
     }
   }, [segment?.isFinal]);
+
 
   useEffect(() => {
     if (voices.length === 0) {
@@ -160,7 +145,11 @@ const Interview = (props:any) => {
   const handlerStopAnswer = async () => {
     await stop();
     setIsAnswerSubmitted(true)
-    updateCounter.current = 0
+    const payload: QuestionAnswer = {
+          question: questionData[currentQuestionIndex.current],
+          answer: transcribedText
+        }
+        dispatch(addQuestionAnswer(payload))
   }
   const handleSubmitAnswerForCodingQn = () => {
      const codeAnswer = editorRef.current ? editorRef.current?.getValue() :''
