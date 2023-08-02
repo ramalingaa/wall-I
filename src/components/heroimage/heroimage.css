@@ -1,0 +1,27 @@
+.hero-text {
+    text-align: center;
+    font-family: 'Monoton', cursive;
+    font-weight: normal;
+    font-size: 4rem;
+    word-spacing: 1rem;
+}
+.hero-text-parent {
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    height:70vh;
+    flex-direction: column;
+    color: white;
+    gap: 2rem;
+
+}
+.hero-text-btn-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 2rem;
+}
+.btn-secondary {
+    background-color:grey;
+    color: var(--white-color);
+}

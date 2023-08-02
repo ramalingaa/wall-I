@@ -1,0 +1,26 @@
+.feature-content-container {
+    display: flex;
+    gap: 1rem;
+}
+.feature-content-container > div > img {
+    width: 100%;
+    height: 20rem;
+}
+.feature-content-single {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width:100%;
+}
+.feature-content-single > p {
+    line-height: 1.5rem;
+}
+.feature-content-header {
+    text-align: center;
+    font-size:1.5rem;
+    margin: 2rem 0;
+}
+.feature-content-parent {
+    margin: 6rem 0;
+    color: white;
+}

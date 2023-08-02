@@ -6,6 +6,8 @@ import 'modern-normalize/modern-normalize.css';
 import './styles.css';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import {BrowserRouter as Router} from "react-router-dom"
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <SpeechProvider
@@ -14,9 +16,12 @@ root.render(
       logSegments={true}
       vad={{ enabled: false }}
     >
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <Router>
+        <Provider store={store}>
+            <App />
+        </Provider>
+      </Router>
+      
      
     </SpeechProvider>
 );
