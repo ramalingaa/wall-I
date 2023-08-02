@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-walli-dev-205045-authRole",
+      "UnauthRoleArn": "arn:aws:iam::042941107826:role/amplify-walli-dev-205045-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::042941107826:role/amplify-walli-dev-205045-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-walli-dev-205045-deployment",
+      "UnauthRoleName": "amplify-walli-dev-205045-unauthRole",
+      "StackName": "amplify-walli-dev-205045",
+      "StackId": "arn:aws:cloudformation:ap-south-1:042941107826:stack/amplify-walli-dev-205045/277ace30-3148-11ee-a1c9-06522431d086",
+      "AmplifyAppId": "d694oo6vomlzm"
+    },
+    "categories": {
+      "auth": {
+        "walliddab592a": {}
+      }
+    }
+  }
+}
