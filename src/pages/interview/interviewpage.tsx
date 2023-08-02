@@ -14,7 +14,6 @@ const InterviewPage = (props:any) => {
 
     return(
         <div>
-
             {
                 isInterviewCompleted ? <FeedbackDisplay /> : <Interview setIsInterviewCompleted = { setIsInterviewCompleted} />
              }
