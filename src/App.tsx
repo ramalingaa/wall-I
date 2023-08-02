@@ -11,9 +11,7 @@ import Interviewpage from './pages/interview/interviewpage';
 
 function App(props:any) {
 
-  const { signOut, user } = props
   const [isInterviewCompleted, setIsInterviewCompleted] = useState<boolean | undefined>(false)
-  console.log(user)
   return(
     <div className = "App">
      {/* {
@@ -23,7 +21,6 @@ function App(props:any) {
           <Route path = "/" element = {<LandingPage />}/>
           <Route path = "/auth" element = {<Interviewpage />}/>
      </Routes>
-     
     </div>
   )
  }
