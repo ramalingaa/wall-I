@@ -1,19 +1,19 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-walli-dev-205045-authRole",
-      "UnauthRoleArn": "arn:aws:iam::042941107826:role/amplify-walli-dev-205045-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::042941107826:role/amplify-walli-dev-205045-authRole",
+      "AuthRoleName": "amplify-walli-dev-224445-authRole",
+      "UnauthRoleArn": "arn:aws:iam::042941107826:role/amplify-walli-dev-224445-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::042941107826:role/amplify-walli-dev-224445-authRole",
       "Region": "ap-south-1",
-      "DeploymentBucketName": "amplify-walli-dev-205045-deployment",
-      "UnauthRoleName": "amplify-walli-dev-205045-unauthRole",
-      "StackName": "amplify-walli-dev-205045",
-      "StackId": "arn:aws:cloudformation:ap-south-1:042941107826:stack/amplify-walli-dev-205045/277ace30-3148-11ee-a1c9-06522431d086",
-      "AmplifyAppId": "d694oo6vomlzm"
+      "DeploymentBucketName": "amplify-walli-dev-224445-deployment",
+      "UnauthRoleName": "amplify-walli-dev-224445-unauthRole",
+      "StackName": "amplify-walli-dev-224445",
+      "StackId": "arn:aws:cloudformation:ap-south-1:042941107826:stack/amplify-walli-dev-224445/14514ea0-3158-11ee-b676-0223640e7e62",
+      "AmplifyAppId": "dh0gmtpvmq225"
     },
     "categories": {
       "auth": {
-        "walliddab592a": {}
+        "wallieadcfc3c": {}
       }
     }
   }

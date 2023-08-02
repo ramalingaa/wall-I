@@ -1,6 +1,6 @@
 {
   "auth": {
-    "walliddab592a": {
+    "wallieadcfc3c": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -14,8 +14,7 @@
         },
         "signupAttributes": [
           "EMAIL",
-          "NAME",
-          "PHONE_NUMBER"
+          "NAME"
         ],
         "socialProviders": [],
         "usernameAttributes": [
