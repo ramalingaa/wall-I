@@ -5,7 +5,7 @@ const BodyContent = () => {
         <div className = "bodycontent-container">
             <div className = "bodycontent-text-container">
                 <p className = "bodycontent-header">Unleash Your Full Potential</p>
-                <p>
+                <p id = "body-text">
                     MockMan offers an unparalleled mock interview experience, designed to boost your confidence and prepare you for the real thing. With our state-of-the-art platform, you’ll be ready to nail any interview thrown your way.
                 </p>
             </div>

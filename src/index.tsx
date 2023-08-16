@@ -16,11 +16,9 @@ root.render(
       logSegments={true}
       vad={{ enabled: false }}
     >
-      <Router>
         <Provider store={store}>
             <App />
         </Provider>
-      </Router>
       
      
     </SpeechProvider>
