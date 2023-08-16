@@ -6,17 +6,17 @@ import NonCodeInterviewDisplay from '../components/interview/noncodeinterviewdis
 import CodingInterviewDisplay from '../components/interview/codinginterviewdisplay';
 import * as monaco from 'monaco-editor';
 import RefreshTimer from '../components/timers/refreshtimer';
-
-// 'What are closures? Give examples/applications.','List some new features introduced in ES6.', 'How many data types are there in JS? ', 'Null vs undefined', 'what are first-class functions? ',
-// , 'what is a callback function?', 'codeDSA: write a function to find maximum and minimum of given array'
+import "./landingpage.css"
 
 
-export const questionData = ['What is hoisting? Which out of let, var, and const are hoisted']
+
+export const questionData = ['What is hoisting? Which out of let, var, and const are hoisted', 'codeDSA: write a function to find maximum and minimum of given array',
+'What is event loop in Javascript', 'What are closures? Give examples/applications.','List some new features introduced in ES6.', 'How many data types are there in JS? ', 'Can explain Null vs undefined',  'what is a callback function?']
 
 
 
 const Interview = (props:any) => {
-  const { setIsInterviewCompleted } = props
+  const { setIsInterviewCompleted, signOut } = props
 
   const [speechSegments, setSpeechSegments] = useState<SpeechSegment[]>([]);
   const initialState: SpeechSynthesisVoice[] = [];
@@ -29,10 +29,10 @@ const Interview = (props:any) => {
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean | undefined>(false)
   const [isTimerOn, setIsTimerOn] = useState<boolean | undefined>(false)
   const [timer, setTimer] = useState<number>(0)
-  const [failedFeedbackQnIdx, setFailedFeedbackQnIdx] = useState<string[]>([])
   const [timeTakenToSolveCodingQn, setTimeTakenToSolveCodingQn] = useState<number>(0)
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
-
+  const failedFeedbackQnQueue = useRef<QuestionAnswer[]>([])
+  const generatorFunction = useRef<Generator<void | Promise<void>, void, unknown> | undefined>()
 
   const {
     client,
@@ -58,7 +58,14 @@ const Interview = (props:any) => {
     }
   }, [segment?.isFinal]);
 
-
+  // const retryFailedApiCalls = () => {
+  //   setFailedApiCalls((prevFailedApiCalls) => {
+  //     // Process the failed API calls from the queue
+  //     // Retry the API calls here
+  //     // For example: prevFailedApiCalls.forEach(task => makeApiCall(task));
+  //     return [];
+  //   });
+  // };
   useEffect(() => {
     if (voices.length === 0) {
 
@@ -82,6 +89,8 @@ const Interview = (props:any) => {
   //timer function to display refresh timer
   useEffect(() => {
     if (isTimerOn && timer === 10) {
+      //API call function invocation through generator
+
       generatorFunction?.current?.next()
       intervalId.current = setInterval(() => {
 
@@ -101,6 +110,11 @@ const Interview = (props:any) => {
       }, 1000)
     }
   }, [isTimerOn])
+  useEffect(() => {
+    if(currentQuestionIndex.current === questionData.length){
+      setIsInterviewCompleted(true)
+    }
+  }, [currentQuestionIndex.current])
 
   const handleMicPress = async () => {
       if (listening) {
@@ -110,19 +124,21 @@ const Interview = (props:any) => {
         await start();
       }
     };
-  const failedFeedbackQnLength = useRef<string[]>([])
   const handlerStartInterview = () => {
+    console.log(failedFeedbackQnQueue)
     if (currentQuestionIndex.current === 0) {
       setIsInterviewStarted(true)
     }
-    // calling feedback API for failed calls
-    // if (failedFeedbackQnLength.current.length > 0) {
-    //   // TODO add case where set of failed api calls are to be made after the last question.
-    //   const dataToSendForFeedbackCall = allQuestionAnswerData.find((ele) => ele.question === failedFeedbackQnLength.current[0])
-    //   handleAPIFeedbackCall(dataToSendForFeedbackCall)
+    //calling feedback with failed data queue
+    if(failedFeedbackQnQueue.current.length > 0 && currentQuestionIndex.current !== 0){
 
-    // }
-    //resetting the submitted answer state value
+      console.log("inside failed call")
+
+      failedFeedbackQnQueue.current.forEach((payload) => {
+        handleAPIFeedbackCall(payload)
+      })
+
+    }
     if (currentQuestionIndex.current > 0) {
       setIsAnswerSubmitted(false)
     }
@@ -146,12 +162,9 @@ const Interview = (props:any) => {
   const handlerStopAnswer = async () => {
     await stop();
     setIsAnswerSubmitted(true)
-    const payload: QuestionAnswer = {
-          question: questionData[currentQuestionIndex.current],
-          answer: transcribedText
-        }
-        dispatch(addQuestionAnswer(payload))
+
   }
+  
   const handleSubmitAnswerForCodingQn = () => {
      const codeAnswer = editorRef.current ? editorRef.current?.getValue() :''
      const payload: QuestionAnswer = {
@@ -159,85 +172,33 @@ const Interview = (props:any) => {
       answer: codeAnswer
     }
     setIsAnswerSubmitted(true)
-
-     dispatch(addQuestionAnswer(payload))
+    dispatch(addQuestionAnswer(payload))
   }
-useEffect(() => {
-  if(currentQuestionIndex.current === questionData.length){
-    setIsInterviewCompleted(true)
-  }
-}, [currentQuestionIndex.current])
-  const handleNextQuestion = () => {
-    currentQuestionIndex.current = currentQuestionIndex.current + 1
-    if (currentQuestionIndex.current < questionData.length) {
-      setSpeechSegments(() => [])
-      setTranscribedText("")
-      handlerStartInterview()
-
-    } else {
-      console.log("interview is completed")
-    }
 
 
-  }
+  const handleNextQuestion = nextQuestionActualEvent(currentQuestionIndex, setSpeechSegments, setTranscribedText, handlerStartInterview, failedFeedbackQnQueue)
   const handleTimer = () => {
     setIsTimerOn(true)
     setTimer(10)
   }
-  const handleAPIFeedbackCall = async (dataToSendForFeedbackCall?: QuestionAnswer) => {
-    console.log("API")
-    const bodyPayload = allQuestionAnswerData.find(({question}) => question === questionData[currentQuestionIndex.current])
-    if (dataToSendForFeedbackCall?.question) {
-      console.log("Called for failed")
-    }
-    const bodyPayloadForFailedCall = {
-      question: dataToSendForFeedbackCall?.question,
-      answer: dataToSendForFeedbackCall?.answer
-    }
-    const apiFeedbackPayload = dataToSendForFeedbackCall?.question ? bodyPayloadForFailedCall : bodyPayload;
-    console.log(apiFeedbackPayload)
-    try {
-        const response = await fetch("http://localhost:8080/api/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(apiFeedbackPayload),
-        });
-
-        const responseData = await response.json();
-        if (response.status !== 200) {
-          throw responseData.error || new Error(`Request failed with status ${response.status}`);
-        }
-        dispatch(addQuestionAnswerFeedback(responseData.result))
-        if(dataToSendForFeedbackCall?.question){
-          setFailedFeedbackQnIdx((prev) => {
-              return prev.filter((ele, index) => index !== 0)
-          })
-        }
-    } catch (error) {
-      // Consider implementing your own error handling logic here
-      console.error(error);
-      const isFailedQuestionExists = failedFeedbackQnIdx.some((ele) => ele === questionData[currentQuestionIndex.current])
-      if (!isFailedQuestionExists) failedFeedbackQnLength.current = [...failedFeedbackQnLength.current, questionData[currentQuestionIndex.current]]
-
-    }
-  }
+  const handleAPIFeedbackCall = feedbackPostCall(dispatch, failedFeedbackQnQueue)
   //generator function is to allow timer to start at the first and to make api call once timer is started without needing to complete the function call.
-  function* generator() {
+  function* generator(payload:QuestionAnswer | undefined) {
     yield handleTimer()
-    yield handleAPIFeedbackCall()
+    yield handleAPIFeedbackCall(payload)
   }
-  const generatorFunction = useRef<Generator<void | Promise<void>, void, unknown> | undefined>()
-  const handleNextQuestionPress = async () => {
-    generatorFunction.current = generator()
-    generatorFunction?.current?.next()
 
-  };
+  const handleNextQuestionPress = nextQuestionClickInitializer(currentQuestionIndex, allQuestionAnswerData, generatorFunction, generator, transcribedText, dispatch);
 
 
   return (
-    <div className="app">
+    <div>
+          <div className="interview-action-header">
+            <button onClick = {signOut} className='btn btn-secondary'>Signout</button>
+            <span>Total No-Of questions: {questionData.length}</span>
+            <span>Current question No: {currentQuestionIndex.current + 1}</span>
+          </div>
+
      {
       isTimerOn ? <RefreshTimer timer = { timer } /> :
        <div>
@@ -254,6 +215,77 @@ useEffect(() => {
 
 }
 export default Interview
+
+function nextQuestionActualEvent(currentQuestionIndex: React.MutableRefObject<number>, setSpeechSegments: React.Dispatch<React.SetStateAction<SpeechSegment[]>>, setTranscribedText: React.Dispatch<React.SetStateAction<string>>, handlerStartInterview: () => void, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>) {
+  return () => {
+    currentQuestionIndex.current = currentQuestionIndex.current + 1;
+    if (currentQuestionIndex.current < questionData.length) {
+      setSpeechSegments(() => []);
+      setTranscribedText("");
+      handlerStartInterview();
+
+    } else {
+      console.log("interview is completed");
+      console.log(failedFeedbackQnQueue);
+
+    }
+
+
+  };
+}
+
+function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObject<number>, allQuestionAnswerData: QuestionAnswer[], generatorFunction: React.MutableRefObject<Generator<void | Promise<void>, void, unknown> | undefined>, generator: (payload: QuestionAnswer | undefined) => Generator<void | Promise<void>, void, unknown>, transcribedText: string, dispatch:any) {
+  return async () => {
+
+
+    if (questionData[currentQuestionIndex.current].startsWith("codeDSA")) {
+      const payloadForCodingQn: QuestionAnswer | undefined = allQuestionAnswerData.find((ele) => ele.question === questionData[currentQuestionIndex.current]);
+      payloadForCodingQn && (generatorFunction.current = generator(payloadForCodingQn));
+
+    }
+    else {
+      const payloadForNonCodingQn: QuestionAnswer = {
+        question: questionData[currentQuestionIndex.current],
+        answer: transcribedText
+      };
+      dispatch(addQuestionAnswer(payloadForNonCodingQn));
+      generatorFunction.current = generator(payloadForNonCodingQn);
+    }
+
+
+    generatorFunction?.current?.next();
+
+  };
+}
+
+function feedbackPostCall(dispatch:any, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>) {
+  return async (payload: QuestionAnswer | undefined) => {
+    try {
+      const response = await fetch("https://d250-49-204-102-192.ngrok-free.app/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const responseData = await response.json();
+      if (response.status !== 200) {
+        throw responseData.error || new Error(`Request failed with status ${response.status}`);
+      }
+      dispatch(addQuestionAnswerFeedback(responseData.result));
+      failedFeedbackQnQueue.current = failedFeedbackQnQueue.current.filter((ele) => ele.question !== payload?.question);
+    } catch (error) {
+      // Consider implementing your own error handling logic here
+      console.error(error);
+      const isFailedQuestionExists = failedFeedbackQnQueue.current.some((ele) => ele.question === payload?.question);
+      if (!isFailedQuestionExists) {
+        console.log(payload, "inside catch");
+        payload && (failedFeedbackQnQueue.current = [...failedFeedbackQnQueue.current, payload]);
+      }
+    }
+  };
+}
 
 function callQuestionWOCode(questionData: string[], currentQuestionIndex: React.MutableRefObject<number>, voices: SpeechSynthesisVoice[], synth: SpeechSynthesis, handleMicPress: () => Promise<void>) {
   const utterThis = new SpeechSynthesisUtterance(questionData[currentQuestionIndex.current]);
