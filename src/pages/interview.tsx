@@ -81,7 +81,8 @@ const Interview = (props:any) => {
           return +1;
         }
       });
-      setVoices(voiceList)
+      const voice = voiceList.filter((ele) => ele.name === "Google US English")
+      setVoices(voice)
     }
   }, [voices])
   const intervalId = useRef<ReturnType<typeof setInterval> | undefined>();
@@ -288,8 +289,8 @@ function feedbackPostCall(dispatch:any, failedFeedbackQnQueue: React.MutableRefO
 
 function callQuestionWOCode(questionData: string[], currentQuestionIndex: React.MutableRefObject<number>, voices: SpeechSynthesisVoice[], synth: SpeechSynthesis, handleMicPress: () => Promise<void>) {
   const utterThis = new SpeechSynthesisUtterance(questionData[currentQuestionIndex.current]);
-  utterThis.voice = voices[10];
-  utterThis.rate = 1;
+  utterThis.voice = voices[0];
+  utterThis.rate = 0.9;
   utterThis.pitch = 1;
   synth.speak(utterThis);
 
