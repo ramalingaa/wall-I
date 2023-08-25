@@ -10,6 +10,7 @@ export interface QuestionAnswer {
 }
 export interface QuestionAnswerFeedback extends QuestionAnswer {
     feedback: string
+    rating:number
 }
 interface InitialState {
   allQuestionAnswerData: QuestionAnswer[];
@@ -46,10 +47,13 @@ const counterSlice = createSlice({
     },
     updateJwtToken(state, payload){
       state.jwtToken = payload.payload
+    },
+    resetInterviewState(state){
+      state = initialState
     }
 
   },
 });
 
-export const { addQuestionAnswer, addQuestionAnswerFeedback, updateJwtToken } = counterSlice.actions;
+export const { addQuestionAnswer, addQuestionAnswerFeedback, updateJwtToken, resetInterviewState } = counterSlice.actions;
 export default counterSlice.reducer;

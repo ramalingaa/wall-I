@@ -1,0 +1,42 @@
+.about-parent-container {
+    width: 75%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    font-family: "Space Grotesk", "Space Grotesk Placeholder", sans-serif;
+}
+.about-parent-page {
+    color: var(--white-color);
+    background-color: var(--black-color);
+    overflow: hidden;
+}
+.about-hero-container {
+    height: 40rem;
+    font-size: 3rem;
+    letter-spacing: 0em;
+    line-height: 1.1;
+    text-align: center;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+.about-meet-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.about-meet-inner {
+    display: flex;
+    gap: 2rem;
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+.about-help-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-size: 1.2rem;
+    line-height: 1.5;
+}

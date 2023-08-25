@@ -4,13 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 const HeroImage = () => {
+
         const navigate = useNavigate();
         const { jwtToken } = useAppSelector((state) => state)
         const authHandler = () => {
-                navigate("auth")
-                
+                navigate("auth")     
         }
-
+        const learnMoreHandler = () => {
+                navigate("about")
+        }
     return (
     
            <div className = "hero-text-parent">
@@ -19,7 +21,7 @@ const HeroImage = () => {
             </div>
             <div className = "hero-text-btn-container">
                     <button className = "btn" onClick = {authHandler} id = "get-started-btn">Get Started</button>
-                    <button className = "btn btn-secondary" id = "learn-more">Learn More</button>
+                    <button className = "btn btn-secondary" id = "learn-more" onClick={learnMoreHandler}>Learn More</button>
             </div>
            </div>
            

@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SpeechSegment, stateToString, useSpeechContext } from '@speechly/react-client';
 import { useAppSelector, useAppDispatch } from '../hooks/redux'
-import { QuestionAnswer, addQuestionAnswer, addQuestionAnswerFeedback } from '../redux/reducer';
+import { QuestionAnswer, addQuestionAnswer, addQuestionAnswerFeedback, resetInterviewState } from '../redux/reducer';
 import NonCodeInterviewDisplay from '../components/interview/noncodeinterviewdisplay';
 import CodingInterviewDisplay from '../components/interview/codinginterviewdisplay';
 import * as monaco from 'monaco-editor';
 import RefreshTimer from '../components/timers/refreshtimer';
 import "./landingpage.css"
+import { useNavigate } from 'react-router-dom';
 
 
 
-export const questionData = ['What is hoisting? Which out of let, var, and const are hoisted', 'codeDSA: write a function to find maximum and minimum of given array',
-'What is event loop in Javascript', 'What are closures? Give examples/applications.','List some new features introduced in ES6.', 'How many data types are there in JS? ', 'Can explain Null vs undefined',  'what is a callback function?']
+export const questionData = [ 
+'What is event loop in Javascript','What is hoisting? Which out of let, var, and const are hoisted', 'What are closures? Give examples/applications.','List some new features introduced in ES6.', 'How many data types are there in JS? ', 'Can explain Null vs undefined',  'what is a callback function?']
 
 
 
@@ -33,6 +34,8 @@ const Interview = (props:any) => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
   const failedFeedbackQnQueue = useRef<QuestionAnswer[]>([])
   const generatorFunction = useRef<Generator<void | Promise<void>, void, unknown> | undefined>()
+  const navigate = useNavigate();
+
 
   const {
     client,
@@ -190,11 +193,17 @@ const Interview = (props:any) => {
 
   const handleNextQuestionPress = nextQuestionClickInitializer(currentQuestionIndex, allQuestionAnswerData, generatorFunction, generator, transcribedText, dispatch);
 
+  //ends
+  const endInterviewHandler = () => {
+    dispatch(resetInterviewState())
+    navigate("/")
+  }
 
   return (
     <div>
           <div className="interview-action-header">
-            <button onClick = {signOut} className='btn btn-secondary'>Signout</button>
+            {/* <button onClick = {signOut} className='btn btn-secondary'>Signout</button> */}
+            <button onClick = {endInterviewHandler} className='btn btn-primary bg-red'>End Interview</button>
             <span>Total No-Of questions: {questionData.length}</span>
             <span>Current question No: {currentQuestionIndex.current + 1}</span>
           </div>
@@ -261,7 +270,7 @@ function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObje
 function feedbackPostCall(dispatch:any, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>) {
   return async (payload: QuestionAnswer | undefined) => {
     try {
-      const response = await fetch("https://d250-49-204-102-192.ngrok-free.app/api/generate", {
+      const response = await fetch("http://localhost:8080/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -39,11 +39,19 @@ app.post("/api/generate", async (req, res) => {
           temperature: 1,
           max_tokens: 2900
         });
-        console.log(completion.data.choices);
+        const responseText = completion.data.choices[0].text
+        
+        const ratingIndex = responseText.indexOf("Rating: ");
+        const feedbackText = responseText.substring(0,ratingIndex)
+        const ratingSubstring = responseText.substring(ratingIndex+8); 
+
+        const rating = parseFloat(ratingSubstring);
+        
         const result = {
           question: question,
           answer: answer,
-          feedback:completion.data.choices[0].text
+          feedback:feedbackText,
+          rating:rating
         }
         res.status(200).json({ result: result });
       } catch(error) {
@@ -71,7 +79,7 @@ function generatePrompt(answer, question) {
     Answer: ${answer}
     `
   }else {
-    return `You are an expert interviewer and you are best at analyzing at providing detailed feedback to users. The feedback should be in 1000 characters and should not exceed this limit in any given circumstance.Now I will give you question and answer mentioned by user. For this provide me with detailed accuracy and correctness of the answer with respect to question. Suggest better way of answering the question.
+    return `You are an expert interviewer and you are best at analyzing at providing detailed feedback to users. The feedback should be in 1000 characters and should not exceed this limit in any given circumstance.Now I will give you question and answer mentioned by user. For this provide me with detailed accuracy and correctness of the answer with respect to question. If the answer is incorrect or partially correct suggest better way of answering the question.At last on a scale of 10 rate answer for it's accuracy, correctness and relevance to subject, 0 is for inaccurate and 10 is for close to perfect answer or correct answer that describes it well. The rating should always be at last and should be in format of Rating: number.There shouldn't be any other text after rating
     Question: ${question}
     Answer: ${answer}
     `
