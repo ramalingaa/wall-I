@@ -5,6 +5,7 @@
     justify-content:center;
     align-items:center;
     gap: 2rem;
+    
 
 }
 .feedback-single-container {
@@ -12,4 +13,19 @@
     flex-direction: column;
     gap: 0.3rem;
     width: 50%;
+}
+.feedback-question {
+    color: #9292e5
+}
+.feedback-answer {
+    color: orange
+}
+.feedback-feedback {
+    color: purple
+}
+.feedback-rating {
+    color: red;
+}
+.feedback-step {
+    padding-left:2rem
 }

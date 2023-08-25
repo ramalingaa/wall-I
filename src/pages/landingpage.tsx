@@ -7,7 +7,7 @@ const LandingPage = () => {
 
 
     return (
-        <div >
+        <div className = "landing-page-parent-container">
            <div className="landing-page-parent">
             <div className="landing-page-container">
                     <Navbar />

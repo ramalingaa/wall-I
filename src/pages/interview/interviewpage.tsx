@@ -15,7 +15,7 @@ const InterviewPage = (props:any) => {
     const { signOut, user } = props
     const dispatch = useAppDispatch()
 
-    const [isInterviewCompleted, setIsInterviewCompleted] = useState<boolean | undefined>(false)
+    const [isInterviewCompleted, setIsInterviewCompleted] = useState<boolean | undefined>(true)
     const [jwtToken, setJwtToken] = useState<string>('')
     const getJwtToken = async() => {
         try {
