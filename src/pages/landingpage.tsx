@@ -10,7 +10,6 @@ const LandingPage = () => {
         <div className = "landing-page-parent-container">
            <div className="landing-page-parent">
             <div className="landing-page-container">
-                    <Navbar />
                     <HeroImage />
                     
             </div>

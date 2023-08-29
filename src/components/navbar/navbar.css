@@ -1,8 +1,24 @@
-.navbar-wrapper {
+.navbar-wrapper {  
+    position: sticky;
+    top: 0;
+    background-color: var(--white-color);
+    border-bottom: 1px solid rgb(201, 201, 201);
+
+}
+.logo-design {
+    color: var(--primary-color-blue);
+   cursor: pointer;
+}
+.navbar-container {
+    width: 77%;
+    margin: auto;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-top: 1rem;
-    color: #fff;
-    
+    align-items:center;
+}
+.navbar-cta-container {
+    display: flex;
+    gap: 2rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 450;
 }

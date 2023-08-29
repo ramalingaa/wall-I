@@ -15,9 +15,6 @@ const NonCodeInterviewDisplay = (props:any) => {
             Microphone: <span className= {props.microphoneState === "Started" ? 'connected' : 'notconnected'}>{props.microphoneState}</span>
           </code>
         </div>
-        <div>
-            <p className="current-qn-text">{questionData[props.currentQuestionIndex.current]}</p>
-        </div>
         <div className="noncoding-button-container">
             <button onClick={props.handlerStartInterview} disabled={props.isInterviewStarted} className= {`btn ${btnStatusArray[0] ? "": " btn-active"}`} id="start-interview-button">Start the Interview</button>
             <button onClick={props.handlerStopAnswer} disabled={btnStatusArray[1]} className={`btn ${btnStatusArray[1] ? "": " btn-active"}`} id = "btn-stop-answer">Submit answer for this question</button>

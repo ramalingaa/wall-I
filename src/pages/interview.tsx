@@ -203,9 +203,10 @@ const Interview = (props:any) => {
     <div>
           <div className="interview-action-header">
             {/* <button onClick = {signOut} className='btn btn-secondary'>Signout</button> */}
-            <button onClick = {endInterviewHandler} className='btn btn-primary bg-red'>End Interview</button>
             <span>Total No-Of questions: {questionData.length}</span>
             <span>Current question No: {currentQuestionIndex.current + 1}</span>
+            <button onClick = {endInterviewHandler} className='btn btn-primary bg-red'>End Interview</button>
+
           </div>
 
      {
@@ -270,7 +271,7 @@ function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObje
 function feedbackPostCall(dispatch:any, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>) {
   return async (payload: QuestionAnswer | undefined) => {
     try {
-      const response = await fetch("http://localhost:8080/api/generate", {
+      const response = await fetch("https://ab8f-49-204-102-192.ngrok-free.app/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
