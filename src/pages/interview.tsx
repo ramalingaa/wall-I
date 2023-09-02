@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export const questionData = [ 
-'What is event loop in Javascript','What is hoisting? Which out of let, var, and const are hoisted', 'What are closures? Give examples/applications.','List some new features introduced in ES6.', 'How many data types are there in JS? ', 'Can explain Null vs undefined',  'what is a callback function?']
+'What is Python', 'Explain the difference between Python 2 and Python 3. Which version should you use for new projects','What are variables in Python, and how do you declare and assign values to them', 'How many data types are there in JS? ', 'Can explain Null vs undefined',  'what is a callback function?']
 
 
 
