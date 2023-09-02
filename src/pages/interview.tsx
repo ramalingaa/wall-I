@@ -271,7 +271,7 @@ function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObje
 function feedbackPostCall(dispatch:any, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>) {
   return async (payload: QuestionAnswer | undefined) => {
     try {
-      const response = await fetch("https://9a81-2409-4070-420e-f243-2cde-c993-f24a-f17f.ngrok-free.app/api/generate", {
+      const response = await fetch("https://8bec-103-77-36-142.ngrok-free.app/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
