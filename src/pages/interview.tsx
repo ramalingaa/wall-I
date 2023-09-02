@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export const questionData = [ 
-'What is Python', 'Explain the difference between Python 2 and Python 3. Which version should you use for new projects','What are variables in Python, and how do you declare and assign values to them', 'How many data types are there in JS? ', 'Can explain Null vs undefined',  'what is a callback function?']
+'What are different data types available in Python?', 'What does # symbol does in python','What is the difference between list and tuples', 'Is python compiled or interpreted language', 'Who invented Python and when']
 
 
 
