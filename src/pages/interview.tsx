@@ -21,7 +21,7 @@ const Interview = (props:any) => {
 
   const [speechSegments, setSpeechSegments] = useState<SpeechSegment[]>([]);
   const initialState: SpeechSynthesisVoice[] = [];
-  const [tentative, setTentative] = useState('');
+  const [tentative, setTentative] = useState<string>('');
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>(initialState);
   const [transcribedText, setTranscribedText] = useState<string>("")
   const synth = window.speechSynthesis;
@@ -61,14 +61,6 @@ const Interview = (props:any) => {
     }
   }, [segment?.isFinal]);
 
-  // const retryFailedApiCalls = () => {
-  //   setFailedApiCalls((prevFailedApiCalls) => {
-  //     // Process the failed API calls from the queue
-  //     // Retry the API calls here
-  //     // For example: prevFailedApiCalls.forEach(task => makeApiCall(task));
-  //     return [];
-  //   });
-  // };
   useEffect(() => {
     if (voices.length === 0) {
 
@@ -128,7 +120,6 @@ const Interview = (props:any) => {
       }
     };
   const handlerStartInterview = () => {
-    console.log(failedFeedbackQnQueue)
     if (currentQuestionIndex.current === 0) {
       setIsInterviewStarted(true)
     }
@@ -268,7 +259,7 @@ function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObje
   };
 }
 
-function feedbackPostCall(dispatch:any, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>) {
+export function feedbackPostCall(dispatch:any, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>) {
   return async (payload: QuestionAnswer | undefined) => {
     try {
       const response = await fetch("https://8bec-103-77-36-142.ngrok-free.app/api/generate", {
