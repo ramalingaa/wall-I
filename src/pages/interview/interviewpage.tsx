@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react"
 import FeedbackDisplay from "../../components/feedback/feedbackdisplay"
 import Interview from "../interview";
-import { withAuthenticator} from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-import { Amplify } from 'aws-amplify';
 import { Auth } from "aws-amplify";
 
-import awsconfig from '../../aws-exports.js';
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { updateJwtToken } from "../../redux/reducer";
 
-Amplify.configure(awsconfig);
+
 const InterviewPage = (props:any) => {
     const { signOut, user } = props
     const dispatch = useAppDispatch()
@@ -29,7 +26,6 @@ const InterviewPage = (props:any) => {
     }
     useEffect(() => {
         getJwtToken()
-
     },[])
     
     return(
@@ -41,4 +37,4 @@ const InterviewPage = (props:any) => {
         </div>
     )
 }
-export default withAuthenticator(InterviewPage)
+export default InterviewPage

@@ -12,11 +12,17 @@ export interface QuestionAnswerFeedback extends QuestionAnswer {
     feedback: string
     rating:number
 }
+interface AudioAnswers {
+  audio: AudioBuffer
+  question: string
+}
 interface InitialState {
   allQuestionAnswerData: QuestionAnswer[];
   allQuestionAnswerFeedbackData: QuestionAnswerFeedback[];
   currentEditorData:String;
-  jwtToken: string
+  jwtToken: string;
+  audioAnswers: AudioAnswers[];
+  questionDataForInterview: string[]
 }
 
 
@@ -24,7 +30,9 @@ const initialState: InitialState = {
     allQuestionAnswerData: [],
     allQuestionAnswerFeedbackData: [],
     currentEditorData:"",
-    jwtToken : ""
+    jwtToken : "",
+    audioAnswers:[],
+    questionDataForInterview:[]
 
 };
 
@@ -45,8 +53,14 @@ const counterSlice = createSlice({
     updateCurrentEditorData(state, payload){
       state.currentEditorData = payload.payload;
     },
+    addInterviewQuestionData(state, payload){
+      state.questionDataForInterview = payload.payload
+    },
     updateJwtToken(state, payload){
       state.jwtToken = payload.payload
+    },
+    updateAudioAnswers(state, payload){
+      state.audioAnswers = [...state.audioAnswers, payload.payload]
     },
     resetInterviewState(state){
       state = initialState
@@ -55,5 +69,5 @@ const counterSlice = createSlice({
   },
 });
 
-export const { addQuestionAnswer, addQuestionAnswerFeedback, updateJwtToken, resetInterviewState } = counterSlice.actions;
+export const { addInterviewQuestionData, addQuestionAnswer, addQuestionAnswerFeedback, updateJwtToken, resetInterviewState, updateAudioAnswers } = counterSlice.actions;
 export default counterSlice.reducer;

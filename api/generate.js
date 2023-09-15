@@ -7,7 +7,7 @@ const bodyParser = require('body-parser')
 app.use(cors())
 app.use(bodyParser.json())
 const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
   const PORT = 8080

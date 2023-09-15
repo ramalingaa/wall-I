@@ -8,7 +8,7 @@ const HeroImage = () => {
         const navigate = useNavigate();
         const { jwtToken } = useAppSelector((state) => state)
         const authHandler = () => {
-                navigate("auth")     
+                navigate("select-level")     
         }
         const learnMoreHandler = () => {
                 navigate("about")

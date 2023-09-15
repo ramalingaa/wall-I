@@ -4,7 +4,7 @@ import "./feedbackdisplay.css"
 
 const FeedbackDisplay = (props:any) => {
   const { signOut } = props
-  const { allQuestionAnswerFeedbackData } = useAppSelector((state) => state.counter)
+  const { allQuestionAnswerFeedbackData } = useAppSelector((state) => state.interview)
   const samples = [
     {
       question: "Where is Paris located?",

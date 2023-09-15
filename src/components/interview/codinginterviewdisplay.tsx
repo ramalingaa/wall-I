@@ -1,13 +1,15 @@
 
 import { useEffect, useRef, useState } from "react"
-import { questionData } from "../../pages/interview"
 import CodeEditor from "../codeeditor/codeeditor"
 import CodeEditorJS from "../codeeditor/codeeditorjs"
 import "./coding.css"
 import { Allotment } from "allotment"
+import { useAppSelector } from "../../hooks/redux"
 const CodingInterviewDisplay = (props:any) => {
+    const {  questionDataForInterview } = useAppSelector((state) => state.interview)
+
     const { currentQuestionIndex,  handleNextQuestionPress, setTimeTakenToSolveCodingQn, editorRef, handleSubmitAnswer, isAnswerSubmitted, setIsAnswerSubmitted} = props
-    const questionToDisplay = questionData[currentQuestionIndex?.current] && questionData[currentQuestionIndex?.current].replace("code:","")
+    const questionToDisplay = questionDataForInterview[currentQuestionIndex?.current] && questionDataForInterview[currentQuestionIndex?.current].replace("code:","")
     const intervalId = useRef<NodeJS.Timer | number | undefined>(undefined)
 
     // useEffect(() => {

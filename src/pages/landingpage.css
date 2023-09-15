@@ -16,6 +16,7 @@
     display: flex;
     justify-content:space-around;
     align-items: center;
+    margin-top:4rem
 }
 .bg-red {
     background-color:var(--primary-color-red);

@@ -1,8 +1,10 @@
 import { SpeechSegment, stateToString, useSpeechContext } from '@speechly/react-client';
 import "./noncoding.css"
-import { questionData } from '../../pages/interview';
 import "./noncoding.css"
+import { useAppSelector } from '../../hooks/redux';
 const NonCodeInterviewDisplay = (props:any) => {
+  const {  questionDataForInterview } = useAppSelector((state) => state.interview)
+
     const btnStatusArray = [props.isInterviewStarted, props.currentQuestionIndex.current > 0 ? props.isAnswerSubmitted : !props.isInterviewStarted || props.isAnswerSubmitted, !props.isAnswerSubmitted]
     return (
       <div className="noncoding-container">
@@ -16,13 +18,15 @@ const NonCodeInterviewDisplay = (props:any) => {
           </code>
         </div>
         <div>
-            <p className="current-qn-text">{questionData[props.currentQuestionIndex.current]}</p>
+          <h2>{
+            questionDataForInterview[props.currentQuestionIndex.current]
+          }</h2>
         </div>
         <div className="noncoding-button-container">
             <button onClick={props.handlerStartInterview} disabled={props.isInterviewStarted} className= {`btn ${btnStatusArray[0] ? "": " btn-active"}`} id="start-interview-button">Start the Interview</button>
             <button onClick={props.handlerStopAnswer} disabled={btnStatusArray[1]} className={`btn ${btnStatusArray[1] ? "": " btn-active"}`} id = "btn-stop-answer">Submit answer for this question</button>
             <button onClick={props.handleNextQuestionPress} disabled={btnStatusArray[2]} className={`btn ${btnStatusArray[2] ? "": " btn-active"}`} id = "btn-next">
-              {props.currentQuestionIndex.current === questionData.length - 1 ? "Get the feedback" : "Next Question"}
+              {props.currentQuestionIndex.current === questionDataForInterview.length - 1 ? "Get the feedback" : "Next Question"}
             </button>
         </div>     
       </div>

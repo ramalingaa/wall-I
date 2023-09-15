@@ -1,0 +1,47 @@
+.selectlevel-container-parent {
+    width: 77%;
+    margin:4rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.lang-children-parent, .exp-children-parent, .qns-children-parent {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+}
+.exp-children-parent {
+
+}
+.btn {
+    align-self: center;
+}
+.configure-header {
+    text-align: center;
+}
+.loading-balls-wrapper {
+    justify-content:center
+}
+.loader-container {
+    height: 90vh;
+    display:flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+.required-symbol::after {
+    content: " *";
+    color: var(--primary-color-red);
+}
+.error-hidden {
+    visibility: hidden;
+}
+.error-visible {
+    visibility: visible;
+    color: var(--primary-color-red);
+}
+.userinput-width {
+    width: 22rem;
+}

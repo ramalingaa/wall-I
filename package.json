@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/ui-react": "^5.0.6",
+    "@azure/openai": "^1.0.0-beta.5",
     "@monaco-editor/react": "^4.5.1",
     "@reduxjs/toolkit": "^1.9.5",
     "@speechly/react-client": "^2.2.4",
@@ -22,6 +23,7 @@
     "openai": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-loader-spinner": "^5.4.5",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.1",
