@@ -22,6 +22,7 @@ interface InitialState {
   currentEditorData:String;
   jwtToken: string;
   audioAnswers: AudioAnswers[];
+  questionDataForInterview: string[]
 }
 
 
@@ -31,6 +32,7 @@ const initialState: InitialState = {
     currentEditorData:"",
     jwtToken : "",
     audioAnswers:[],
+    questionDataForInterview:[]
 
 };
 
@@ -51,6 +53,9 @@ const counterSlice = createSlice({
     updateCurrentEditorData(state, payload){
       state.currentEditorData = payload.payload;
     },
+    addInterviewQuestionData(state, payload){
+      state.questionDataForInterview = payload.payload
+    },
     updateJwtToken(state, payload){
       state.jwtToken = payload.payload
     },
@@ -64,5 +69,5 @@ const counterSlice = createSlice({
   },
 });
 
-export const { addQuestionAnswer, addQuestionAnswerFeedback, updateJwtToken, resetInterviewState, updateAudioAnswers } = counterSlice.actions;
+export const { addInterviewQuestionData, addQuestionAnswer, addQuestionAnswerFeedback, updateJwtToken, resetInterviewState, updateAudioAnswers } = counterSlice.actions;
 export default counterSlice.reducer;

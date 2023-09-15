@@ -1,10 +1,10 @@
 // store/rootReducer.ts
 
 import { combineReducers } from 'redux';
-import counterReducer from './reducer';
+import interviewReducer from './reducer';
 
 const rootReducer = combineReducers({
-  counter: counterReducer,
+  interview: interviewReducer,
 });
 
 export default rootReducer;

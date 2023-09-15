@@ -22,3 +22,24 @@
     font-family: 'Courier New', Courier, monospace;
     font-weight: 450;
 }
+.profile-details {
+    position: absolute;
+    width: 15rem;
+    right: 2rem;
+    top:49px;
+    background-color: var(--white-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1rem;
+    border: 1px solid grey;
+}
+.logo-align {
+    width:8rem;
+    height:5rem;
+}
+.logo-container {
+    display: flex;
+    gap:5px;
+    align-items: center;
+}

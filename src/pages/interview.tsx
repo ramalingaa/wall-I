@@ -9,11 +9,7 @@ import RefreshTimer from '../components/timers/refreshtimer';
 import "./landingpage.css"
 import { useNavigate } from 'react-router-dom';
 
-
-
-export const questionData = [ 
-'What are different data types available in Python?', 'What does # symbol does in python','What is the difference between list and tuples', 'Is python compiled or interpreted language', 'Who invented Python and when']
-
+import axios from 'axios';
 
 
 const Interview = (props:any) => {
@@ -49,7 +45,7 @@ const Interview = (props:any) => {
   } = useSpeechContext();
 
   const dispatch = useAppDispatch()
-  const { allQuestionAnswerData, allQuestionAnswerFeedbackData } = useAppSelector((state) => state.counter)
+  const { allQuestionAnswerData, questionDataForInterview } = useAppSelector((state) => state.interview)
   useEffect(() => {
     if (segment) {
      
@@ -106,7 +102,7 @@ const Interview = (props:any) => {
     }
   }, [isTimerOn])
   useEffect(() => {
-    if(currentQuestionIndex.current === questionData.length){
+    if(currentQuestionIndex.current === questionDataForInterview.length){
       setIsInterviewCompleted(true)
     }
   }, [currentQuestionIndex.current])
@@ -136,11 +132,11 @@ const Interview = (props:any) => {
     if (currentQuestionIndex.current > 0) {
       setIsAnswerSubmitted(false)
     }
-    if (!questionData[currentQuestionIndex.current].startsWith("codeDSA:")) {
-      callQuestionWOCode(questionData, currentQuestionIndex, voices, synth, handleMicPress);
+    if (!questionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA:")) {
+      callQuestionWOCode(questionDataForInterview, currentQuestionIndex, voices, synth, handleMicPress);
     }
 
-    if (currentQuestionIndex.current > 0 && questionData[currentQuestionIndex.current].startsWith("code")) {
+    if (currentQuestionIndex.current > 0 && questionDataForInterview[currentQuestionIndex.current].startsWith("code")) {
       //set the question display
       //display editor based on the question choice
       //allow user to code the problem
@@ -162,7 +158,7 @@ const Interview = (props:any) => {
   const handleSubmitAnswerForCodingQn = () => {
      const codeAnswer = editorRef.current ? editorRef.current?.getValue() :''
      const payload: QuestionAnswer = {
-      question: questionData[currentQuestionIndex.current],
+      question: questionDataForInterview[currentQuestionIndex.current],
       answer: codeAnswer
     }
     setIsAnswerSubmitted(true)
@@ -170,7 +166,7 @@ const Interview = (props:any) => {
   }
 
 
-  const handleNextQuestion = nextQuestionActualEvent(currentQuestionIndex, setSpeechSegments, setTranscribedText, handlerStartInterview, failedFeedbackQnQueue)
+  const handleNextQuestion = nextQuestionActualEvent(currentQuestionIndex, setSpeechSegments, setTranscribedText, handlerStartInterview, failedFeedbackQnQueue, questionDataForInterview)
   const handleTimer = () => {
     setIsTimerOn(true)
     setTimer(10)
@@ -182,7 +178,7 @@ const Interview = (props:any) => {
     yield handleAPIFeedbackCall(payload)
   }
 
-  const handleNextQuestionPress = nextQuestionClickInitializer(currentQuestionIndex, allQuestionAnswerData, generatorFunction, generator, transcribedText, dispatch);
+  const handleNextQuestionPress = nextQuestionClickInitializer(currentQuestionIndex, allQuestionAnswerData, generatorFunction, generator, transcribedText, dispatch, questionDataForInterview);
 
   //ends
   const endInterviewHandler = () => {
@@ -194,7 +190,7 @@ const Interview = (props:any) => {
     <div>
           <div className="interview-action-header">
             {/* <button onClick = {signOut} className='btn btn-secondary'>Signout</button> */}
-            <span>Total No-Of questions: {questionData.length}</span>
+            <span>Total No-Of questions: {questionDataForInterview.length}</span>
             <span>Current question No: {currentQuestionIndex.current + 1}</span>
             <button onClick = {endInterviewHandler} className='btn btn-primary bg-red'>End Interview</button>
 
@@ -203,7 +199,7 @@ const Interview = (props:any) => {
      {
       isTimerOn ? <RefreshTimer timer = { timer } /> :
        <div>
-      {questionData[currentQuestionIndex.current] && !questionData[currentQuestionIndex.current].startsWith("codeDSA") ?
+      {questionDataForInterview[currentQuestionIndex.current] && !questionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA") ?
         <NonCodeInterviewDisplay tentative={tentative} currentQuestionIndex={currentQuestionIndex} isInterviewStarted={isInterviewStarted} isAnswerSubmitted={isAnswerSubmitted} isTimerOn={isTimerOn} timer={timer} clientState={clientState} microphoneState={microphoneState} handlerStartInterview={handlerStartInterview} handlerStopAnswer={handlerStopAnswer} handleNextQuestionPress={handleNextQuestionPress}></NonCodeInterviewDisplay> : 
         <CodingInterviewDisplay currentQuestionIndex={currentQuestionIndex} handleNextQuestionPress={handleNextQuestionPress} setTimeTakenToSolveCodingQn = {setTimeTakenToSolveCodingQn} editorRef = {editorRef} handleSubmitAnswer = {handleSubmitAnswerForCodingQn} setIsAnswerSubmitted = { setIsAnswerSubmitted } isAnswerSubmitted = {isAnswerSubmitted}/>}
         
@@ -217,10 +213,10 @@ const Interview = (props:any) => {
 }
 export default Interview
 
-function nextQuestionActualEvent(currentQuestionIndex: React.MutableRefObject<number>, setSpeechSegments: React.Dispatch<React.SetStateAction<SpeechSegment[]>>, setTranscribedText: React.Dispatch<React.SetStateAction<string>>, handlerStartInterview: () => void, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>) {
+function nextQuestionActualEvent(currentQuestionIndex: React.MutableRefObject<number>, setSpeechSegments: React.Dispatch<React.SetStateAction<SpeechSegment[]>>, setTranscribedText: React.Dispatch<React.SetStateAction<string>>, handlerStartInterview: () => void, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>, questionDataForInterview: string[]) {
   return () => {
     currentQuestionIndex.current = currentQuestionIndex.current + 1;
-    if (currentQuestionIndex.current < questionData.length) {
+    if (currentQuestionIndex.current < questionDataForInterview.length) {
       setSpeechSegments(() => []);
       setTranscribedText("");
       handlerStartInterview();
@@ -235,18 +231,16 @@ function nextQuestionActualEvent(currentQuestionIndex: React.MutableRefObject<nu
   };
 }
 
-function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObject<number>, allQuestionAnswerData: QuestionAnswer[], generatorFunction: React.MutableRefObject<Generator<void | Promise<void>, void, unknown> | undefined>, generator: (payload: QuestionAnswer | undefined) => Generator<void | Promise<void>, void, unknown>, transcribedText: string, dispatch:any) {
+function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObject<number>, allQuestionAnswerData: QuestionAnswer[], generatorFunction: React.MutableRefObject<Generator<void | Promise<void>, void, unknown> | undefined>, generator: (payload: QuestionAnswer | undefined) => Generator<void | Promise<void>, void, unknown>, transcribedText: string, dispatch:any, questionDataForInterview:string[]) {
   return async () => {
-
-
-    if (questionData[currentQuestionIndex.current].startsWith("codeDSA")) {
-      const payloadForCodingQn: QuestionAnswer | undefined = allQuestionAnswerData.find((ele) => ele.question === questionData[currentQuestionIndex.current]);
+    if (questionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA")) {
+      const payloadForCodingQn: QuestionAnswer | undefined = allQuestionAnswerData.find((ele) => ele.question === questionDataForInterview[currentQuestionIndex.current]);
       payloadForCodingQn && (generatorFunction.current = generator(payloadForCodingQn));
 
     }
     else {
       const payloadForNonCodingQn: QuestionAnswer = {
-        question: questionData[currentQuestionIndex.current],
+        question: questionDataForInterview[currentQuestionIndex.current],
         answer: transcribedText
       };
       dispatch(addQuestionAnswer(payloadForNonCodingQn));
@@ -261,34 +255,28 @@ function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObje
 
 export function feedbackPostCall(dispatch:any, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>) {
   return async (payload: QuestionAnswer | undefined) => {
+    const userMessage = {
+        question: payload?.question,
+        answer: payload?.answer
+      };
     try {
-      const response = await fetch("https://8bec-103-77-36-142.ngrok-free.app/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-      const responseData = await response.json();
-      if (response.status !== 200) {
-        throw responseData.error || new Error(`Request failed with status ${response.status}`);
+      const response = await axios.post('http://localhost:5000/api/feedback', { user_message: userMessage });
+      const assistantReply = response.data.assistant_reply;
+      const feedbackPayload = {
+        question: payload?.question,
+        answer: payload?.answer,
+        feedback: assistantReply
       }
-      dispatch(addQuestionAnswerFeedback(responseData.result));
-      failedFeedbackQnQueue.current = failedFeedbackQnQueue.current.filter((ele) => ele.question !== payload?.question);
+      dispatch(addQuestionAnswerFeedback(feedbackPayload));
     } catch (error) {
-      // Consider implementing your own error handling logic here
-      console.error(error);
-      const isFailedQuestionExists = failedFeedbackQnQueue.current.some((ele) => ele.question === payload?.question);
-      if (!isFailedQuestionExists) {
-        console.log(payload, "inside catch");
-        payload && (failedFeedbackQnQueue.current = [...failedFeedbackQnQueue.current, payload]);
-      }
+      console.error('Error:', error);
+    } finally {
     }
   };
 }
 
-function callQuestionWOCode(questionData: string[], currentQuestionIndex: React.MutableRefObject<number>, voices: SpeechSynthesisVoice[], synth: SpeechSynthesis, handleMicPress: () => Promise<void>) {
-  const utterThis = new SpeechSynthesisUtterance(questionData[currentQuestionIndex.current]);
+function callQuestionWOCode(questionDataForInterview: string[], currentQuestionIndex: React.MutableRefObject<number>, voices: SpeechSynthesisVoice[], synth: SpeechSynthesis, handleMicPress: () => Promise<void>) {
+  const utterThis = new SpeechSynthesisUtterance(questionDataForInterview[currentQuestionIndex.current]);
   utterThis.voice = voices[0];
   utterThis.rate = 0.9;
   utterThis.pitch = 1;
