@@ -2,11 +2,10 @@
     position: sticky;
     top: 0;
     background-color: var(--white-color);
-    border-bottom: 1px solid rgb(201, 201, 201);
 
 }
 .logo-design {
-    color: var(--primary-color-blue);
+    color: var(--black-color);
    cursor: pointer;
 }
 .navbar-container {
@@ -27,7 +26,7 @@
     width: 15rem;
     right: 2rem;
     top:49px;
-    background-color: var(--white-color);
+    background-color: var(--black-color);
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -36,7 +35,7 @@
 }
 .logo-align {
     width:8rem;
-    height:5rem;
+    height:2rem;
 }
 .logo-container {
     display: flex;

@@ -7,6 +7,19 @@
     height: 98vh;
     
 }
+.blink {
+    animation: blinker 1s cubic-bezier(.5, 0, 1, 1) infinite alternate;  
+}
+.text-danger-glow {
+    color: red
+}
+@keyframes blinker {  
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.blinking-iconText {
+    text-align: center;
+}
 .connected {
     color: var(--primary-color-green);
     font-weight: bold;

@@ -32,7 +32,11 @@ const initialState: InitialState = {
     currentEditorData:"",
     jwtToken : "",
     audioAnswers:[],
-    questionDataForInterview:[]
+    questionDataForInterview:[
+      "What is a closure in JavaScript, and why is it useful?",
+      "Explain the differences between let, const, and var for declaring variables in JavaScript.",
+      "What is the purpose of the map() function in JavaScript, and how does it differ from forEach()?"
+    ]
 
 };
 

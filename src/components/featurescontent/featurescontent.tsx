@@ -1,6 +1,6 @@
-import featureImageOne from "../../imageDB/featurcontante1.png";
-import featureImageTwo from "../../imageDB/featurcontante2.png";
-import featureImageThree from "../../imageDB/featurcontante3.png";
+import featureImageOne from "../../imageDB/ideogram (9).jpeg";
+import featureImageTwo from "../../imageDB/ideogram (5).jpeg";
+import featureImageThree from "../../imageDB/ideogram (7).jpeg";
 
 
 
