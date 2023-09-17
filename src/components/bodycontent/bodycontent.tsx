@@ -1,4 +1,4 @@
-import BodyImage from "../../imageDB/bodyImage.png"
+import BodyImage from "../../imageDB/ideogram (3).jpeg"
 import "./bodycontent.css"
 const BodyContent = () => {
     return (

@@ -2,8 +2,7 @@ import { useAppSelector } from "../../hooks/redux";
 import { QuestionAnswerFeedback } from "../../redux/reducer";
 import "./feedbackdisplay.css"
 
-const FeedbackDisplay = (props:any) => {
-  const { signOut } = props
+const FeedbackDisplay = () => {
   const { allQuestionAnswerFeedbackData } = useAppSelector((state) => state.interview)
   const samples = [
     {

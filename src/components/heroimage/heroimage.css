@@ -1,9 +1,14 @@
-.hero-text {
+
+.about-hero-container {
+    height: 40rem;
+    font-size: 3rem;
+    letter-spacing: 0em;
+    line-height: 1.1;
     text-align: center;
-    font-family: 'Monoton', cursive;
-    font-weight: normal;
-    font-size: 4rem;
-    word-spacing: 1rem;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    justify-content:center;
 }
 .hero-text-parent {
     display: flex;
@@ -13,7 +18,6 @@
     flex-direction: column;
     color: white;
     gap: 2rem;
-
 }
 .hero-text-btn-container {
     display: flex;

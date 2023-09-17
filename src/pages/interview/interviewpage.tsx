@@ -6,14 +6,17 @@ import { Auth } from "aws-amplify";
 
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { updateJwtToken } from "../../redux/reducer";
+import { useNavigate } from "react-router";
 
 
 const InterviewPage = (props:any) => {
-    const { signOut, user } = props
-    const dispatch = useAppDispatch()
-
+    const { questionDataForInterview } = useAppSelector((state) => state.interview)
     const [isInterviewCompleted, setIsInterviewCompleted] = useState<boolean | undefined>(false)
     const [jwtToken, setJwtToken] = useState<string>('')
+
+    const navigate = useNavigate()
+    const dispatch = useAppDispatch()
+
     const getJwtToken = async() => {
         try {
             const jwtTokenFunction = (await Auth.currentSession()).getIdToken().getJwtToken();
@@ -26,13 +29,16 @@ const InterviewPage = (props:any) => {
     }
     useEffect(() => {
         getJwtToken()
+        if(questionDataForInterview.length === 0){
+            navigate("/select-level")
+        }
     },[])
     
     return(
         <div>
             
             {
-            isInterviewCompleted ? <FeedbackDisplay signOut = {signOut} /> : <Interview setIsInterviewCompleted = { setIsInterviewCompleted} signOut = {signOut}/>
+            !isInterviewCompleted ?  <Interview setIsInterviewCompleted = { setIsInterviewCompleted} /> : <FeedbackDisplay />
              }
         </div>
     )

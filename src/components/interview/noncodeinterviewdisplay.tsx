@@ -8,19 +8,21 @@ const NonCodeInterviewDisplay = (props:any) => {
     const btnStatusArray = [props.isInterviewStarted, props.currentQuestionIndex.current > 0 ? props.isAnswerSubmitted : !props.isInterviewStarted || props.isAnswerSubmitted, !props.isAnswerSubmitted]
     return (
       <div className="noncoding-container">
-        <div className="">
-          <code>
+        <div>
+          <code className="device-status">
             Your Device: <span className= { stateToString(props.clientState) === 'Connected' ? "connected" : "notconnected"}>{stateToString(props.clientState)}</span>
           </code>
           <code> &middot; | &middot; </code>
-          <code>
+          <code className = "microphone-status">
             Microphone: <span className= {props.microphoneState === "Started" ? 'connected' : 'notconnected'}>{props.microphoneState}</span>
           </code>
         </div>
         <div>
-          <h2>{
+          {props.isQuestionCompleted && <p className = "blinking-iconText"><i className="fa fa-circle text-danger-glow blink"></i> Start Speaking</p>}
+          <h2 className = "current-display-question">{
             questionDataForInterview[props.currentQuestionIndex.current]
-          }</h2>
+          }
+          </h2>
         </div>
         <div className="noncoding-button-container">
             <button onClick={props.handlerStartInterview} disabled={props.isInterviewStarted} className= {`btn ${btnStatusArray[0] ? "": " btn-active"}`} id="start-interview-button">Start the Interview</button>

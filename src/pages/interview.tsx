@@ -8,12 +8,14 @@ import * as monaco from 'monaco-editor';
 import RefreshTimer from '../components/timers/refreshtimer';
 import "./landingpage.css"
 import { useNavigate } from 'react-router-dom';
+import { Steps, Hints } from "intro.js-react";
+import "intro.js/introjs.css";
 
 import axios from 'axios';
 
 
 const Interview = (props:any) => {
-  const { setIsInterviewCompleted, signOut } = props
+  const { setIsInterviewCompleted } = props
 
   const [speechSegments, setSpeechSegments] = useState<SpeechSegment[]>([]);
   const initialState: SpeechSynthesisVoice[] = [];
@@ -29,6 +31,7 @@ const Interview = (props:any) => {
   const [timeTakenToSolveCodingQn, setTimeTakenToSolveCodingQn] = useState<number>(0)
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
   const failedFeedbackQnQueue = useRef<QuestionAnswer[]>([])
+  const [isQuestionCompleted, setIsQuestionCompleted] = useState<boolean>(false)
   const generatorFunction = useRef<Generator<void | Promise<void>, void, unknown> | undefined>()
   const navigate = useNavigate();
 
@@ -59,7 +62,6 @@ const Interview = (props:any) => {
 
   useEffect(() => {
     if (voices.length === 0) {
-
       const voiceList = synth.getVoices().sort(function (a, b) {
         const firstVoice = a.name.toUpperCase();
         const secondVoice = b.name.toUpperCase();
@@ -102,7 +104,7 @@ const Interview = (props:any) => {
     }
   }, [isTimerOn])
   useEffect(() => {
-    if(currentQuestionIndex.current === questionDataForInterview.length){
+    if(currentQuestionIndex.current > 0 && currentQuestionIndex.current === questionDataForInterview.length){
       setIsInterviewCompleted(true)
     }
   }, [currentQuestionIndex.current])
@@ -116,43 +118,45 @@ const Interview = (props:any) => {
       }
     };
   const handlerStartInterview = () => {
-    if (currentQuestionIndex.current === 0) {
-      setIsInterviewStarted(true)
-    }
-    //calling feedback with failed data queue
-    if(failedFeedbackQnQueue.current.length > 0 && currentQuestionIndex.current !== 0){
-
-      console.log("inside failed call")
-
-      failedFeedbackQnQueue.current.forEach((payload) => {
-        handleAPIFeedbackCall(payload)
-      })
-
-    }
-    if (currentQuestionIndex.current > 0) {
-      setIsAnswerSubmitted(false)
-    }
-    if (!questionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA:")) {
-      callQuestionWOCode(questionDataForInterview, currentQuestionIndex, voices, synth, handleMicPress);
-    }
-
-    if (currentQuestionIndex.current > 0 && questionDataForInterview[currentQuestionIndex.current].startsWith("code")) {
-      //set the question display
-      //display editor based on the question choice
-      //allow user to code the problem
-      //start the timer from start to end of question till submit answer
-      //store the timer along with answer for answer
-      //collect the answer string i.e, code in string which can be read
-      //send this to feedback to Agent
-      //collect feedback and store it in the data.
-
-
+    if(questionDataForInterview.length > 0){
+      if (currentQuestionIndex.current === 0) {
+        setIsInterviewStarted(true)
+      }
+      //calling feedback with failed data queue
+      if(failedFeedbackQnQueue.current.length > 0 && currentQuestionIndex.current !== 0){
+  
+        console.log("inside failed call")
+  
+        failedFeedbackQnQueue.current.forEach((payload) => {
+          handleAPIFeedbackCall(payload)
+        })
+  
+      }
+      if (currentQuestionIndex.current > 0) {
+        setIsAnswerSubmitted(false)
+      }
+      if (!questionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA:")) {
+        callQuestionWOCode(questionDataForInterview, currentQuestionIndex, voices, synth, handleMicPress, setIsQuestionCompleted);
+      }
+  
+      if (currentQuestionIndex.current > 0 && questionDataForInterview[currentQuestionIndex.current].startsWith("code")) {
+        //set the question display
+        //display editor based on the question choice
+        //allow user to code the problem
+        //start the timer from start to end of question till submit answer
+        //store the timer along with answer for answer
+        //collect the answer string i.e, code in string which can be read
+        //send this to feedback to Agent
+        //collect feedback and store it in the data.
+  
+  
+      }
     }
   }
   const handlerStopAnswer = async () => {
     await stop();
     setIsAnswerSubmitted(true)
-
+    setIsQuestionCompleted(false)
   }
   
   const handleSubmitAnswerForCodingQn = () => {
@@ -185,14 +189,73 @@ const Interview = (props:any) => {
     dispatch(resetInterviewState())
     navigate("/")
   }
-
+  const [onBoardingProps, setOnBoardingProps] = useState( {
+    stepsEnabled: true,
+    initialStep: 0,
+    steps: [
+      {
+        element: ".question",
+        intro: "Total number of questions present in the Interview"
+      },
+      {
+        element: ".currentQuestion",
+        intro: "This shows current question your are taking in interview"
+      },
+      {
+        element: ".end-interview",
+        intro: "You can end your interview by clicking End Interview"
+      },
+      {
+        element: "#start-interview-button",
+        intro: "You can Start Interview by clicking Start Interview"
+      },
+      {
+        element: "#btn-stop-answer",
+        intro: "At the end of your answer click on Submit to Submit answer. Your answer is considered till you press Submit."
+      },
+      {
+        element: "#btn-next",
+        intro: "To move to the next question click on Next question"
+      },
+      {
+        element: ".device-status",
+        intro: "Your device status should be Connected or Active, If status is Disconnected please do not proceed with interview."
+      },
+      {
+        element: ".microphone-status",
+        intro: "Your microphone status will be displayed here."
+      },
+      {
+        element: ".current-display-question",
+        intro: "Current question will be displayed here."
+      }
+    ],
+    hintsEnabled: true,
+    hints: [
+      {
+        element: ".hello",
+        hint: "Hello hint",
+        hintPosition: "middle-right",
+      }
+    ]
+  })
+const onExit = () => {
+  setOnBoardingProps((prev) => ({...prev, stepsEnabled:false}))
+}
   return (
     <div>
+          <Steps
+          enabled={onBoardingProps.stepsEnabled}
+          steps={onBoardingProps.steps}
+          initialStep={onBoardingProps.initialStep}
+          onExit={onExit}
+        />
+        <Hints enabled={onBoardingProps.hintsEnabled} hints={onBoardingProps.hints} />
           <div className="interview-action-header">
             {/* <button onClick = {signOut} className='btn btn-secondary'>Signout</button> */}
-            <span>Total No-Of questions: {questionDataForInterview.length}</span>
-            <span>Current question No: {currentQuestionIndex.current + 1}</span>
-            <button onClick = {endInterviewHandler} className='btn btn-primary bg-red'>End Interview</button>
+            <span className = "question">Total No-Of questions: {questionDataForInterview.length}</span>
+            <span className = "currentQuestion">Current question No: {currentQuestionIndex.current + 1}</span>
+            <button onClick = {endInterviewHandler} className='btn btn-primary bg-red end-interview'>End Interview</button>
 
           </div>
 
@@ -200,7 +263,7 @@ const Interview = (props:any) => {
       isTimerOn ? <RefreshTimer timer = { timer } /> :
        <div>
       {questionDataForInterview[currentQuestionIndex.current] && !questionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA") ?
-        <NonCodeInterviewDisplay tentative={tentative} currentQuestionIndex={currentQuestionIndex} isInterviewStarted={isInterviewStarted} isAnswerSubmitted={isAnswerSubmitted} isTimerOn={isTimerOn} timer={timer} clientState={clientState} microphoneState={microphoneState} handlerStartInterview={handlerStartInterview} handlerStopAnswer={handlerStopAnswer} handleNextQuestionPress={handleNextQuestionPress}></NonCodeInterviewDisplay> : 
+        <NonCodeInterviewDisplay tentative={tentative} currentQuestionIndex={currentQuestionIndex} isInterviewStarted={isInterviewStarted} isAnswerSubmitted={isAnswerSubmitted} isTimerOn={isTimerOn} timer={timer} clientState={clientState} microphoneState={microphoneState} handlerStartInterview={handlerStartInterview} handlerStopAnswer={handlerStopAnswer} handleNextQuestionPress={handleNextQuestionPress} isQuestionCompleted = {isQuestionCompleted}></NonCodeInterviewDisplay> : 
         <CodingInterviewDisplay currentQuestionIndex={currentQuestionIndex} handleNextQuestionPress={handleNextQuestionPress} setTimeTakenToSolveCodingQn = {setTimeTakenToSolveCodingQn} editorRef = {editorRef} handleSubmitAnswer = {handleSubmitAnswerForCodingQn} setIsAnswerSubmitted = { setIsAnswerSubmitted } isAnswerSubmitted = {isAnswerSubmitted}/>}
         
       </div>
@@ -275,13 +338,16 @@ export function feedbackPostCall(dispatch:any, failedFeedbackQnQueue: React.Muta
   };
 }
 
-function callQuestionWOCode(questionDataForInterview: string[], currentQuestionIndex: React.MutableRefObject<number>, voices: SpeechSynthesisVoice[], synth: SpeechSynthesis, handleMicPress: () => Promise<void>) {
+function callQuestionWOCode(questionDataForInterview: string[], currentQuestionIndex: React.MutableRefObject<number>, voices: SpeechSynthesisVoice[], synth: SpeechSynthesis, handleMicPress: () => Promise<void>, setIsQuestionCompleted:any) {
   const utterThis = new SpeechSynthesisUtterance(questionDataForInterview[currentQuestionIndex.current]);
   utterThis.voice = voices[0];
   utterThis.rate = 0.9;
   utterThis.pitch = 1;
   synth.speak(utterThis);
 
-  utterThis.onend = () => handleMicPress();
+  utterThis.onend = () => {
+    handleMicPress()
+    setIsQuestionCompleted(true)
+  };
 
 }
