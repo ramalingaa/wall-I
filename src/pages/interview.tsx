@@ -323,7 +323,7 @@ export function feedbackPostCall(dispatch:any, failedFeedbackQnQueue: React.Muta
         answer: payload?.answer
       };
     try {
-      const response = await axios.post('http://localhost:5000/api/feedback', { user_message: userMessage });
+      const response = await axios.post('https://c442-49-204-102-192.ngrok-free.app/api/feedback', { user_message: userMessage });
       const assistantReply = response.data.assistant_reply;
       const feedbackPayload = {
         question: payload?.question,

@@ -161,7 +161,7 @@ async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAg
       experience: experience
     };
     try {
-      const response = await axios.post('http://localhost:5000/api/questions', { user_message: userMessage });
+      const response = await axios.post('https://c442-49-204-102-192.ngrok-free.app/api/questions', { user_message: userMessage });
       const assistantReply = response.data.assistant_reply;
   
       const interviewQuestionData = assistantReply.split(/\d+\.\s+/).filter((str: string) => str.trim() !== "");
