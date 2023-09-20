@@ -1,0 +1,23 @@
+.align-interviewtext {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.interviewtext-parent {
+    max-width: 80%;
+    margin: auto;
+    height: 90vh;
+    gap:2rem
+}
+.interviewtext-question, .interviewtext-textarea{
+    gap:1rem;
+
+}
+.section-header {
+    font-weight: bold;
+}
+.userinput-textarea {
+    resize: none;
+    padding: 0.2rem;
+}

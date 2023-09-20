@@ -63,7 +63,7 @@ const SelectLevel = () => {
 
     }
     const noOfQuestionsChangeHandler = (e:any) => {
-        if(e.target.value >4 && e.target.value < 13){
+        if(e.target.value >1 && e.target.value < 13){
             setNoOfQuestions(e.target.value)
             setErrorStateForInputs((prev) => ({...prev, noOfQuestions:false}))
         }else {
@@ -116,7 +116,7 @@ const SelectLevel = () => {
             <div className='qns-children-parent'>
                  <p className='required-symbol'>Choose No Of questions for interview</p>
                  <div>
-                    <input type = "number" name = "no-of-qns" onChange = {noOfQuestionsChangeHandler} className='userinput-width' placeholder='Enter question count'required min="5" max = "12"/>
+                    <input type = "number" name = "no-of-qns" onChange = {noOfQuestionsChangeHandler} className='userinput-width' placeholder='Enter question count'required min="2" max = "12"/>
                     <p className={errorStateForInputs.noOfQuestions? "error-visible": "error-hidden"}>Select Questions count </p>
                  </div>
             </div>

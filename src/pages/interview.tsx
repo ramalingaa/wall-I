@@ -81,7 +81,7 @@ const Interview = (props:any) => {
   const intervalId = useRef<ReturnType<typeof setInterval> | undefined>();
   //timer function to display refresh timer
   useEffect(() => {
-    if (isTimerOn && timer === 10) {
+    if (isTimerOn && timer === 1) {
       //API call function invocation through generator
 
       generatorFunction?.current?.next()
@@ -175,7 +175,7 @@ const Interview = (props:any) => {
     setIsTimerOn(true)
     setTimer(10)
   }
-  const handleAPIFeedbackCall = feedbackPostCall(dispatch, failedFeedbackQnQueue)
+  const handleAPIFeedbackCall = feedbackPostCall(dispatch)
   //generator function is to allow timer to start at the first and to make api call once timer is started without needing to complete the function call.
   function* generator(payload:QuestionAnswer | undefined) {
     yield handleTimer()
@@ -316,7 +316,7 @@ function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObje
   };
 }
 
-export function feedbackPostCall(dispatch:any, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>) {
+export function feedbackPostCall(dispatch:any) {
   return async (payload: QuestionAnswer | undefined) => {
     const userMessage = {
         question: payload?.question,
