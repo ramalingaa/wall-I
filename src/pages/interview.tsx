@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SpeechSegment, stateToString, useSpeechContext } from '@speechly/react-client';
 import { useAppSelector, useAppDispatch } from '../hooks/redux'
-import { QuestionAnswer, addQuestionAnswer, addQuestionAnswerFeedback, resetInterviewState } from '../redux/reducer';
+import { QuestionAnswer, addFailedFeedbackAPIData, addQuestionAnswer, addQuestionAnswerFeedback, removeFailedFeedbackAPIData, resetInterviewState } from '../redux/reducer';
 import NonCodeInterviewDisplay from '../components/interview/noncodeinterviewdisplay';
 import CodingInterviewDisplay from '../components/interview/codinginterviewdisplay';
 import * as monaco from 'monaco-editor';
@@ -48,7 +48,7 @@ const Interview = (props:any) => {
   } = useSpeechContext();
 
   const dispatch = useAppDispatch()
-  const { allQuestionAnswerData, questionDataForInterview } = useAppSelector((state) => state.interview)
+  const { allQuestionAnswerData, questionDataForInterview, failedFeedbackAPICallQueue } = useAppSelector((state) => state.interview)
   useEffect(() => {
     if (segment) {
      
@@ -175,7 +175,7 @@ const Interview = (props:any) => {
     setIsTimerOn(true)
     setTimer(10)
   }
-  const handleAPIFeedbackCall = feedbackPostCall(dispatch)
+  const handleAPIFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue)
   //generator function is to allow timer to start at the first and to make api call once timer is started without needing to complete the function call.
   function* generator(payload:QuestionAnswer | undefined) {
     yield handleTimer()
@@ -316,22 +316,36 @@ function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObje
   };
 }
 
-export function feedbackPostCall(dispatch:any) {
+export function feedbackPostCall(dispatch:any, failedFeedbackAPICallQueue: QuestionAnswer[]) {
   return async (payload: QuestionAnswer | undefined) => {
-    const userMessage = {
+    const apiFeedbackData = {
         question: payload?.question,
         answer: payload?.answer
       };
+
+    const isFailedDataAlreadyAdded = failedFeedbackAPICallQueue.some((feedback: QuestionAnswer) => feedback.question === apiFeedbackData.question)
+
     try {
-      const response = await axios.post('https://c442-49-204-102-192.ngrok-free.app/api/feedback', { user_message: userMessage });
+      const response = await axios.post('http://localhost:5000/api/feedback', { user_message: apiFeedbackData });
       const assistantReply = response.data.assistant_reply;
+      const ratingIndex = assistantReply.indexOf("Rating: ");
+      const feedbackText = assistantReply.substring(0,ratingIndex)
+      const ratingSubstring = assistantReply.substring(ratingIndex+8);
       const feedbackPayload = {
         question: payload?.question,
         answer: payload?.answer,
-        feedback: assistantReply
+        feedback: feedbackText,
+        rating: ratingSubstring
       }
       dispatch(addQuestionAnswerFeedback(feedbackPayload));
+      if(isFailedDataAlreadyAdded){
+        dispatch(removeFailedFeedbackAPIData(apiFeedbackData))
+      }
     } catch (error) {
+      
+      if(!isFailedDataAlreadyAdded){
+        dispatch(addFailedFeedbackAPIData(apiFeedbackData))
+      }
       console.error('Error:', error);
     } finally {
     }

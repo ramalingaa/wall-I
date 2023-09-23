@@ -22,8 +22,10 @@ interface InitialState {
   currentEditorData:String;
   jwtToken: string;
   audioAnswers: AudioAnswers[];
-  questionDataForInterview: string[]
+  questionDataForInterview: string[];
+  failedFeedbackAPICallQueue: QuestionAnswer[];
 }
+
 
 
 const initialState: InitialState = {
@@ -36,7 +38,8 @@ const initialState: InitialState = {
       "What is a closure in JavaScript, and why is it useful?",
       "Explain the differences between let, const, and var for declaring variables in JavaScript.",
       "What is the purpose of the map() function in JavaScript, and how does it differ from forEach()?"
-    ]
+    ],
+    failedFeedbackAPICallQueue: []
 
 };
 
@@ -66,6 +69,13 @@ const counterSlice = createSlice({
     updateAudioAnswers(state, payload){
       state.audioAnswers = [...state.audioAnswers, payload.payload]
     },
+    addFailedFeedbackAPIData(state, payload){
+      state.failedFeedbackAPICallQueue = [...state.failedFeedbackAPICallQueue, payload.payload]
+    },
+    removeFailedFeedbackAPIData(state, payload){
+      const filteredFeedbackQueue = state.failedFeedbackAPICallQueue.filter((feedback) => feedback.question !== payload.payload.question)
+      state.failedFeedbackAPICallQueue = filteredFeedbackQueue
+    },
     resetInterviewState(state){
       state = initialState
     }
@@ -73,5 +83,14 @@ const counterSlice = createSlice({
   },
 });
 
-export const { addInterviewQuestionData, addQuestionAnswer, addQuestionAnswerFeedback, updateJwtToken, resetInterviewState, updateAudioAnswers } = counterSlice.actions;
+export const { 
+        addInterviewQuestionData,
+        addQuestionAnswer, 
+        addQuestionAnswerFeedback, 
+        updateJwtToken, 
+        resetInterviewState, 
+        updateAudioAnswers,
+        addFailedFeedbackAPIData,
+        removeFailedFeedbackAPIData 
+            } = counterSlice.actions;
 export default counterSlice.reducer;

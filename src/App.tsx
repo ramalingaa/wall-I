@@ -8,6 +8,9 @@ import SelectLevel from './pages/selectlevel/selectlevel';
 import { Login } from './components/auth/login';
 import { RequireAuth } from './requireauth';
 import NotFound from './pages/notfound/notfound';
+import FeedbackDisplay from './components/feedback/feedbackdisplay';
+import Interview from './pages/interview';
+import InterviewText from './pages/interviewtext';
 
 function App() {
   return(
@@ -19,7 +22,9 @@ function App() {
                   <Route path = "/about" element = {<About />}/>
                   {/* protected routes */}
                   <Route path="/select-level" element={<RequireAuth><SelectLevel /></RequireAuth>} />
-                  <Route path="/interview" element={<RequireAuth><Interviewpage /></RequireAuth>} />
+                  <Route path="/interview" element={<RequireAuth><Interview /></RequireAuth>} />
+                  <Route path="/feedback" element={<RequireAuth><FeedbackDisplay /></RequireAuth>} />
+                  <Route path="/interview-text" element={<RequireAuth><InterviewText /></RequireAuth>} />
                   <Route path="/login" element={<Login />} />
                   <Route path = "*" element={<NotFound />} />
             </Routes>

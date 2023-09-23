@@ -167,7 +167,7 @@ async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAg
       const interviewQuestionData = assistantReply.split(/\d+\.\s+/).filter((str: string) => str.trim() !== "");
       const payload: string[] = interviewQuestionData;
       dispatch(addInterviewQuestionData(payload));
-      navigate("/interview")
+      navigate("/interview-text")
       console.log('Assistant Reply:', assistantReply);
       setIsLoading(false);
 

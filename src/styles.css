@@ -18,6 +18,7 @@
 }
 *{
   --app-background-color: rgb(31, 30, 30);
+  --app-border-color: #ccc;
 }
 .logo {
   letter-spacing:5px;
@@ -30,4 +31,11 @@
 }
 .cursor-pointer {
   cursor: pointer;
+}
+.error-hidden {
+  visibility: hidden;
+}
+.error-visible {
+  visibility: visible;
+  color: var(--primary-color-red);
 }

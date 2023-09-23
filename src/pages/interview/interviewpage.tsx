@@ -39,7 +39,7 @@ const InterviewPage = (props:any) => {
         <div>
             
             {
-            !isInterviewCompleted ?  <InterviewText setIsInterviewCompleted = { setIsInterviewCompleted} /> : <FeedbackDisplay />
+            // !isInterviewCompleted ?  <InterviewText setIsInterviewCompleted = { setIsInterviewCompleted} /> : <FeedbackDisplay />
              }
         </div>
     )

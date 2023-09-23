@@ -1,9 +1,21 @@
-import { useAppSelector } from "../../hooks/redux";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { QuestionAnswerFeedback } from "../../redux/reducer";
 import "./feedbackdisplay.css"
+import { feedbackPostCall } from "../../pages/interview";
+import { BallTriangle } from "react-loader-spinner";
 
 const FeedbackDisplay = () => {
-  const { allQuestionAnswerFeedbackData } = useAppSelector((state) => state.interview)
+  const { allQuestionAnswerFeedbackData, failedFeedbackAPICallQueue } = useAppSelector((state) => state.interview)
+  const dispatch = useAppDispatch()
+  const apiFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue)
+
+  useEffect(() => {
+    //implement failed API calls here
+    if(failedFeedbackAPICallQueue.length > 0){
+        failedFeedbackAPICallQueue.forEach((payload) => apiFeedbackCall(payload))
+    }
+},[])
   const samples = [
     {
       question: "Where is Paris located?",
@@ -43,10 +55,11 @@ const FeedbackDisplay = () => {
     }
   ];
   
-  const userScore = allQuestionAnswerFeedbackData.map((feedback) => feedback.rating).reduce((a,b) => a+b,0)
+  const userScore = allQuestionAnswerFeedbackData.map((feedback) => Number(feedback.rating)).reduce((a,b) => a+b,0)
   const idealScore = allQuestionAnswerFeedbackData.length * 10
     return (
-        <div className="feedback-container-parent">
+        <div>
+            {!failedFeedbackAPICallQueue.length ? <div className="feedback-container-parent">
           <div>
             <p>Yay! You have successfully completed your mock interview.</p>
             <p className="feedback-answer">Interview Score: {userScore} / {idealScore}</p>
@@ -61,6 +74,17 @@ const FeedbackDisplay = () => {
                 </ul>
               </div>;
             })}
+        </div> :<div className = "loader-container">
+        <BallTriangle
+            height={100}
+            width={100}
+            radius={5}
+            color="#4fa94d"
+            ariaLabel="ball-triangle-loading"
+            wrapperClass="loading-balls-wrapper"
+            visible={true}/>
+        <p>One step Closer, Sit back and Relax while we create your Score card</p>
+    </div>}
         </div>
     )
 }
