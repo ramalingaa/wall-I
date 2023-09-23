@@ -35,13 +35,6 @@
     content: " *";
     color: var(--primary-color-red);
 }
-.error-hidden {
-    visibility: hidden;
-}
-.error-visible {
-    visibility: visible;
-    color: var(--primary-color-red);
-}
 .userinput-width {
     width: 22rem;
 }

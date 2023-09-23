@@ -7,6 +7,7 @@ import { Auth } from "aws-amplify";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { updateJwtToken } from "../../redux/reducer";
 import { useNavigate } from "react-router";
+import InterviewText from "../interviewtext";
 
 
 const InterviewPage = (props:any) => {
@@ -38,7 +39,7 @@ const InterviewPage = (props:any) => {
         <div>
             
             {
-            !isInterviewCompleted ?  <Interview setIsInterviewCompleted = { setIsInterviewCompleted} /> : <FeedbackDisplay />
+            // !isInterviewCompleted ?  <InterviewText setIsInterviewCompleted = { setIsInterviewCompleted} /> : <FeedbackDisplay />
              }
         </div>
     )

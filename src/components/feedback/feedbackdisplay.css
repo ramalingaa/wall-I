@@ -29,3 +29,7 @@
 .feedback-step {
     padding-left:2rem
 }
+.loader-container {
+    width: 80%;
+    margin:auto;
+}

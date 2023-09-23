@@ -1,5 +1,8 @@
 export type AmplifyDependentResourcesAttributes = {
   "auth": {
+    "userPoolGroups": {
+      "mockmanGroupRole": "string"
+    },
     "wallieadcfc3c": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
