@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { QuestionAnswerFeedback } from "../../redux/reducer";
 import "./feedbackdisplay.css"
@@ -9,7 +9,6 @@ const FeedbackDisplay = () => {
   const { allQuestionAnswerFeedbackData, failedFeedbackAPICallQueue } = useAppSelector((state) => state.interview)
   const dispatch = useAppDispatch()
   const apiFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue)
-
   useEffect(() => {
     //implement failed API calls here
     if(failedFeedbackAPICallQueue.length > 0){
@@ -54,7 +53,15 @@ const FeedbackDisplay = () => {
       rating: 8
     }
   ];
-  
+  const answerSegment = (rating: number) => {
+    if(rating >= 7){
+      return "correct"
+    }else if (rating < 7 && rating > 3) {
+      return "partially-correct"
+    } else if (rating < 3 && rating >=0) {
+      return "incorrect"
+    }
+  }
   const userScore = allQuestionAnswerFeedbackData.map((feedback) => Number(feedback.rating)).reduce((a,b) => a+b,0)
   const idealScore = allQuestionAnswerFeedbackData.length * 10
     return (
@@ -68,9 +75,9 @@ const FeedbackDisplay = () => {
               return <div key={singleInstance.feedback} className="feedback-single-container">
                 <p className="feedback-question"><b>Question: </b>{singleInstance.question}</p>
                 <ul className="feedback-step">
-                  <li className="feedback-answer"><b>Your Answer: </b>{singleInstance.answer}</li>
+                  <li className={answerSegment(Number(singleInstance.rating))}><b>Your Answer: </b>{singleInstance.answer}</li>
                   <li className="feedback-feedback"><b>Agent Feedback: </b>{singleInstance.feedback}</li>
-                  <li className="feedback-rating"><b>Score: </b>{singleInstance.rating} out of 10</li>         
+                  <li className={answerSegment(Number(singleInstance.rating))}><b>Score: </b>{singleInstance.rating} out of 10</li>         
                 </ul>
               </div>;
             })}

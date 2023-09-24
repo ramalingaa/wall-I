@@ -326,16 +326,18 @@ export function feedbackPostCall(dispatch:any, failedFeedbackAPICallQueue: Quest
     const isFailedDataAlreadyAdded = failedFeedbackAPICallQueue.some((feedback: QuestionAnswer) => feedback.question === apiFeedbackData.question)
 
     try {
-      const response = await axios.post('http://localhost:5000/api/feedback', { user_message: apiFeedbackData });
+      const response = await axios.post('https://be39-49-204-102-192.ngrok-free.app/api/feedback', { user_message: apiFeedbackData });
       const assistantReply = response.data.assistant_reply;
       const ratingIndex = assistantReply.indexOf("Rating: ");
       const feedbackText = assistantReply.substring(0,ratingIndex)
       const ratingSubstring = assistantReply.substring(ratingIndex+8);
+      const ratingIndexUser = ratingSubstring.indexOf("/");
+      const rating = ratingSubstring.substring(0,ratingIndexUser)
       const feedbackPayload = {
         question: payload?.question,
         answer: payload?.answer,
         feedback: feedbackText,
-        rating: ratingSubstring
+        rating: rating
       }
       dispatch(addQuestionAnswerFeedback(feedbackPayload));
       if(isFailedDataAlreadyAdded){
