@@ -15,21 +15,25 @@
     width: 50%;
 }
 .feedback-question {
-    color: #9292e5
-}
-.feedback-answer {
-    color: orange
+    color: blue
 }
 .feedback-feedback {
-    color: purple
+    color: #ea00ff
 }
-.feedback-rating {
-    color: red;
-}
+
 .feedback-step {
     padding-left:2rem
 }
 .loader-container {
     width: 80%;
     margin:auto;
+}
+.correct { 
+    color: green
+}
+.partially-correct {
+    color: rgb(255, 123, 0)
+}
+.incorrect { 
+    color: red
 }
