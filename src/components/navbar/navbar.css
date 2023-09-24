@@ -5,7 +5,7 @@
 
 }
 .logo-design {
-    color: var(--black-color);
+    color: var(--primary-color-blue);
    cursor: pointer;
 }
 .navbar-container {
