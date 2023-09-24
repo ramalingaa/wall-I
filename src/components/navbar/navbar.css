@@ -2,7 +2,7 @@
     position: sticky;
     top: 0;
     background-color: var(--white-color);
-
+    padding: 0.6rem 0;
 }
 .logo-design {
     color: var(--primary-color-blue);
@@ -35,7 +35,6 @@
 }
 .logo-align {
     width:8rem;
-    height:2rem;
 }
 .logo-container {
     display: flex;
