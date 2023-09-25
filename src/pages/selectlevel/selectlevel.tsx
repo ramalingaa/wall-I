@@ -106,7 +106,7 @@ const SelectLevel = () => {
                     <select onChange = {interviewLevelChangeHandler} required className='userinput-width'>
                         <option disabled = {interviewLevel ? true : false} value="">Select Your Expertise Level</option>
                         <option value = "Beginner">Beginner(0-6 months experience)</option>
-                        <option value = "Intermediate">Intermediate(6-2 months experience)</option>
+                        <option value = "Intermediate">Intermediate(6-12 months experience)</option>
                         <option value = "Advanced">Advanced(more than 2 years of experience)</option>
                     </select>
                     <p className={errorStateForInputs.interviewLevel? "error-visible": "error-hidden"}>Select your expertise</p>
