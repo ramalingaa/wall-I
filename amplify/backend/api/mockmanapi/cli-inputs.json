@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "paths": {
+    "/api/questions": {
+      "name": "/api/questions",
+      "lambdaFunction": "selectlevelquestions",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/api/feedback": {
+      "name": "/api/feedback",
+      "lambdaFunction": "interviewfeedback",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

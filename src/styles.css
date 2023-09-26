@@ -32,7 +32,10 @@
 .cursor-pointer {
   cursor: pointer;
 }
-
+.error-hidden {
+  visibility: hidden;
+}
 .error-visible {
+  visibility: visible;
   color: var(--primary-color-red);
 }

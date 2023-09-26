@@ -1,22 +1,4 @@
 {
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-walli-dev-224445-authRole",
-      "UnauthRoleArn": "arn:aws:iam::042941107826:role/amplify-walli-dev-224445-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::042941107826:role/amplify-walli-dev-224445-authRole",
-      "Region": "ap-south-1",
-      "DeploymentBucketName": "amplify-walli-dev-224445-deployment",
-      "UnauthRoleName": "amplify-walli-dev-224445-unauthRole",
-      "StackName": "amplify-walli-dev-224445",
-      "StackId": "arn:aws:cloudformation:ap-south-1:042941107826:stack/amplify-walli-dev-224445/14514ea0-3158-11ee-b676-0223640e7e62",
-      "AmplifyAppId": "dh0gmtpvmq225"
-    },
-    "categories": {
-      "auth": {
-        "wallieadcfc3c": {}
-      }
-    }
-  },
   "mockman": {
     "awscloudformation": {
       "AuthRoleName": "amplify-walli-mockman-174222-authRole",
@@ -39,6 +21,19 @@
           "appId": "d67v88wu3ozyo",
           "type": "manual"
         }
+      },
+      "function": {
+        "selectlevelquestions": {
+          "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
+          "s3Key": "amplify-builds/selectlevelquestions-53744d6e727159424a6c-build.zip"
+        },
+        "interviewfeedback": {
+          "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
+          "s3Key": "amplify-builds/interviewfeedback-4535595a3962736d7454-build.zip"
+        }
+      },
+      "api": {
+        "mockmanapi": {}
       }
     }
   }
