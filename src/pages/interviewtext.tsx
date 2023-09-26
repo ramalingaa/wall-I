@@ -45,7 +45,10 @@ const InterviewText = (props:any) => {
     }
     const answerChangeHandler = (e:any) => {
         setCurrentQuestionAnswer(e.target.value)
-        if(e.target.value.replace(/\s/g, '').length < 100){
+        if(!e.target.value) {
+            setAnswerFieldErrorMsg(answerErrors.emptyAnswer)
+        }
+        else if(e.target.value.replace(/\s/g, '').length < 100){
             setAnswerFieldErrorMsg(answerErrors.minCharLimit)
         }else if(e.target.value.replace(/\s/g, '').length > 1000){
             setAnswerFieldErrorMsg(answerErrors.maxCharLimit)
