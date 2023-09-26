@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import axios from 'axios';
 import "./selectlevel.css"
 import { useAppDispatch } from '../../hooks/redux';
-import { addInterviewQuestionData } from '../../redux/reducer';
+import { addInterviewQuestionData, resetInterviewState } from '../../redux/reducer';
 import { BallTriangle  } from  'react-loader-spinner'
 import { useNavigate } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -27,6 +27,7 @@ const SelectLevel = () => {
     
 
     const interviewLevelSubmitClickHandler = () => {
+        dispatch(resetInterviewState())
         if(language && interviewLevel && noOfQuestions){
             getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions, dispatch, navigate, experience, setIsLoading})
         }else {
