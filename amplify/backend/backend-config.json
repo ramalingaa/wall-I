@@ -1,4 +1,28 @@
 {
+  "api": {
+    "mockmanapi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "selectlevelquestions"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "interviewfeedback"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
     "userPoolGroups": {
       "dependsOn": [
@@ -44,6 +68,18 @@
       "service": "Cognito"
     }
   },
+  "function": {
+    "interviewfeedback": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "selectlevelquestions": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
   "hosting": {
     "amplifyhosting": {
       "providerPlugin": "awscloudformation",
@@ -52,6 +88,38 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_interviewfeedback_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "interviewfeedback"
+        }
+      ]
+    },
+    "AMPLIFY_function_interviewfeedback_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "interviewfeedback"
+        }
+      ]
+    },
+    "AMPLIFY_function_selectlevelquestions_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "selectlevelquestions"
+        }
+      ]
+    },
+    "AMPLIFY_function_selectlevelquestions_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "selectlevelquestions"
+        }
+      ]
+    },
     "AMPLIFY_hosting_amplifyhosting_appId": {
       "usedBy": [
         {

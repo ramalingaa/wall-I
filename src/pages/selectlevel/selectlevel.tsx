@@ -162,7 +162,7 @@ async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAg
       experience: experience
     };
     try {
-      const response = await axios.post('https://be39-49-204-102-192.ngrok-free.app/api/questions', { user_message: userMessage });
+      const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/api/questions', { user_message: userMessage });
       const assistantReply = response.data.assistant_reply;
   
       const interviewQuestionData = assistantReply.split(/\d+\.\s+/).filter((str: string) => str.trim() !== "");

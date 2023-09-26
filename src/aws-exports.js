@@ -26,6 +26,13 @@ const awsmobile = {
     },
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
+    ],
+    "aws_cloud_logic_custom": [
+        {
+            "name": "mockmanapi",
+            "endpoint": "https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman",
+            "region": "ap-south-1"
+        }
     ]
 };
 

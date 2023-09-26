@@ -326,7 +326,7 @@ export function feedbackPostCall(dispatch:any, failedFeedbackAPICallQueue: Quest
     const isFailedDataAlreadyAdded = failedFeedbackAPICallQueue.some((feedback: QuestionAnswer) => feedback.question === apiFeedbackData.question)
 
     try {
-      const response = await axios.post('https://be39-49-204-102-192.ngrok-free.app/api/feedback', { user_message: apiFeedbackData });
+      const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/api/feedback', { user_message: apiFeedbackData });
       const assistantReply =  JSON.parse(response.data.assistant_reply);
       const feedbackPayload = {
         question: payload?.question,
