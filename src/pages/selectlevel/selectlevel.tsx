@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import axios from 'axios';
 import "./selectlevel.css"
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { addInterviewQuestionData, resetInterviewState } from '../../redux/reducer';
 import { BallTriangle  } from  'react-loader-spinner'
 import { useNavigate } from 'react-router-dom';
@@ -23,13 +23,13 @@ const SelectLevel = () => {
     const [errorStateForInputs, setErrorStateForInputs] = useState<ErrorState>({language:false, interviewLevel:false, noOfQuestions:false})
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
-
+    const { jwtToken } = useAppSelector((state) => state.interview)
     
 
     const interviewLevelSubmitClickHandler = () => {
         dispatch(resetInterviewState())
         if(language && interviewLevel && noOfQuestions){
-            getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions, dispatch, navigate, experience, setIsLoading})
+            getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions, dispatch, navigate, experience, setIsLoading, jwtToken})
         }else {
             if(!language && !noOfQuestions && !interviewLevel){
                 setErrorStateForInputs({language:true, interviewLevel:true, noOfQuestions:true})
@@ -115,7 +115,7 @@ const SelectLevel = () => {
                 </div>
             </div>
             <div className='qns-children-parent'>
-                 <p className='required-symbol'>Choose No Of questions for interview</p>
+                 <p className='required-symbol'>Choose No Of questions for interview<b>Minimum 2 required</b></p>
                  <div>
                     <input type = "number" name = "no-of-qns" onChange = {noOfQuestionsChangeHandler} className='userinput-width' placeholder='Enter question count'required min="2" max = "12"/>
                     <p className={errorStateForInputs.noOfQuestions? "error-visible": "error-hidden"}>Select Questions count </p>
@@ -150,9 +150,10 @@ interface getInterviewQuestionsFromAgentProps {
     navigate: NavigateFunction;
     experience: string;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    jwtToken: string
 }
 async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAgentProps) {
-    const { language, interviewLevel, noOfQuestions, dispatch, navigate, experience, setIsLoading } = props 
+    const { language, interviewLevel, noOfQuestions, dispatch, navigate, experience, setIsLoading, jwtToken } = props 
     setIsLoading(true)
 
     const userMessage = {
@@ -161,8 +162,12 @@ async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAg
       noOfQuestions: noOfQuestions,
       experience: experience
     };
+    const headers = {
+        'Authorization': `Bearer ${jwtToken}`, // Add 'Bearer ' before the token
+        'Content-Type': 'application/json',
+      }
     try {
-      const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/api/questions', { user_message: userMessage });
+      const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/api/questions', { user_message: userMessage }, { headers });
       const assistantReply = response.data.assistant_reply;
   
       const interviewQuestionData = assistantReply.split(/\d+\.\s+/).filter((str: string) => str.trim() !== "");

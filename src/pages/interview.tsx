@@ -48,7 +48,7 @@ const Interview = (props:any) => {
   } = useSpeechContext();
 
   const dispatch = useAppDispatch()
-  const { allQuestionAnswerData, questionDataForInterview, failedFeedbackAPICallQueue } = useAppSelector((state) => state.interview)
+  const { allQuestionAnswerData, questionDataForInterview, failedFeedbackAPICallQueue, jwtToken } = useAppSelector((state) => state.interview)
   useEffect(() => {
     if (segment) {
      
@@ -175,7 +175,7 @@ const Interview = (props:any) => {
     setIsTimerOn(true)
     setTimer(10)
   }
-  const handleAPIFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue)
+  const handleAPIFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue, jwtToken)
   //generator function is to allow timer to start at the first and to make api call once timer is started without needing to complete the function call.
   function* generator(payload:QuestionAnswer | undefined) {
     yield handleTimer()
@@ -316,7 +316,7 @@ function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObje
   };
 }
 
-export function feedbackPostCall(dispatch:any, failedFeedbackAPICallQueue: QuestionAnswer[]) {
+export function feedbackPostCall(dispatch:any, failedFeedbackAPICallQueue: QuestionAnswer[], jwtToken: string) {
   return async (payload: QuestionAnswer | undefined) => {
     const apiFeedbackData = {
         question: payload?.question,
@@ -324,9 +324,12 @@ export function feedbackPostCall(dispatch:any, failedFeedbackAPICallQueue: Quest
       };
 
     const isFailedDataAlreadyAdded = failedFeedbackAPICallQueue.some((feedback: QuestionAnswer) => feedback.question === apiFeedbackData.question)
-
+    const headers = {
+      'Authorization': `Bearer ${jwtToken}`, // Add 'Bearer ' before the token
+      'Content-Type': 'application/json',
+    }
     try {
-      const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/api/feedback', { user_message: apiFeedbackData });
+      const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/api/feedback', { user_message: apiFeedbackData }, { headers });
       const assistantReply =  JSON.parse(response.data.assistant_reply);
       const feedbackPayload = {
         question: payload?.question,
