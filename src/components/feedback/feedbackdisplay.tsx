@@ -6,9 +6,9 @@ import { feedbackPostCall } from "../../pages/interview";
 import { BallTriangle } from "react-loader-spinner";
 
 const FeedbackDisplay = () => {
-  const { allQuestionAnswerFeedbackData, failedFeedbackAPICallQueue } = useAppSelector((state) => state.interview)
+  const { allQuestionAnswerFeedbackData, failedFeedbackAPICallQueue, jwtToken } = useAppSelector((state) => state.interview)
   const dispatch = useAppDispatch()
-  const apiFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue)
+  const apiFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue, jwtToken)
   useEffect(() => {
     //implement failed API calls here
     if(failedFeedbackAPICallQueue.length > 0){

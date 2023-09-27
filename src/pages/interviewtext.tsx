@@ -5,7 +5,7 @@ import { feedbackPostCall } from './interview'
 import { useNavigate } from 'react-router-dom'
 
 const InterviewText = (props:any) => {
-    const { failedFeedbackAPICallQueue } = useAppSelector((state) => state.interview)
+    const { failedFeedbackAPICallQueue, jwtToken } = useAppSelector((state) => state.interview)
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [isAnswerSubmittedForText, setIsAnswerSubmittedForText] = useState<boolean>(false)
     const  { questionDataForInterview } = useAppSelector((state) => state.interview)
@@ -13,7 +13,7 @@ const InterviewText = (props:any) => {
     const [answerFieldErrorMsg, setAnswerFieldErrorMsg] = useState<string>("")
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const apiFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue)
+    const apiFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue, jwtToken)
 
     const answerErrors = {
         emptyAnswer: "Please Write Your Answer in the above box",
