@@ -31,7 +31,6 @@ interface InitialState {
   questionDataForInterview: string[];
   failedFeedbackAPICallQueue: QuestionAnswer[];
   userDetails: UserDetails
-  userId: string
 }
 
 
@@ -54,7 +53,6 @@ const initialState: InitialState = {
       credit: '',
       userId: ''
     },
-    userId:''
 };
 
 const counterSlice = createSlice({
@@ -86,9 +84,6 @@ const counterSlice = createSlice({
     updateUserDetails(state, payload){
       state.userDetails = payload.payload
     },
-    updateUserId(state, payload){
-      state.userId = payload.payload
-    },
     addFailedFeedbackAPIData(state, payload){
       state.failedFeedbackAPICallQueue = [...state.failedFeedbackAPICallQueue, payload.payload]
     },
@@ -113,6 +108,5 @@ export const {
         addFailedFeedbackAPIData,
         removeFailedFeedbackAPIData,
         updateUserDetails,
-        updateUserId
             } = counterSlice.actions;
 export default counterSlice.reducer;

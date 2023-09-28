@@ -17,6 +17,14 @@
           ],
           "category": "function",
           "resourceName": "interviewfeedback"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getuserdetails"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -69,6 +77,11 @@
     }
   },
   "function": {
+    "getuserdetails": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "interviewfeedback": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -88,6 +101,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_getuserdetails_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getuserdetails"
+        }
+      ]
+    },
+    "AMPLIFY_function_getuserdetails_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getuserdetails"
+        }
+      ]
+    },
     "AMPLIFY_function_interviewfeedback_deploymentBucketName": {
       "usedBy": [
         {

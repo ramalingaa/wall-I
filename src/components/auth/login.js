@@ -7,7 +7,7 @@ import "./login.css"
 import { useNavigate, useLocation } from 'react-router';
 import { Auth } from 'aws-amplify';
 import { useAppDispatch } from "../../hooks/redux";
-import { updateJwtToken, updateUserId } from "../../redux/reducer";
+import { updateJwtToken } from "../../redux/reducer";
 
 
 export function Login() {
@@ -26,8 +26,6 @@ export function Login() {
             const jwtToken = user?.signInUserSession?.idToken?.jwtToken;
             // Do something with the JWT token (e.g., store it in state or local storage)
             const payload = jwtToken
-            const userId = user?.attributes?.sub
-            dispatch(updateUserId(userId))
             dispatch(updateJwtToken(payload))
           } catch (error) {
             console.error('Error fetching JWT token:', error);

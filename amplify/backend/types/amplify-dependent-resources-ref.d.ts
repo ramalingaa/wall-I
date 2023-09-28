@@ -21,6 +21,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "getuserdetails": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "interviewfeedback": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
