@@ -11,8 +11,37 @@ import NotFound from './pages/notfound/notfound';
 import FeedbackDisplay from './components/feedback/feedbackdisplay';
 import Interview from './pages/interview';
 import InterviewText from './pages/interviewtext';
-
+import { useAuthenticator, View } from '@aws-amplify/ui-react';
+import { useAppDispatch, useAppSelector } from './hooks/redux';
+import axios from 'axios'
+import { updateUserDetails } from './redux/reducer';
 function App() {
+  const { route } = useAuthenticator((context) => [context.route, ]);
+  const { userDetails, userId } = useAppSelector((state) => state.interview)
+  const dispatch = useAppDispatch()
+  async function getUserDetails() {
+    const apiFeedbackData = {
+      user_id: userId
+    }
+    const headers =  {
+      'Content-Type': 'application/json', // Set the content type you're sending
+      'Access-Control-Allow-Origin': '*', // Allow requests from all origins (for development/testing)
+      // Add other headers as needed
+    }
+      try {
+        const response = await axios.post('https://tlc5ruhgyb.execute-api.ap-south-1.amazonaws.com/mockman/getuserdetails', { ...apiFeedbackData }, { headers });
+        console.log(response.data);
+        dispatch(updateUserDetails(response.data))
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+      }
+    };
+  useEffect(() => {
+    if(route === "authenticated" && !userDetails.userId){
+        getUserDetails()
+    }
+  },[route])
   return(
     <Router>
         <div className = "App">

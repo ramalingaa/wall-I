@@ -16,6 +16,12 @@ interface AudioAnswers {
   audio: AudioBuffer
   question: string
 }
+interface UserDetails {
+  username: string
+  email: string
+  credit: string
+  userId: string
+}
 interface InitialState {
   allQuestionAnswerData: QuestionAnswer[];
   allQuestionAnswerFeedbackData: QuestionAnswerFeedback[];
@@ -24,6 +30,8 @@ interface InitialState {
   audioAnswers: AudioAnswers[];
   questionDataForInterview: string[];
   failedFeedbackAPICallQueue: QuestionAnswer[];
+  userDetails: UserDetails
+  userId: string
 }
 
 
@@ -39,8 +47,14 @@ const initialState: InitialState = {
       "Explain the differences between let, const, and var for declaring variables in JavaScript.",
       "What is the purpose of the map() function in JavaScript, and how does it differ from forEach()?"
     ],
-    failedFeedbackAPICallQueue: []
-
+    failedFeedbackAPICallQueue: [],
+    userDetails: {
+      username: '',
+      email: '',
+      credit: '',
+      userId: ''
+    },
+    userId:''
 };
 
 const counterSlice = createSlice({
@@ -69,6 +83,12 @@ const counterSlice = createSlice({
     updateAudioAnswers(state, payload){
       state.audioAnswers = [...state.audioAnswers, payload.payload]
     },
+    updateUserDetails(state, payload){
+      state.userDetails = payload.payload
+    },
+    updateUserId(state, payload){
+      state.userId = payload.payload
+    },
     addFailedFeedbackAPIData(state, payload){
       state.failedFeedbackAPICallQueue = [...state.failedFeedbackAPICallQueue, payload.payload]
     },
@@ -91,6 +111,8 @@ export const {
         resetInterviewState, 
         updateAudioAnswers,
         addFailedFeedbackAPIData,
-        removeFailedFeedbackAPIData 
+        removeFailedFeedbackAPIData,
+        updateUserDetails,
+        updateUserId
             } = counterSlice.actions;
 export default counterSlice.reducer;

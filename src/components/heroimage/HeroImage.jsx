@@ -1,6 +1,7 @@
 import "./heroimage.css"
 import { useNavigate } from 'react-router-dom';
 import {  useAppSelector } from "../../hooks/redux";
+
 const HeroImage = () => {
 
         const navigate = useNavigate();
@@ -11,6 +12,7 @@ const HeroImage = () => {
         const learnMoreHandler = () => {
                 navigate("about")
         }
+
     return (
     
            <div className = "hero-text-parent">
