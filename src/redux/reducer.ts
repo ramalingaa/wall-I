@@ -98,7 +98,19 @@ const counterSlice = createSlice({
       state.failedFeedbackAPICallQueue = filteredFeedbackQueue
     },
     resetInterviewState(state){
-      state = initialState
+      state.allQuestionAnswerData = []
+      state.allQuestionAnswerFeedbackData = []
+      state.audioAnswers = []
+      state.currentEditorData = ""
+      state.jwtToken = ""
+      state.failedFeedbackAPICallQueue = []
+      state.userDetails = {
+        username: '',
+        email: '',
+        credit: '',
+        userId: '',
+      }
+      state.userInterviewHistoryData = []
     }
 
   },

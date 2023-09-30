@@ -26,13 +26,13 @@ function App() {
   async function getUserDetails() {
     
     const apiFeedbackData = {
-      user_id: user?.attributes?.sub
+      userId: user?.attributes?.sub
     }
   
       try {
         const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/get-userdetails-mockman', { ...apiFeedbackData }, { headers });
-        console.log(response.data);
-        dispatch(updateUserDetails(response.data))
+        const userDetailsPayload = JSON.parse(response.data.body)
+        dispatch(updateUserDetails(userDetailsPayload))
       } catch (error) {
         console.error('Error:', error);
       } finally {
