@@ -102,7 +102,7 @@ useEffect(() => {
   const idealScore = allQuestionAnswerFeedbackData.length * 10
     return (
         <div>
-            {!failedFeedbackAPICallQueue.length ? <div className="feedback-container-parent">
+          <div className="feedback-container-parent">
           <div>
             <p>Yay! You have successfully completed your mock interview.</p>
             <p className="feedback-answer">Interview Score: {userScore} / {idealScore}</p>
@@ -117,17 +117,7 @@ useEffect(() => {
                 </ul>
               </div>;
             })}
-        </div> :<div className = "loader-container">
-        <BallTriangle
-            height={100}
-            width={100}
-            radius={5}
-            color="#4fa94d"
-            ariaLabel="ball-triangle-loading"
-            wrapperClass="loading-balls-wrapper"
-            visible={true}/>
-        <p>One step Closer, Sit back and Relax while we create your Score card</p>
-    </div>}
+        </div> 
         </div>
     )
 }
