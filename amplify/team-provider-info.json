@@ -33,7 +33,7 @@
         },
         "getuserdetails": {
           "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
-          "s3Key": "amplify-builds/getuserdetails-475a765635537147436a-build.zip"
+          "s3Key": "amplify-builds/getuserdetails-4570637a773755324267-build.zip"
         },
         "updateuserinfo": {}
       },

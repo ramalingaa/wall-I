@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import "./navbar.css"
 import { Authenticator, useAuthenticator, View } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
+import { resetInterviewState } from '../../redux/reducer';
+import { useAppDispatch } from '../../hooks/redux';
 
 
 
@@ -10,6 +12,7 @@ function ProfileCard() {
         context.route,
         context.signOut,
       ]);
+      const dispatch = useAppDispatch()
     const navigate = useNavigate()
   const [expanded, setExpanded] = useState(false);
 
@@ -17,6 +20,7 @@ function ProfileCard() {
     setExpanded(!expanded);
   };
 const signOutHandler = () => {
+    dispatch(resetInterviewState())
     signOut()
     navigate('/login');
 }
