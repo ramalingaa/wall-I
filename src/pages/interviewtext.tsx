@@ -58,7 +58,6 @@ const InterviewText = (props:any) => {
            
     }
     const textInputNextQuestionHandler = () => {
-        
             if(currentQuestion+1 === questionDataForInterview.length){
                 navigate("/feedback")
             }else {
@@ -95,3 +94,4 @@ const InterviewText = (props:any) => {
 }
 
 export default InterviewText
+

@@ -9,9 +9,18 @@ import { Dispatch } from 'redux';
 import { NavigateFunction } from 'react-router-dom';
 
 interface ErrorState {
-    language: boolean;
-    interviewLevel: boolean;
-    noOfQuestions: boolean;
+    language: string;
+    experience: string;
+    noOfQuestions: string;
+    outOfCredits: string;
+
+  }
+  const errorMessageInitialState = {
+    language: '',
+    experience: '',
+    noOfQuestions: '',
+    outOfCredits: ''
+
   }
 const SelectLevel = () => {
 
@@ -20,32 +29,44 @@ const SelectLevel = () => {
     const [noOfQuestions, setNoOfQuestions] = useState<number>(0) 
     const [experience, setExperience] = useState<string>('')  
     const [isLoading, setIsLoading] = useState<boolean>(false) 
-    const [errorStateForInputs, setErrorStateForInputs] = useState<ErrorState>({language:false, interviewLevel:false, noOfQuestions:false})
+    const [errorMessagesData, setErrorMessagesData] = useState<ErrorState>(errorMessageInitialState)
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
-    const { jwtToken } = useAppSelector((state) => state.interview)
+    const { jwtToken, userDetails } = useAppSelector((state) => state.interview)
     
-
+    const selectlevelErrorMessages = {
+        language: "Select your programming language",
+        experience: "Please Choose your experience",
+        noOfQuestions: "Choose questions size for this interview",
+        minQuestions: "Minimum 2 questions are required",
+        maxQuestions: "Maximum 10 questions allowed",
+        outOfCredits: "Your ran out of Interview Credits"
+    }
     const interviewLevelSubmitClickHandler = () => {
         dispatch(resetInterviewState())
+       if(Number(userDetails.credit) > 0){
+        setErrorMessagesData((prev:ErrorState) => ({...prev, outOfCredits:''}))
         if(language && interviewLevel && noOfQuestions){
             getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions, dispatch, navigate, experience, setIsLoading, jwtToken})
         }else {
             if(!language && !noOfQuestions && !interviewLevel){
-                setErrorStateForInputs({language:true, interviewLevel:true, noOfQuestions:true})
+                setErrorMessagesData({language:selectlevelErrorMessages.language, experience: selectlevelErrorMessages.experience, noOfQuestions:selectlevelErrorMessages.noOfQuestions, outOfCredits:''})
             } else if (!language){
-                setErrorStateForInputs((prev) => ({...prev, language:true}))
+                setErrorMessagesData((prev:ErrorState) => ({...prev, language:selectlevelErrorMessages.language}))
             }else if (!interviewLevel){
-                setErrorStateForInputs((prev) => ({...prev, interviewLevel:true}))
+                setErrorMessagesData((prev: ErrorState) => ({...prev, experience:selectlevelErrorMessages.experience}))
             }else if (!noOfQuestions){
-                setErrorStateForInputs((prev) => ({...prev, noOfQuestions:true}))
+                setErrorMessagesData((prev: ErrorState) => ({...prev, noOfQuestions:selectlevelErrorMessages.noOfQuestions}))
             }
         }
+       }else {
+        setErrorMessagesData((prev:ErrorState) => ({...prev, outOfCredits:selectlevelErrorMessages.outOfCredits}))
+       }
     }
     const languageChangeHandler = (e:any) => {
         if(e.target.value){
             setLanguage(e.target.value)
-            setErrorStateForInputs((prev) => ({...prev, language:false}))
+            setErrorMessagesData((prev) => ({...prev, language:''}))
         }
     }
     const interviewLevelChangeHandler = (e:any) => {
@@ -58,18 +79,23 @@ const SelectLevel = () => {
             }else {
                 setExperience("more than 2 years of experience")
             }
-            setErrorStateForInputs((prev) => ({...prev, interviewLevel:false}))
+            setErrorMessagesData((prev) => ({...prev, experience:''}))
 
         }
 
     }
     const noOfQuestionsChangeHandler = (e:any) => {
-        if(e.target.value >1 && e.target.value < 13){
+        if(e.target.value >1 && e.target.value < 11){
             setNoOfQuestions(e.target.value)
-            setErrorStateForInputs((prev) => ({...prev, noOfQuestions:false}))
-        }else {
+            setErrorMessagesData((prev) => ({...prev, noOfQuestions:''}))
+        }else if(!e.target.value) {
             setNoOfQuestions(0)
-            setErrorStateForInputs((prev) => ({...prev, noOfQuestions:true}))
+            setErrorMessagesData((prev) => ({...prev, noOfQuestions:selectlevelErrorMessages.noOfQuestions}))
+        } else if(e.target.value < 2){
+            setErrorMessagesData((prev) => ({...prev, noOfQuestions:selectlevelErrorMessages.minQuestions}))
+
+        } else if(e.target.value > 10){
+            setErrorMessagesData((prev) => ({...prev, noOfQuestions:selectlevelErrorMessages.maxQuestions}))
 
         }
 
@@ -88,7 +114,7 @@ const SelectLevel = () => {
             <p>Please wait while we configure your MockMan</p>
         </div> :
         <div className='selectlevel-container-parent'>
-            <h2 className = "configure-header">Configure your Interview</h2>
+            <h2 className = "align-center">Configure your Interview</h2>
             <b>All fields with <span className='required-symbol'>asterisk (</span> ) are required</b>
             <div className='lang-children-parent'>
                 <p className='required-symbol'>Choose your programming language for Interview</p>
@@ -98,7 +124,7 @@ const SelectLevel = () => {
                         <option value = "JavaScript">JavaScript</option>
                         <option value = "Python">Python</option>
                     </select>
-                    <p className={errorStateForInputs.language? "error-visible": "error-hidden"}>Select your programming language</p>
+                    <p className='error-visible'>{errorMessagesData.language}</p>
                 </div>
             </div>
             <div className='exp-children-parent'>
@@ -110,15 +136,15 @@ const SelectLevel = () => {
                         <option value = "Intermediate">Intermediate(6-12 months experience)</option>
                         <option value = "Advanced">Advanced(more than 2 years of experience)</option>
                     </select>
-                    <p className={errorStateForInputs.interviewLevel? "error-visible": "error-hidden"}>Select your expertise</p>
+                    <p className='error-visible'>{errorMessagesData.experience}</p>
 
                 </div>
             </div>
             <div className='qns-children-parent'>
-                 <p className='required-symbol'>Choose No Of questions for interview<b>Minimum 2 required</b></p>
+                 <p className='required-symbol'>Choose No Of questions for interview</p>
                  <div>
                     <input type = "number" name = "no-of-qns" onChange = {noOfQuestionsChangeHandler} className='userinput-width' placeholder='Enter question count'required min="2" max = "12"/>
-                    <p className={errorStateForInputs.noOfQuestions? "error-visible": "error-hidden"}>Select Questions count </p>
+                    <p className='error-visible'>{errorMessagesData.noOfQuestions}</p>
                  </div>
             </div>
             {/* <div className='qns-children-parent'>
@@ -133,7 +159,8 @@ const SelectLevel = () => {
             {/* <div>
                 <p>Have JD for the Job you are applying for?</p>
             </div> */}
-            
+            <p className='error-visible align-center'>{errorMessagesData.outOfCredits}</p>
+
             <button onClick = {interviewLevelSubmitClickHandler} className='btn primary'>Submit</button>
         </div>
         }

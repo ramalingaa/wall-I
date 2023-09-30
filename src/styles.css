@@ -39,3 +39,6 @@
   visibility: visible;
   color: var(--primary-color-red);
 }
+.align-center {
+  text-align: center;
+}

@@ -25,16 +25,17 @@
       "function": {
         "selectlevelquestions": {
           "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
-          "s3Key": "amplify-builds/selectlevelquestions-4567476779324f443977-build.zip"
+          "s3Key": "amplify-builds/selectlevelquestions-2f2b4e636d4942553530-build.zip"
         },
         "interviewfeedback": {
           "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
-          "s3Key": "amplify-builds/interviewfeedback-57346b654e4656367830-build.zip"
+          "s3Key": "amplify-builds/interviewfeedback-71757361333172374436-build.zip"
         },
         "getuserdetails": {
           "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
-          "s3Key": "amplify-builds/getuserdetails-6f7a5372774768557437-build.zip"
-        }
+          "s3Key": "amplify-builds/getuserdetails-475a765635537147436a-build.zip"
+        },
+        "updateuserinfo": {}
       },
       "api": {
         "mockmanapi": {}
