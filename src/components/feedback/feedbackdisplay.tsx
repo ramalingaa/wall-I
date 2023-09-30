@@ -1,12 +1,42 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { QuestionAnswerFeedback } from "../../redux/reducer";
+import { QuestionAnswerFeedback, updateUserInterviewHistoryData } from "../../redux/reducer";
 import "./feedbackdisplay.css"
 import { feedbackPostCall } from "../../pages/interview";
 import { BallTriangle } from "react-loader-spinner";
+import axios from 'axios'
 
+
+async function updateUserInterviewDetails(props:any) {
+  const { allQuestionAnswerFeedbackData, jwtToken, credit, userId, setIsDataPosted, dispatch } = props 
+  const newCredit = Number(credit) - 1
+  const userMessage = {
+    userId: userId,
+    credit: newCredit,
+    interviewData: {
+      interviewData: allQuestionAnswerFeedbackData
+    },
+  };
+  const headers = {
+      'Authorization': `Bearer ${jwtToken}`, // Add 'Bearer ' before the token
+      'Content-Type': 'application/json',
+    }
+  try {
+    const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/update-userdetails-mockman', { ...userMessage });
+    console.log(JSON.parse(response.data.body))
+    const payload = JSON.parse(response.data.body)
+    dispatch(updateUserInterviewHistoryData(payload))
+    setIsDataPosted(true)
+  } catch (error) {
+    console.error('Error:', error);
+  } finally {
+  }
+}
 const FeedbackDisplay = () => {
-  const { allQuestionAnswerFeedbackData, failedFeedbackAPICallQueue, jwtToken } = useAppSelector((state) => state.interview)
+  const { allQuestionAnswerFeedbackData, failedFeedbackAPICallQueue, jwtToken, questionDataForInterview, userDetails } = useAppSelector((state) => state.interview)
+  const { credit, userId } = userDetails
+  const [isDataPosted, setIsDataPosted] = useState<boolean>(false)
+
   const dispatch = useAppDispatch()
   const apiFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue, jwtToken)
   useEffect(() => {
@@ -15,6 +45,12 @@ const FeedbackDisplay = () => {
         failedFeedbackAPICallQueue.forEach((payload) => apiFeedbackCall(payload))
     }
 },[])
+
+useEffect(() => {
+  if(allQuestionAnswerFeedbackData.length === questionDataForInterview.length && !isDataPosted){
+    updateUserInterviewDetails({allQuestionAnswerFeedbackData, jwtToken, userId, credit, setIsDataPosted, dispatch})
+  }
+},[allQuestionAnswerFeedbackData])
   const samples = [
     {
       question: "Where is Paris located?",
