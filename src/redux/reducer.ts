@@ -111,6 +111,12 @@ const counterSlice = createSlice({
         userId: '',
       }
       state.userInterviewHistoryData = []
+    },
+    resetPrevInterviewFeedbackData(state){
+      state.allQuestionAnswerFeedbackData = []
+      state.allQuestionAnswerData = []
+      state.questionDataForInterview = []
+      state.failedFeedbackAPICallQueue = []
     }
 
   },
@@ -126,6 +132,7 @@ export const {
         addFailedFeedbackAPIData,
         removeFailedFeedbackAPIData,
         updateUserDetails,
-        updateUserInterviewHistoryData
+        updateUserInterviewHistoryData,
+        resetPrevInterviewFeedbackData
             } = counterSlice.actions;
 export default counterSlice.reducer;

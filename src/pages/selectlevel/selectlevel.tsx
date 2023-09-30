@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import axios from 'axios';
 import "./selectlevel.css"
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { addInterviewQuestionData, resetInterviewState } from '../../redux/reducer';
+import { addInterviewQuestionData, resetPrevInterviewFeedbackData } from '../../redux/reducer';
 import { BallTriangle  } from  'react-loader-spinner'
 import { useNavigate } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -43,7 +43,7 @@ const SelectLevel = () => {
         outOfCredits: "Your ran out of Interview Credits"
     }
     const interviewLevelSubmitClickHandler = () => {
-        dispatch(resetInterviewState())
+        dispatch(resetPrevInterviewFeedbackData())
        if(Number(userDetails.credit) > 0){
         setErrorMessagesData((prev:ErrorState) => ({...prev, outOfCredits:''}))
         if(language && interviewLevel && noOfQuestions){
