@@ -42,3 +42,11 @@
 .align-center {
   text-align: center;
 }
+.align-right {
+  float: right;
+  padding-right: 1rem;
+}
+.resize-none {
+  resize: none;
+
+}

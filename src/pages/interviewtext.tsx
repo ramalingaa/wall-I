@@ -5,10 +5,9 @@ import { feedbackPostCall } from './interview'
 import { useNavigate } from 'react-router-dom'
 
 const InterviewText = (props:any) => {
-    const { failedFeedbackAPICallQueue, jwtToken } = useAppSelector((state) => state.interview)
+    const { failedFeedbackAPICallQueue, jwtToken, questionDataForInterview } = useAppSelector((state) => state.interview)
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [isAnswerSubmittedForText, setIsAnswerSubmittedForText] = useState<boolean>(false)
-    const  { questionDataForInterview } = useAppSelector((state) => state.interview)
     const [currentQuestionAnswer, setCurrentQuestionAnswer] =useState<string>("")
     const [answerFieldErrorMsg, setAnswerFieldErrorMsg] = useState<string>("")
     const dispatch = useAppDispatch()
@@ -41,6 +40,8 @@ const InterviewText = (props:any) => {
         }catch (e){
             console.log(e)
         }
+       } else {
+        setAnswerFieldErrorMsg(answerErrors.emptyAnswer)
        }
     }
     const answerChangeHandler = (e:any) => {
@@ -74,7 +75,7 @@ const InterviewText = (props:any) => {
   return (
     <div className = "align-interviewtext interviewtext-parent">
         <div className='align-interviewtext interviewtext-question'>
-            <p className='section-header'>Current Question</p>
+            <p className='section-header'>Current Question: {currentQuestion + 1}/ {questionDataForInterview.length}</p>
             <p>{questionDataForInterview[currentQuestion]}</p>
             
         </div>

@@ -44,7 +44,7 @@ const SelectLevel = () => {
     }
     const interviewLevelSubmitClickHandler = () => {
         dispatch(resetPrevInterviewFeedbackData())
-    //    if(Number(userDetails.credit) > 0){
+       if(Number(userDetails.credit) > 0){
         setErrorMessagesData((prev:ErrorState) => ({...prev, outOfCredits:''}))
         if(language && interviewLevel && noOfQuestions){
             getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions, dispatch, navigate, experience, setIsLoading, jwtToken})
@@ -59,9 +59,9 @@ const SelectLevel = () => {
                 setErrorMessagesData((prev: ErrorState) => ({...prev, noOfQuestions:selectlevelErrorMessages.noOfQuestions}))
             }
         }
-    //    }else {
-    //     setErrorMessagesData((prev:ErrorState) => ({...prev, outOfCredits:selectlevelErrorMessages.outOfCredits}))
-    //    }
+       }else {
+        setErrorMessagesData((prev:ErrorState) => ({...prev, outOfCredits:selectlevelErrorMessages.outOfCredits}))
+       }
     }
     const languageChangeHandler = (e:any) => {
         if(e.target.value){
@@ -123,6 +123,7 @@ const SelectLevel = () => {
                         <option disabled = {language ? true : false} value="">Select Programming Language</option>
                         <option value = "JavaScript">JavaScript</option>
                         <option value = "Python">Python</option>
+                        <option value = "Java">Java</option>
                     </select>
                     <p className='error-visible'>{errorMessagesData.language}</p>
                 </div>
@@ -161,7 +162,7 @@ const SelectLevel = () => {
             </div> */}
             <p className='error-visible align-center'>{errorMessagesData.outOfCredits}</p>
 
-            <button onClick = {interviewLevelSubmitClickHandler} className='btn primary'>Submit</button>
+            <button onClick = {interviewLevelSubmitClickHandler} className='btn primary'>Start Interview</button>
         </div>
         }
     </div>
