@@ -1,0 +1,18 @@
+.userfeedback-parent {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+.feedback-segement {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+.feedback-segement > label {
+    width: 14rem;
+}
+.feedback-segement > textarea {
+    resize: none
+}

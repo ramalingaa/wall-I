@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { QuestionAnswerFeedback, updateUserInterviewHistoryData } from "../../redux/reducer";
+import { QuestionAnswerFeedback, updateUserDetails, updateUserInterviewHistoryData } from "../../redux/reducer";
 import "./feedbackdisplay.css"
 import { feedbackPostCall } from "../../pages/interview";
 import { BallTriangle } from "react-loader-spinner";
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 
 async function updateUserInterviewDetails(props:any) {
   const { allQuestionAnswerFeedbackData, jwtToken, credit, userId, setIsDataPosted, dispatch } = props 
   const newCredit = Number(credit) - 1
+  
   const userMessage = {
     userId: userId,
     credit: newCredit,
@@ -23,8 +25,8 @@ async function updateUserInterviewDetails(props:any) {
     }
   try {
     const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/update-userdetails-mockman', { ...userMessage });
-    console.log(JSON.parse(response.data.body))
     const payload = JSON.parse(response.data.body)
+    dispatch(updateUserDetails(payload))
     dispatch(updateUserInterviewHistoryData(payload))
     setIsDataPosted(true)
   } catch (error) {
@@ -33,11 +35,13 @@ async function updateUserInterviewDetails(props:any) {
   }
 }
 const FeedbackDisplay = () => {
+
   const { allQuestionAnswerFeedbackData, failedFeedbackAPICallQueue, jwtToken, questionDataForInterview, userDetails } = useAppSelector((state) => state.interview)
   const { credit, userId } = userDetails
   const [isDataPosted, setIsDataPosted] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const apiFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue, jwtToken)
   useEffect(() => {
     //implement failed API calls here
@@ -98,10 +102,13 @@ useEffect(() => {
       return "incorrect"
     }
   }
+  const submitFeedbackHandler = () => {
+    navigate('/user-feedback')
+  }
   const userScore = allQuestionAnswerFeedbackData.map((feedback) => Number(feedback.rating)).reduce((a,b) => a+b,0)
   const idealScore = allQuestionAnswerFeedbackData.length * 10
     return (
-        <div>
+        <div className = "feedback-parent">
           <div className="feedback-container-parent">
           <div>
             <p>Yay! You have successfully completed your mock interview.</p>
@@ -117,7 +124,10 @@ useEffect(() => {
                 </ul>
               </div>;
             })}
-        </div> 
+          </div>
+          <div className = "align-center">
+            <button className = "btn primary" onClick = {submitFeedbackHandler}>Submit Feedback</button>  
+          </div> 
         </div>
     )
 }

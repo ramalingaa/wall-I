@@ -14,6 +14,7 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
 import axios from 'axios'
 import { updateJwtToken, updateUserDetails } from './redux/reducer';
+import CustomerFeedback from './pages/customerfeedback/customerfeedback';
 function App() {
   const { route, user } = useAuthenticator((context) => [context.route, context.user]);
   const { userDetails, jwtToken } = useAppSelector((state) => state.interview)
@@ -58,9 +59,10 @@ function App() {
                   <Route path = "/about" element = {<About />}/>
                   {/* protected routes */}
                   <Route path="/select-level" element={<RequireAuth><SelectLevel /></RequireAuth>} />
-                  <Route path="/interview" element={<RequireAuth><Interview /></RequireAuth>} />
+                  {/* <Route path="/interview" element={<RequireAuth><Interview /></RequireAuth>} /> */}
                   <Route path="/feedback" element={<RequireAuth><FeedbackDisplay /></RequireAuth>} />
                   <Route path="/interview-text" element={<RequireAuth><InterviewText /></RequireAuth>} />
+                  <Route path="/user-feedback" element={<RequireAuth><CustomerFeedback /></RequireAuth>} />
                   <Route path="/login" element={<Login />} />
                   <Route path = "*" element={<NotFound />} />
             </Routes>

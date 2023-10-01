@@ -26,12 +26,13 @@
     width: 15rem;
     right: 2rem;
     top:49px;
-    background-color: var(--black-color);
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
     padding: 1rem;
     border: 1px solid grey;
+    background-color: white;
+    color: black;
 }
 .logo-align {
     width:8rem;
@@ -40,4 +41,8 @@
     display: flex;
     gap:5px;
     align-items: center;
+}
+.btn-text {
+}
+.btn-text:hover {
 }

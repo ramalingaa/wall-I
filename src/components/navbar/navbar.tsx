@@ -23,10 +23,10 @@ const Navbar = () => {
                     : <img src = {Logo} alt = "product" className = "logo-align"/>}
                 </div>
                 <div className="navbar-cta-container">
-                    <Link to = "/">Services</Link>
+                    <Link to = "/">Home</Link>
                     <Link to = "/about">About</Link>
-                    <Link to = "/about">Contact</Link>
                     {route === "authenticated" ?  <ProfileCard /> :  (location.pathname === "/login" ?"" :<button className = "btn primary" onClick = {loginRedirectHandler}>Login</button>)}
+
                 </div>
             </div>
         </div>
