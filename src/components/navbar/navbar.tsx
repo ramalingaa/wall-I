@@ -25,7 +25,7 @@ const Navbar = () => {
                 <div className="navbar-cta-container">
                     <Link to = "/">Home</Link>
                     <Link to = "/about">About</Link>
-                    {route === "authenticated" ?  <ProfileCard /> :  (location.pathname === "/login" ?"" :<button className = "btn primary" onClick = {loginRedirectHandler}>Login</button>)}
+                    {route === "authenticated" ?  <ProfileCard /> :  (location.pathname === "/login" ?"" :<button className = "btn btn-text" onClick = {loginRedirectHandler}>Login</button>)}
 
                 </div>
             </div>

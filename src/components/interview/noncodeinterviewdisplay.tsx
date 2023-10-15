@@ -18,7 +18,7 @@ const NonCodeInterviewDisplay = (props:any) => {
           </code>
         </div>
         <div>
-          {props.isQuestionCompleted && <p className = "blinking-iconText"><i className="fa fa-circle text-danger-glow blink"></i> Start Speaking</p>}
+          {props.isQuestionCompleted && <p className = "blinking-iconText"><i className="fa fa-circle danger blink"></i> Start Speaking</p>}
           <h2 className = "current-display-question">{
             questionDataForInterview[props.currentQuestionIndex.current]
           }

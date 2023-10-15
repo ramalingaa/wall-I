@@ -1,63 +1,26 @@
 .editor-parent {
-    height: 90vh;
-}
-.editor-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    height: 90vh;
-}
-.output-container {
-    height: 90%;
-}
-.editor-main{
-    width: 90%;
-}
-.border-black {
-    border: 1px solid var(--grey-color);
-
-}
-.cursor-pointer {
-    cursor: pointer;
-}
-.editor-code {
-    height: 100%;
-    width: 100%;
-}
-.editor-console {
-    border: 1px solid var(--grey-color);
-    height: 100%;
-}
-
-.console-error {
-    color: var(--primary-color-red);
-}
-.console-header {
-    background-color: var(--black-color);
-    color: var(--white-color);
-}
-.resize-output-editor {
-    min-height: 3rem;
-}
-.editor-header {
-    display:flex;
-    gap: 2rem;
-    align-items: center;
-    margin: 0.1rem 0;
-}
-.autorun-checkbox {
-    display: flex;
-    gap: 0.3rem;
-    
-}
-.autorun-checkbox > input , .autorun-checkbox>label {
-    cursor: pointer;
-}
-.editor-select-lang {
-    padding: 0.2rem;
-    border-radius: 0.3rem;
+    /* width:90%;
+    margin: auto;
+    border: 1px solid red; */
+    height: calc(100% - 57px);
+    border-radius: 5px;
+    margin: 5px;
     border: 1px solid grey;
 }
-.sash-horizontal{
-    cursor:col-resize
+span.Resizer.vertical {
+    width: 10px;
+    background: black;
+    cursor: col-resize;
 }
+.span.Resizer.vertical:hover {
+    background:orangered
+}
+.Pane.vertical.Pane1 {
+    overflow: scroll;
+}
+
+.SplitPane.vertical {
+    height: 90vh!important;
+    margin-bottom: 5px;
+}
+

@@ -3,7 +3,7 @@ import "./navbar.css"
 import { Authenticator, useAuthenticator, View } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
 import { resetInterviewState } from '../../redux/reducer';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 
 
@@ -15,7 +15,7 @@ function ProfileCard() {
       const dispatch = useAppDispatch()
     const navigate = useNavigate()
   const [expanded, setExpanded] = useState(false);
-
+    const { userDetails } = useAppSelector(state => state.interview)
   const toggleExpand = () => {
     setExpanded(!expanded);
   };
@@ -50,8 +50,7 @@ const signOutHandler = () => {
         {expanded && (
           <div className="profile-details">
             <div className="user-info cursor-pointer">
-              {/* <p >About</p> */}
-              {/* Display user profile data here */}
+              <p >Credits: {userDetails.credit}</p>
             </div>
             <div className="journey cursor-pointer">
               {/* <p>My Journey</p> */}

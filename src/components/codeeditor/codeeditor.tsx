@@ -4,8 +4,12 @@ import { useEffect, useRef, useState } from "react"
 import * as monaco from 'monaco-editor';
 import "./codeeditor.css"
 import SingleEditor from "./singleeditor";
-import { Allotment } from "allotment";
-import "allotment/dist/style.css";
+import EditorConsole from "./editorconsole";
+import SplitPane, { Pane } from 'react-split-pane';
+import './resizer.css';
+import EditorHeader from "./editorheader";
+import CodeQuestion from "./codequestion";
+
 export interface LanguageData {
     name: string;
     language: string;
@@ -40,6 +44,7 @@ const CodeEditor = () => {
     const [editorData, setEditorData] = useState<editorData>({html:"", css:"", javascript:""})
     const [srcDoc, setSrcDoc] = useState<string>("")
     
+    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
 
     const autoRunCheckBoxHandler = (e:any) => {
         if(e.target.checked) {
@@ -60,67 +65,15 @@ const CodeEditor = () => {
             )
         }
     },[editorData])
-    const runCodeClickHandler = () => {
-        setSrcDoc(
-            `<html>
-                <body>${editorData["html"]}</body>
-                <style>${editorData["css"]}</style>
-                <script>${editorData["javascript"]}</script>
-            </html>`
-        )
-    }
+   
+    
     return(
         <div className="editor-parent">
-            
-          <div className = "editor-main">
-          <div className = "editor-header">
-                    <button  className = "btn primary" onClick = {runCodeClickHandler}>Run</button>
-                    <div className="autorun-checkbox">
-                        <input type = "checkbox" id = "auto-run" onChange = {autoRunCheckBoxHandler}/>
-                        <label  htmlFor = "auto-run">Auto Reload</label>
-                    </div>
-            </div>
-           <Allotment vertical = {false}>
-                <div className = "editor-container">
-                        <Allotment vertical = {true} separator = {true}>
-                            <Allotment.Pane >
-                                <SingleEditor editorDataValue = {files["html"]} setEditorData = {setEditorData}/>
-
-                            </Allotment.Pane>
-                            <Allotment.Pane>
-                                <SingleEditor editorDataValue = {files["css"]} setEditorData = {setEditorData}/>
-
-                            </Allotment.Pane>
-                            <Allotment.Pane>
-                                <SingleEditor editorDataValue = {files["javascript"]} setEditorData = {setEditorData} setConsoleError = {setConsoleError}/>
-
-                            </Allotment.Pane>
-                        </Allotment>
-                    </div>
-                    <Allotment vertical = {true} separator = {true} defaultSizes={[90,10]}>
-                        <Allotment.Pane minSize = {100}>
-                                <p className = "console-header">Preview</p>
-                                <iframe 
-                                    srcDoc={srcDoc}
-                                    title="output"
-                                    sandbox="allow-scripts"
-                                    width="100%"
-                                    height="100%"
-                                    />
-                        </Allotment.Pane>
-                        <Allotment.Pane minSize = {50}>
-                            <div className="editor-console">
-                                <p className = "console-header">Console</p>
-                                <div className = "console-error">{consoleError}</div>
-                            </div>
-                        </Allotment.Pane>
-                                
-                    </Allotment>
-           </Allotment>
+                <SplitPane split="vertical" minSize = "20%" defaultSize="40%" allowResize = {true}>
+                    <CodeQuestion />
+                    <SingleEditor />
+                </SplitPane>
           </div>
-
-          
-        </div>
     )
 }
 export default CodeEditor

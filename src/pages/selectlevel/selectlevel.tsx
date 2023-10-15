@@ -40,7 +40,7 @@ const SelectLevel = () => {
         noOfQuestions: "Choose questions size for this interview",
         minQuestions: "Minimum 2 questions are required",
         maxQuestions: "Maximum 10 questions allowed",
-        outOfCredits: "Your ran out of Interview Credits"
+        outOfCredits: "Your ran out of Interview Credits. Mail us at teammockman@gmail.com to get more credits"
     }
     const interviewLevelSubmitClickHandler = () => {
         dispatch(resetPrevInterviewFeedbackData())
@@ -196,13 +196,14 @@ async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAg
       }
     try {
       const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/api/questions', { user_message: userMessage }, { headers });
-      const assistantReply = response.data.assistant_reply;
-  
-      const interviewQuestionData = assistantReply.split(/\d+\.\s+/).filter((str: string) => str.trim() !== "");
-      const payload: string[] = interviewQuestionData;
-      dispatch(addInterviewQuestionData(payload));
-      navigate("/interview-text")
-      console.log('Assistant Reply:', assistantReply);
+      const assistantReply = JSON.parse(response.data.assistant_reply);
+      const questionsArray = assistantReply.reduce((result:any, item:any) => {
+        result.push(item.question, item['follow-up question']);
+        return result;
+      }, []);
+    //   dispatch(addInterviewQuestionData(questionsArray));
+    //   navigate("/interview-text")
+      console.log('Assistant Reply:', questionsArray);
       setIsLoading(false);
 
     } catch (error) {

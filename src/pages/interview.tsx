@@ -3,7 +3,6 @@ import { SpeechSegment, stateToString, useSpeechContext } from '@speechly/react-
 import { useAppSelector, useAppDispatch } from '../hooks/redux'
 import { QuestionAnswer, addFailedFeedbackAPIData, addQuestionAnswer, addQuestionAnswerFeedback, removeFailedFeedbackAPIData, resetInterviewState } from '../redux/reducer';
 import NonCodeInterviewDisplay from '../components/interview/noncodeinterviewdisplay';
-import CodingInterviewDisplay from '../components/interview/codinginterviewdisplay';
 import * as monaco from 'monaco-editor';
 import RefreshTimer from '../components/timers/refreshtimer';
 import "./landingpage.css"
@@ -12,6 +11,7 @@ import { Steps, Hints } from "intro.js-react";
 import "intro.js/introjs.css";
 
 import axios from 'axios';
+import CodeEditor from '../components/codeeditor/codeeditor';
 
 
 const Interview = (props:any) => {
@@ -264,7 +264,7 @@ const onExit = () => {
        <div>
       {questionDataForInterview[currentQuestionIndex.current] && !questionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA") ?
         <NonCodeInterviewDisplay tentative={tentative} currentQuestionIndex={currentQuestionIndex} isInterviewStarted={isInterviewStarted} isAnswerSubmitted={isAnswerSubmitted} isTimerOn={isTimerOn} timer={timer} clientState={clientState} microphoneState={microphoneState} handlerStartInterview={handlerStartInterview} handlerStopAnswer={handlerStopAnswer} handleNextQuestionPress={handleNextQuestionPress} isQuestionCompleted = {isQuestionCompleted}></NonCodeInterviewDisplay> : 
-        <CodingInterviewDisplay currentQuestionIndex={currentQuestionIndex} handleNextQuestionPress={handleNextQuestionPress} setTimeTakenToSolveCodingQn = {setTimeTakenToSolveCodingQn} editorRef = {editorRef} handleSubmitAnswer = {handleSubmitAnswerForCodingQn} setIsAnswerSubmitted = { setIsAnswerSubmitted } isAnswerSubmitted = {isAnswerSubmitted}/>}
+        <CodeEditor />}
         
       </div>
 

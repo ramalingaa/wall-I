@@ -25,7 +25,7 @@
       "function": {
         "selectlevelquestions": {
           "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
-          "s3Key": "amplify-builds/selectlevelquestions-2f2b4e636d4942553530-build.zip"
+          "s3Key": "amplify-builds/selectlevelquestions-6a6b754448572f6e5067-build.zip"
         },
         "interviewfeedback": {
           "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
@@ -33,7 +33,7 @@
         },
         "getuserdetails": {
           "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
-          "s3Key": "amplify-builds/getuserdetails-4570637a773755324267-build.zip"
+          "s3Key": "amplify-builds/getuserdetails-34546161676635675941-build.zip"
         },
         "updateuserinfo": {}
       },

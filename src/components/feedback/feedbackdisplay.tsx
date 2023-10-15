@@ -99,7 +99,7 @@ useEffect(() => {
     }else if (rating < 7 && rating > 3) {
       return "partially-correct"
     } else if (rating < 3 && rating >=0) {
-      return "incorrect"
+      return "danger"
     }
   }
   const submitFeedbackHandler = () => {
