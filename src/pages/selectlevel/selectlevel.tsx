@@ -13,13 +13,15 @@ interface ErrorState {
     experience: string;
     noOfQuestions: string;
     outOfCredits: string;
+    noOfDSAQuestions?: string
 
   }
   const errorMessageInitialState = {
     language: '',
     experience: '',
     noOfQuestions: '',
-    outOfCredits: ''
+    outOfCredits: '',
+    noOfDSAQuestions: ''
 
   }
 const SelectLevel = () => {
@@ -30,6 +32,7 @@ const SelectLevel = () => {
     const [experience, setExperience] = useState<string>('')  
     const [isLoading, setIsLoading] = useState<boolean>(false) 
     const [errorMessagesData, setErrorMessagesData] = useState<ErrorState>(errorMessageInitialState)
+    const [dsaQuestionCount, setDsaQuestionCount] = useState<number>(0)
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
     const { jwtToken, userDetails } = useAppSelector((state) => state.interview)
@@ -40,14 +43,16 @@ const SelectLevel = () => {
         noOfQuestions: "Choose questions size for this interview",
         minQuestions: "Minimum 2 questions are required",
         maxQuestions: "Maximum 10 questions allowed",
-        outOfCredits: "Your ran out of Interview Credits"
+        outOfCredits: "Your ran out of Interview Credits. Mail us at teammockman@gmail.com to get more credits",
+        maxNoOfDSAQuestions: "Maximum 3 allowed",
+        minNoOfDSAQuestions: "Minimum 1 required",
     }
     const interviewLevelSubmitClickHandler = () => {
         dispatch(resetPrevInterviewFeedbackData())
        if(Number(userDetails.credit) > 0){
         setErrorMessagesData((prev:ErrorState) => ({...prev, outOfCredits:''}))
-        if(language && interviewLevel && noOfQuestions){
-            getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions, dispatch, navigate, experience, setIsLoading, jwtToken})
+        if(language && interviewLevel && noOfQuestions && !errorMessagesData.noOfDSAQuestions){
+            getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions,dsaQuestionCount, dispatch, navigate, experience, setIsLoading, jwtToken})
         }else {
             if(!language && !noOfQuestions && !interviewLevel){
                 setErrorMessagesData({language:selectlevelErrorMessages.language, experience: selectlevelErrorMessages.experience, noOfQuestions:selectlevelErrorMessages.noOfQuestions, outOfCredits:''})
@@ -100,6 +105,19 @@ const SelectLevel = () => {
         }
 
     }
+    const noOfDSAQuestionsChangeHandler = (e:any) => {
+        if(e.target.value === ''){
+            setErrorMessagesData((prev) => ({...prev, noOfDSAQuestions: ''}))
+        }
+        else if(Number(e.target.value) <= 3 && Number(e.target.value) >0){
+            setErrorMessagesData((prev) => ({...prev, noOfDSAQuestions: ''}))
+            setDsaQuestionCount(e.target.value)
+        } else if(Number(e.target.value) > 3){
+            setErrorMessagesData((prev) => ({...prev, noOfDSAQuestions: selectlevelErrorMessages.maxNoOfDSAQuestions}))
+        } else if(Number(e.target.value) < 1){
+            setErrorMessagesData((prev) => ({...prev, noOfDSAQuestions: selectlevelErrorMessages.minNoOfDSAQuestions}))
+        }
+    }
   return (
     <div>
         { isLoading ? <div className = "loader-container">
@@ -148,15 +166,13 @@ const SelectLevel = () => {
                     <p className='error-visible'>{errorMessagesData.noOfQuestions}</p>
                  </div>
             </div>
-            {/* <div className='qns-children-parent'>
-                 <p>Do you want Programming questions as well?</p>
-                 <label htmlFor='DSAQuestion'>Yes
-                    <input type = "radio" name = "no-of-qns" id = "DSAQuestion"/>
-                 </label>
-                 <label htmlFor='DSAQuestion'>No
-                    <input type = "radio" name = "no-of-qns" id = "DSAQuestion"/>
-                 </label>
-            </div> */}
+            <div className='qns-children-parent'>
+                 <p>Specify DSA questions number</p>
+                 <div>
+                    <input type = "number" name = "no-of-qns" onChange = {noOfDSAQuestionsChangeHandler} className='userinput-width' placeholder='Enter question count'required max = "3"/>
+                    <p className='error-visible'>{errorMessagesData.noOfDSAQuestions}</p>
+                 </div>
+            </div>
             {/* <div>
                 <p>Have JD for the Job you are applying for?</p>
             </div> */}
@@ -179,16 +195,18 @@ interface getInterviewQuestionsFromAgentProps {
     experience: string;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     jwtToken: string
+    dsaQuestionCount: number
 }
 async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAgentProps) {
-    const { language, interviewLevel, noOfQuestions, dispatch, navigate, experience, setIsLoading, jwtToken } = props 
+    const { language, interviewLevel, noOfQuestions,dsaQuestionCount, dispatch, navigate, experience, setIsLoading, jwtToken } = props 
     setIsLoading(true)
 
     const userMessage = {
       language: language,
       interviewLevel: interviewLevel,
       noOfQuestions: noOfQuestions,
-      experience: experience
+      experience: experience,
+      dsaQuestionCount: dsaQuestionCount
     };
     const headers = {
         'Authorization': `Bearer ${jwtToken}`, // Add 'Bearer ' before the token
@@ -196,13 +214,26 @@ async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAg
       }
     try {
       const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/api/questions', { user_message: userMessage }, { headers });
-      const assistantReply = response.data.assistant_reply;
-  
-      const interviewQuestionData = assistantReply.split(/\d+\.\s+/).filter((str: string) => str.trim() !== "");
-      const payload: string[] = interviewQuestionData;
+      const assistantReply = JSON.parse(response.data.assistant_reply);
+      const nonDSAQuestion:any[] = []
+      const DSAQuestion:any = [];
+      assistantReply.forEach((item:any) => {
+          if(item.question.startsWith("DSA:")){
+              DSAQuestion.push(item)
+          }else {
+              nonDSAQuestion.push(item)
+          }
+      })
+      const nonDSAQuestionsArray = nonDSAQuestion.reduce((result:any, item:any) => {
+        result.push(item.question, item['follow-up question']);
+        return result;
+      }, []);
+      const payload = {
+          nonDSAArray: nonDSAQuestionsArray,
+          dsaArray: DSAQuestion
+      }
       dispatch(addInterviewQuestionData(payload));
       navigate("/interview-text")
-      console.log('Assistant Reply:', assistantReply);
       setIsLoading(false);
 
     } catch (error) {
