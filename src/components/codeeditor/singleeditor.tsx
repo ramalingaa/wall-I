@@ -7,6 +7,8 @@ import "./singleeditor.css"
 import EditorConsole from "./editorconsole";
 import SplitPane, { Pane } from 'react-split-pane';
 import './resizer.css';
+import { feedbackPostCall } from "../../pages/interview";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 const sampleErrorObject = {
   "stdout": null,
   "time": "0.096",
@@ -21,6 +23,7 @@ const sampleErrorObject = {
   }
 }
 const SingleEditor = (props: any) => {
+  const { nextQuestionClickHandler, currentQuestionIndex } = props;
   const [editorData, setEditorData] = useState<string | undefined>("")
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
   const [isConsoleOpen, setIsConsoleOpen] = useState<boolean>(false)
@@ -38,7 +41,13 @@ const SingleEditor = (props: any) => {
     }
   })
   const [languageId, setLanguageId] = useState<string>("")
+  const [codingLanguage, setCodingLanguage] = useState<string>("")
   const [loader, setLoader] = useState<boolean>(false)
+  const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
+  const { failedFeedbackAPICallQueue , jwtToken, dsaQuestionDataForInterview } = useAppSelector((state) => state.interview)
+  const apiFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue, jwtToken)
+
   const handleEditorMount = (editor: any, monaco: any) => {
     editorRef.current = editor
   }
@@ -106,13 +115,23 @@ const SingleEditor = (props: any) => {
     }
 
   };
+  useEffect(() => {
+    //implement failed API calls here
+    if(failedFeedbackAPICallQueue.length > 0){
+        failedFeedbackAPICallQueue.forEach((payload) => apiFeedbackCall(payload))
+
+    }
+
+
+},[currentQuestionIndex])
   const handleToggleConsole = (e: any) => {
     e.preventDefault()
     setIsConsoleOpen(prev => !prev)
   }
   const languageChangeHandler = (e: any) => {
     if (e.target.value) {
-      setLanguageId(e.target.value)
+      setLanguageId(e.target.value)      
+      setCodingLanguage(e.nativeEvent.target[e.nativeEvent.target.selectedIndex].text)
     }
   }
   const LanguageData = [
@@ -133,6 +152,22 @@ const SingleEditor = (props: any) => {
       name: "Python (3.8.1)"
     },
   ]
+  const questionSubmitHandler = () => {
+    if(editorData){
+      setIsAnswerSubmitted(true)
+      const payload = {
+        question:dsaQuestionDataForInterview[currentQuestionIndex].question,
+        answer: editorData,
+        suggestions: dsaQuestionDataForInterview[currentQuestionIndex].suggestions,
+        language: codingLanguage
+    }
+    try {
+        apiFeedbackCall(payload)
+    }catch (e){
+        console.log(e)
+    }
+    }
+  }
 
   return (
     <div className="single-editor">
@@ -175,8 +210,9 @@ const SingleEditor = (props: any) => {
       <div className="single-editor__consoleBtn">
         <button onClick={handleToggleConsole} className="console-btn cursor-pointer flex">Console <span className="console-btn__icon">^</span></button>
         <div className="single-editor__run">
-          <button className="console-btn cursor-pointer run-btn" onClick={runCodeHandler} disabled = {loader}>Run</button>
-          <button className="console-btn cursor-pointer submit-btn">Submit</button>
+          <button className={`console-btn cursor-pointer run-btn ${isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={runCodeHandler} disabled = {loader || isAnswerSubmitted}>Run</button>
+          <button className={`console-btn cursor-pointer submit-btn ${isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={questionSubmitHandler} disabled = {isAnswerSubmitted}>Submit</button>
+          <button className={`console-btn cursor-pointer submit-btn ${!isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={nextQuestionClickHandler} disabled = {!isAnswerSubmitted}>Next</button>
         </div>
       </div>
 

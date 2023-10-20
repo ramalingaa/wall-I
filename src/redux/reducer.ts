@@ -7,6 +7,8 @@ export interface QuestionAnswer {
     question: string
     answer: string
     time?: number
+    suggestions?: string
+    language?: string
 }
 export interface QuestionAnswerFeedback extends QuestionAnswer {
     feedback: string
@@ -28,25 +30,55 @@ interface InitialState {
   currentEditorData:String;
   jwtToken: string;
   audioAnswers: AudioAnswers[];
-  questionDataForInterview: string[];
+  nonDSAquestionDataForInterview: string[];
   failedFeedbackAPICallQueue: QuestionAnswer[];
   userDetails: UserDetails,
-  userInterviewHistoryData: []
+  userInterviewHistoryData: [];
+  dsaQuestionDataForInterview: DSAQuestion[];
 }
 
 
-
+interface DSAQuestion {
+  question: string,
+  suggestions: string,
+  example: {
+    input: string,
+    output: string,
+    explanation: string
+  }
+}
 const initialState: InitialState = {
     allQuestionAnswerData: [],
     allQuestionAnswerFeedbackData: [],
     currentEditorData:"",
     jwtToken : "",
     audioAnswers:[],
-    questionDataForInterview:[
-      "What is a closure in JavaScript, and why is it useful?",
-      "Explain the differences between let, const, and var for declaring variables in JavaScript.",
-      "What is the purpose of the map() function in JavaScript, and how does it differ from forEach()?"
-    ],
+    nonDSAquestionDataForInterview:[
+      "What are the different data types available in JavaScript?",
+      "Can you explain the concept of type coercion in JavaScript?",
+      "How do you declare a function in JavaScript?",
+      "What are the different types of function declarations in JavaScript?"
+  ],
+  dsaQuestionDataForInterview: [
+      {
+        question: "DSA: Write a function to reverse a string in JavaScript.",
+        suggestions: "You cannot use the built-in reverse() method of the string object.",
+        example: {
+          input: "'hello'",
+          output: "'olleh'",
+          explanation: "The function should take in a string and return the reversed string."
+          }
+      },
+      {
+        question: "DSA: secondWrite a function to reverse a string in JavaScript.",
+        suggestions: "You cannot use the built-in reverse() method of the string object.",
+        example: {
+          input: "'hello'",
+          output: "'olleh'",
+          explanation: "The function should take in a string and return the reversed string."
+          }
+      }
+  ],
     failedFeedbackAPICallQueue: [],
     userDetails: {
       username: '',
@@ -76,7 +108,8 @@ const counterSlice = createSlice({
       state.currentEditorData = payload.payload;
     },
     addInterviewQuestionData(state, payload){
-      state.questionDataForInterview = payload.payload
+      state.nonDSAquestionDataForInterview = payload.payload.nonDSAArray;
+      state.dsaQuestionDataForInterview = payload.payload.dsaArray;
     },
     updateJwtToken(state, payload){
       state.jwtToken = payload.payload
@@ -115,7 +148,8 @@ const counterSlice = createSlice({
     resetPrevInterviewFeedbackData(state){
       state.allQuestionAnswerFeedbackData = []
       state.allQuestionAnswerData = []
-      state.questionDataForInterview = []
+      state.nonDSAquestionDataForInterview = []
+      state.dsaQuestionDataForInterview = []
       state.failedFeedbackAPICallQueue = []
     }
 

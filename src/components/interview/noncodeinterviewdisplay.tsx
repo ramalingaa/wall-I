@@ -3,7 +3,7 @@ import "./noncoding.css"
 import "./noncoding.css"
 import { useAppSelector } from '../../hooks/redux';
 const NonCodeInterviewDisplay = (props:any) => {
-  const {  questionDataForInterview } = useAppSelector((state) => state.interview)
+  const {  nonDSAquestionDataForInterview } = useAppSelector((state) => state.interview)
 
     const btnStatusArray = [props.isInterviewStarted, props.currentQuestionIndex.current > 0 ? props.isAnswerSubmitted : !props.isInterviewStarted || props.isAnswerSubmitted, !props.isAnswerSubmitted]
     return (
@@ -20,7 +20,7 @@ const NonCodeInterviewDisplay = (props:any) => {
         <div>
           {props.isQuestionCompleted && <p className = "blinking-iconText"><i className="fa fa-circle danger blink"></i> Start Speaking</p>}
           <h2 className = "current-display-question">{
-            questionDataForInterview[props.currentQuestionIndex.current]
+            nonDSAquestionDataForInterview[props.currentQuestionIndex.current]
           }
           </h2>
         </div>
@@ -28,7 +28,7 @@ const NonCodeInterviewDisplay = (props:any) => {
             <button onClick={props.handlerStartInterview} disabled={props.isInterviewStarted} className= {`btn ${btnStatusArray[0] ? "": " btn-active"}`} id="start-interview-button">Start the Interview</button>
             <button onClick={props.handlerStopAnswer} disabled={btnStatusArray[1]} className={`btn ${btnStatusArray[1] ? "": " btn-active"}`} id = "btn-stop-answer">Submit answer for this question</button>
             <button onClick={props.handleNextQuestionPress} disabled={btnStatusArray[2]} className={`btn ${btnStatusArray[2] ? "": " btn-active"}`} id = "btn-next">
-              {props.currentQuestionIndex.current === questionDataForInterview.length - 1 ? "Get the feedback" : "Next Question"}
+              {props.currentQuestionIndex.current === nonDSAquestionDataForInterview.length - 1 ? "Get the feedback" : "Next Question"}
             </button>
         </div>     
       </div>

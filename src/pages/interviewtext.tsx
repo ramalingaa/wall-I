@@ -5,7 +5,7 @@ import { feedbackPostCall } from './interview'
 import { useNavigate } from 'react-router-dom'
 
 const InterviewText = (props:any) => {
-    const { failedFeedbackAPICallQueue, jwtToken, questionDataForInterview } = useAppSelector((state) => state.interview)
+    const { failedFeedbackAPICallQueue, jwtToken, nonDSAquestionDataForInterview, dsaQuestionDataForInterview } = useAppSelector((state) => state.interview)
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [isAnswerSubmittedForText, setIsAnswerSubmittedForText] = useState<boolean>(false)
     const [currentQuestionAnswer, setCurrentQuestionAnswer] =useState<string>("")
@@ -32,7 +32,7 @@ const InterviewText = (props:any) => {
        if (!answerFieldErrorMsg && currentQuestionAnswer) {
         setIsAnswerSubmittedForText(true)
         const payload = {
-            question:questionDataForInterview[currentQuestion],
+            question:nonDSAquestionDataForInterview[currentQuestion],
             answer: currentQuestionAnswer
         }
         try {
@@ -59,9 +59,12 @@ const InterviewText = (props:any) => {
            
     }
     const textInputNextQuestionHandler = () => {
-            if(currentQuestion+1 === questionDataForInterview.length){
+            if(currentQuestion+1 === nonDSAquestionDataForInterview.length && dsaQuestionDataForInterview.length === 0){
                 navigate("/feedback")
-            }else {
+            }else if(currentQuestion+1 === nonDSAquestionDataForInterview.length && dsaQuestionDataForInterview.length > 0){
+                navigate("/code-editor")
+            }
+            else {
                 setCurrentQuestion((prev) => ++prev)
                 setIsAnswerSubmittedForText(false)
                 setCurrentQuestionAnswer("")
@@ -75,8 +78,8 @@ const InterviewText = (props:any) => {
   return (
     <div className = "align-interviewtext interviewtext-parent">
         <div className='align-interviewtext interviewtext-question'>
-            <p className='section-header'>Current Question: {currentQuestion + 1}/ {questionDataForInterview.length}</p>
-            <p>{questionDataForInterview[currentQuestion]}</p>
+            <p className='section-header'>Current Question: {currentQuestion + 1}/ {nonDSAquestionDataForInterview.length}</p>
+            <p>{nonDSAquestionDataForInterview[currentQuestion]}</p>
             
         </div>
         <div className='align-interviewtext interviewtext-textarea'>
@@ -88,11 +91,12 @@ const InterviewText = (props:any) => {
         </div>
         <div>
             <button className =  {isAnswerSubmittedForText ? "btn disabled" : "btn btn-active"} onClick = {textInputSubmitAnswerHandler} disabled = {isAnswerSubmittedForText}>Submit Answer</button>
-            <button className = {!isAnswerSubmittedForText ? "btn disabled" : "btn btn-active"} onClick = {textInputNextQuestionHandler} disabled = {!isAnswerSubmittedForText}>{currentQuestion+1 === questionDataForInterview.length ? "Get Feedback" : "Next Question"}</button>
+            <button className = {!isAnswerSubmittedForText ? "btn disabled" : "btn btn-active"} onClick = {textInputNextQuestionHandler} disabled = {!isAnswerSubmittedForText}>{(currentQuestion+1 === nonDSAquestionDataForInterview.length && dsaQuestionDataForInterview.length === 0) ? "Get Feedback" : "Next Question"}</button>
         </div>
     </div>
   )
 }
 
 export default InterviewText
+
 

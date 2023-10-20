@@ -36,7 +36,7 @@ async function updateUserInterviewDetails(props:any) {
 }
 const FeedbackDisplay = () => {
 
-  const { allQuestionAnswerFeedbackData, failedFeedbackAPICallQueue, jwtToken, questionDataForInterview, userDetails } = useAppSelector((state) => state.interview)
+  const { allQuestionAnswerFeedbackData, failedFeedbackAPICallQueue, jwtToken, nonDSAquestionDataForInterview, userDetails } = useAppSelector((state) => state.interview)
   const { credit, userId } = userDetails
   const [isDataPosted, setIsDataPosted] = useState<boolean>(false)
 
@@ -51,7 +51,7 @@ const FeedbackDisplay = () => {
 },[])
 
 useEffect(() => {
-  if(allQuestionAnswerFeedbackData.length === questionDataForInterview.length && !isDataPosted){
+  if(allQuestionAnswerFeedbackData.length === nonDSAquestionDataForInterview.length && !isDataPosted){
     updateUserInterviewDetails({allQuestionAnswerFeedbackData, jwtToken, userId, credit, setIsDataPosted, dispatch})
   }
 },[allQuestionAnswerFeedbackData])

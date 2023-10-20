@@ -48,7 +48,7 @@ const Interview = (props:any) => {
   } = useSpeechContext();
 
   const dispatch = useAppDispatch()
-  const { allQuestionAnswerData, questionDataForInterview, failedFeedbackAPICallQueue, jwtToken } = useAppSelector((state) => state.interview)
+  const { allQuestionAnswerData, nonDSAquestionDataForInterview, failedFeedbackAPICallQueue, jwtToken } = useAppSelector((state) => state.interview)
   useEffect(() => {
     if (segment) {
      
@@ -104,7 +104,7 @@ const Interview = (props:any) => {
     }
   }, [isTimerOn])
   useEffect(() => {
-    if(currentQuestionIndex.current > 0 && currentQuestionIndex.current === questionDataForInterview.length){
+    if(currentQuestionIndex.current > 0 && currentQuestionIndex.current === nonDSAquestionDataForInterview.length){
       setIsInterviewCompleted(true)
     }
   }, [currentQuestionIndex.current])
@@ -118,7 +118,7 @@ const Interview = (props:any) => {
       }
     };
   const handlerStartInterview = () => {
-    if(questionDataForInterview.length > 0){
+    if(nonDSAquestionDataForInterview.length > 0){
       if (currentQuestionIndex.current === 0) {
         setIsInterviewStarted(true)
       }
@@ -135,11 +135,11 @@ const Interview = (props:any) => {
       if (currentQuestionIndex.current > 0) {
         setIsAnswerSubmitted(false)
       }
-      if (!questionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA:")) {
-        callQuestionWOCode(questionDataForInterview, currentQuestionIndex, voices, synth, handleMicPress, setIsQuestionCompleted);
+      if (!nonDSAquestionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA:")) {
+        callQuestionWOCode(nonDSAquestionDataForInterview, currentQuestionIndex, voices, synth, handleMicPress, setIsQuestionCompleted);
       }
   
-      if (currentQuestionIndex.current > 0 && questionDataForInterview[currentQuestionIndex.current].startsWith("code")) {
+      if (currentQuestionIndex.current > 0 && nonDSAquestionDataForInterview[currentQuestionIndex.current].startsWith("code")) {
         //set the question display
         //display editor based on the question choice
         //allow user to code the problem
@@ -162,7 +162,7 @@ const Interview = (props:any) => {
   const handleSubmitAnswerForCodingQn = () => {
      const codeAnswer = editorRef.current ? editorRef.current?.getValue() :''
      const payload: QuestionAnswer = {
-      question: questionDataForInterview[currentQuestionIndex.current],
+      question: nonDSAquestionDataForInterview[currentQuestionIndex.current],
       answer: codeAnswer
     }
     setIsAnswerSubmitted(true)
@@ -170,7 +170,7 @@ const Interview = (props:any) => {
   }
 
 
-  const handleNextQuestion = nextQuestionActualEvent(currentQuestionIndex, setSpeechSegments, setTranscribedText, handlerStartInterview, failedFeedbackQnQueue, questionDataForInterview)
+  const handleNextQuestion = nextQuestionActualEvent(currentQuestionIndex, setSpeechSegments, setTranscribedText, handlerStartInterview, failedFeedbackQnQueue, nonDSAquestionDataForInterview)
   const handleTimer = () => {
     setIsTimerOn(true)
     setTimer(10)
@@ -182,7 +182,7 @@ const Interview = (props:any) => {
     yield handleAPIFeedbackCall(payload)
   }
 
-  const handleNextQuestionPress = nextQuestionClickInitializer(currentQuestionIndex, allQuestionAnswerData, generatorFunction, generator, transcribedText, dispatch, questionDataForInterview);
+  const handleNextQuestionPress = nextQuestionClickInitializer(currentQuestionIndex, allQuestionAnswerData, generatorFunction, generator, transcribedText, dispatch, nonDSAquestionDataForInterview);
 
   //ends
   const endInterviewHandler = () => {
@@ -253,22 +253,22 @@ const onExit = () => {
         <Hints enabled={onBoardingProps.hintsEnabled} hints={onBoardingProps.hints} />
           <div className="interview-action-header">
             {/* <button onClick = {signOut} className='btn btn-secondary'>Signout</button> */}
-            <span className = "question">Total No-Of questions: {questionDataForInterview.length}</span>
+            <span className = "question">Total No-Of questions: {nonDSAquestionDataForInterview.length}</span>
             <span className = "currentQuestion">Current question No: {currentQuestionIndex.current + 1}</span>
             <button onClick = {endInterviewHandler} className='btn btn-primary bg-red end-interview'>End Interview</button>
 
           </div>
 
-     {
+     {/* {
       isTimerOn ? <RefreshTimer timer = { timer } /> :
        <div>
-      {questionDataForInterview[currentQuestionIndex.current] && !questionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA") ?
+      {nonDSAquestionDataForInterview[currentQuestionIndex.current] && !nonDSAquestionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA") ?
         <NonCodeInterviewDisplay tentative={tentative} currentQuestionIndex={currentQuestionIndex} isInterviewStarted={isInterviewStarted} isAnswerSubmitted={isAnswerSubmitted} isTimerOn={isTimerOn} timer={timer} clientState={clientState} microphoneState={microphoneState} handlerStartInterview={handlerStartInterview} handlerStopAnswer={handlerStopAnswer} handleNextQuestionPress={handleNextQuestionPress} isQuestionCompleted = {isQuestionCompleted}></NonCodeInterviewDisplay> : 
         <CodeEditor />}
         
       </div>
 
-     }
+     } */}
       
     </div>
   );
@@ -276,10 +276,10 @@ const onExit = () => {
 }
 export default Interview
 
-function nextQuestionActualEvent(currentQuestionIndex: React.MutableRefObject<number>, setSpeechSegments: React.Dispatch<React.SetStateAction<SpeechSegment[]>>, setTranscribedText: React.Dispatch<React.SetStateAction<string>>, handlerStartInterview: () => void, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>, questionDataForInterview: string[]) {
+function nextQuestionActualEvent(currentQuestionIndex: React.MutableRefObject<number>, setSpeechSegments: React.Dispatch<React.SetStateAction<SpeechSegment[]>>, setTranscribedText: React.Dispatch<React.SetStateAction<string>>, handlerStartInterview: () => void, failedFeedbackQnQueue: React.MutableRefObject<QuestionAnswer[]>, nonDSAquestionDataForInterview: string[]) {
   return () => {
     currentQuestionIndex.current = currentQuestionIndex.current + 1;
-    if (currentQuestionIndex.current < questionDataForInterview.length) {
+    if (currentQuestionIndex.current < nonDSAquestionDataForInterview.length) {
       setSpeechSegments(() => []);
       setTranscribedText("");
       handlerStartInterview();
@@ -294,16 +294,16 @@ function nextQuestionActualEvent(currentQuestionIndex: React.MutableRefObject<nu
   };
 }
 
-function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObject<number>, allQuestionAnswerData: QuestionAnswer[], generatorFunction: React.MutableRefObject<Generator<void | Promise<void>, void, unknown> | undefined>, generator: (payload: QuestionAnswer | undefined) => Generator<void | Promise<void>, void, unknown>, transcribedText: string, dispatch:any, questionDataForInterview:string[]) {
+function nextQuestionClickInitializer(currentQuestionIndex: React.MutableRefObject<number>, allQuestionAnswerData: QuestionAnswer[], generatorFunction: React.MutableRefObject<Generator<void | Promise<void>, void, unknown> | undefined>, generator: (payload: QuestionAnswer | undefined) => Generator<void | Promise<void>, void, unknown>, transcribedText: string, dispatch:any, nonDSAquestionDataForInterview:string[]) {
   return async () => {
-    if (questionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA")) {
-      const payloadForCodingQn: QuestionAnswer | undefined = allQuestionAnswerData.find((ele) => ele.question === questionDataForInterview[currentQuestionIndex.current]);
+    if (nonDSAquestionDataForInterview[currentQuestionIndex.current].startsWith("codeDSA")) {
+      const payloadForCodingQn: QuestionAnswer | undefined = allQuestionAnswerData.find((ele) => ele.question === nonDSAquestionDataForInterview[currentQuestionIndex.current]);
       payloadForCodingQn && (generatorFunction.current = generator(payloadForCodingQn));
 
     }
     else {
       const payloadForNonCodingQn: QuestionAnswer = {
-        question: questionDataForInterview[currentQuestionIndex.current],
+        question: nonDSAquestionDataForInterview[currentQuestionIndex.current],
         answer: transcribedText
       };
       dispatch(addQuestionAnswer(payloadForNonCodingQn));
@@ -320,7 +320,9 @@ export function feedbackPostCall(dispatch:any, failedFeedbackAPICallQueue: Quest
   return async (payload: QuestionAnswer | undefined) => {
     const apiFeedbackData = {
         question: payload?.question,
-        answer: payload?.answer
+        answer: payload?.answer,
+        language: payload?.language,
+        suggestions: payload?.suggestions
       };
 
     const isFailedDataAlreadyAdded = failedFeedbackAPICallQueue.some((feedback: QuestionAnswer) => feedback.question === apiFeedbackData.question)
@@ -352,8 +354,8 @@ export function feedbackPostCall(dispatch:any, failedFeedbackAPICallQueue: Quest
   };
 }
 
-function callQuestionWOCode(questionDataForInterview: string[], currentQuestionIndex: React.MutableRefObject<number>, voices: SpeechSynthesisVoice[], synth: SpeechSynthesis, handleMicPress: () => Promise<void>, setIsQuestionCompleted:any) {
-  const utterThis = new SpeechSynthesisUtterance(questionDataForInterview[currentQuestionIndex.current]);
+function callQuestionWOCode(nonDSAquestionDataForInterview: string[], currentQuestionIndex: React.MutableRefObject<number>, voices: SpeechSynthesisVoice[], synth: SpeechSynthesis, handleMicPress: () => Promise<void>, setIsQuestionCompleted:any) {
+  const utterThis = new SpeechSynthesisUtterance(nonDSAquestionDataForInterview[currentQuestionIndex.current]);
   utterThis.voice = voices[0];
   utterThis.rate = 0.9;
   utterThis.pitch = 1;

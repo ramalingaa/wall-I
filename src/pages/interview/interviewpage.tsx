@@ -11,7 +11,7 @@ import InterviewText from "../interviewtext";
 
 
 const InterviewPage = (props:any) => {
-    const { questionDataForInterview } = useAppSelector((state) => state.interview)
+    const { nonDSAquestionDataForInterview } = useAppSelector((state) => state.interview)
     const [isInterviewCompleted, setIsInterviewCompleted] = useState<boolean | undefined>(false)
     const [jwtToken, setJwtToken] = useState<string>('')
 
@@ -30,7 +30,7 @@ const InterviewPage = (props:any) => {
     }
     useEffect(() => {
         getJwtToken()
-        if(questionDataForInterview.length === 0){
+        if(nonDSAquestionDataForInterview.length === 0){
             navigate("/select-level")
         }
     },[])

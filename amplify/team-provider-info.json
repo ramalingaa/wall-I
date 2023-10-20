@@ -12,30 +12,29 @@
       "AmplifyAppId": "d67v88wu3ozyo"
     },
     "categories": {
-      "auth": {
-        "wallieadcfc3c": {},
-        "userPoolGroups": {}
-      },
       "hosting": {
         "amplifyhosting": {
           "appId": "d67v88wu3ozyo",
           "type": "manual"
         }
       },
+      "auth": {
+        "wallieadcfc3c": {},
+        "userPoolGroups": {}
+      },
       "function": {
-        "selectlevelquestions": {
-          "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
-          "s3Key": "amplify-builds/selectlevelquestions-6a6b754448572f6e5067-build.zip"
-        },
-        "interviewfeedback": {
-          "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
-          "s3Key": "amplify-builds/interviewfeedback-71757361333172374436-build.zip"
-        },
         "getuserdetails": {
           "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
           "s3Key": "amplify-builds/getuserdetails-34546161676635675941-build.zip"
         },
-        "updateuserinfo": {}
+        "interviewfeedback": {
+          "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
+          "s3Key": "amplify-builds/interviewfeedback-4b3855322f6b57453142-build.zip"
+        },
+        "selectlevelquestions": {
+          "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
+          "s3Key": "amplify-builds/selectlevelquestions-657157757a534f6f3279-build.zip"
+        }
       },
       "api": {
         "mockmanapi": {}
