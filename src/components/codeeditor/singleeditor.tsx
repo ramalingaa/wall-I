@@ -185,6 +185,7 @@ const SingleEditor = (props: any) => {
 
       </div>
       <div className="single-editor__editor">
+        {/* @ts-ignore */}
         <SplitPane split="horizontal" minSize={isConsoleOpen ? "30%" : "100%"} defaultSize={isConsoleOpen ? "70%" : "100%"} allowResize={isConsoleOpen} maxSize="0">
           <Editor
             height="100%"
