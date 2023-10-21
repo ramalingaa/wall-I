@@ -162,6 +162,7 @@ const SingleEditor = (props: any) => {
         language: codingLanguage
     }
     try {
+
         apiFeedbackCall(payload)
     }catch (e){
         console.log(e)
@@ -201,7 +202,7 @@ const SingleEditor = (props: any) => {
           />
           {isConsoleOpen &&
             <div className="single-editor__console">
-              <EditorConsole codeExecutionData={codeExecutionData} />
+              <EditorConsole codeExecutionData={codeExecutionData} loader = {loader}/>
             </div>}
 
         </SplitPane>
