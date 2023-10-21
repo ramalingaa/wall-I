@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react"
 import axios from 'axios';
 import "./singleeditor.css"
 import EditorConsole from "./editorconsole";
-import SplitPane, { Pane } from 'react-split-pane';
+import SplitPane from 'react-split-pane';
 import './resizer.css';
 import { feedbackPostCall } from "../../pages/interview";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
