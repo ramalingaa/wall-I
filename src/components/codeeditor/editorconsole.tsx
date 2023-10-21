@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { BallTriangle } from "react-loader-spinner";
 
-const EditorConsole = ({codeExecutionData}: any) => {
+const EditorConsole = (props: any) => {
+  const { loader, codeExecutionData} = props
   const[consoleErrorMessage, setConsoleErrorMessage] = useState<string>("")
-  const[isLoader, setIsLoader] = useState<boolean>(false)
   useEffect(() => {
     if(codeExecutionData?.stderr && codeExecutionData?.status?.description !== "Accepted"){
       const lines = codeExecutionData?.stderr.split('\n')
@@ -16,18 +16,10 @@ const EditorConsole = ({codeExecutionData}: any) => {
     }
   }, [codeExecutionData?.stderr])
   
-  useEffect(() => {
-    if(!(codeExecutionData?.status?.description)){
-      setIsLoader(true)
-    }
-    else {
-      setIsLoader(false)
-    }
-  },[codeExecutionData])
   return (
     <div>
         {
-          !isLoader ? (codeExecutionData?.status?.description && (codeExecutionData?.status?.description === "Accepted" ? <p>{codeExecutionData?.stdout}</p> : <p className='danger'>{consoleErrorMessage}</p>)) : <div className = "align-center">
+          !loader ? (codeExecutionData?.status?.description && (codeExecutionData?.status?.description === "Accepted" ? <p>{codeExecutionData?.stdout}</p> : <p className='danger'>{consoleErrorMessage}</p>)) : <div className = "align-center">
             <BallTriangle
                 height={25}
                 width={25}

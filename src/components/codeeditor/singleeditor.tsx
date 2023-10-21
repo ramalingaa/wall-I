@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react"
 import axios from 'axios';
 import "./singleeditor.css"
 import EditorConsole from "./editorconsole";
-import SplitPane, { Pane } from 'react-split-pane';
+import SplitPane from 'react-split-pane';
 import './resizer.css';
 import { feedbackPostCall } from "../../pages/interview";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
@@ -162,6 +162,7 @@ const SingleEditor = (props: any) => {
         language: codingLanguage
     }
     try {
+
         apiFeedbackCall(payload)
     }catch (e){
         console.log(e)
@@ -185,6 +186,7 @@ const SingleEditor = (props: any) => {
 
       </div>
       <div className="single-editor__editor">
+        {/* @ts-ignore */}
         <SplitPane split="horizontal" minSize={isConsoleOpen ? "30%" : "100%"} defaultSize={isConsoleOpen ? "70%" : "100%"} allowResize={isConsoleOpen} maxSize="0">
           <Editor
             height="100%"
@@ -200,7 +202,7 @@ const SingleEditor = (props: any) => {
           />
           {isConsoleOpen &&
             <div className="single-editor__console">
-              <EditorConsole codeExecutionData={codeExecutionData} />
+              <EditorConsole codeExecutionData={codeExecutionData} loader = {loader}/>
             </div>}
 
         </SplitPane>

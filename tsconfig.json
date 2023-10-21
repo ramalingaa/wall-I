@@ -22,5 +22,8 @@
     "jsx": "react-jsx"
   },
   "include": ["src", "cypress"],
+  "paths": {
+    "react-split-pane": ["./types/react-split-pane"]
+  }
 
 }

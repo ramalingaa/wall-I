@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react"
 import "./codeeditor.css"
 import SingleEditor from "./singleeditor";
-import SplitPane, { Pane } from 'react-split-pane';
+import SplitPane from 'react-split-pane';
 import './resizer.css';
 import CodeQuestion from "./codequestion";
 import {  useAppSelector } from "../../hooks/redux";
@@ -23,6 +23,7 @@ const CodeEditor = () => {
 
     return(
         <div className="editor-parent">
+                {/* @ts-ignore */}
                 <SplitPane split="vertical" minSize = "20%" defaultSize="40%" allowResize = {true}>
                     <CodeQuestion questionData = {dsaQuestionDataForInterview[currentQuestionIndex]}/>
                     <SingleEditor nextQuestionClickHandler = {nextQuestionClickHandler} currentQuestionIndex = { currentQuestionIndex}/>
