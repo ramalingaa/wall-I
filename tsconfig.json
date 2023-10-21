@@ -21,6 +21,9 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "cypress"],
+  "include": ["src", "cypress", "types"],
+  "paths": {
+    "react-split-pane": ["./types/react-split-pane"]
+  }
 
 }
