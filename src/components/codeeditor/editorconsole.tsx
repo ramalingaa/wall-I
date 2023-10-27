@@ -19,7 +19,8 @@ const EditorConsole = (props: any) => {
   return (
     <div>
         {
-          !loader ? (codeExecutionData?.status?.description && (codeExecutionData?.status?.description === "Accepted" ? <p>{codeExecutionData?.stdout}</p> : <p className='danger'>{consoleErrorMessage}</p>)) : <div className = "align-center">
+          !loader ? (codeExecutionData?.status?.description && (codeExecutionData?.status?.description === "Accepted" ? <p dangerouslySetInnerHTML={{ __html: codeExecutionData?.stdout.replace(/\n/g, '<br>') }}></p>
+          : <p className='danger'>{consoleErrorMessage}</p>)) : <div className = "align-center">
             <BallTriangle
                 height={25}
                 width={25}

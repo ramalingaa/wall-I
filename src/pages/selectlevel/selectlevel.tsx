@@ -206,7 +206,7 @@ async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAg
       interviewLevel: interviewLevel,
       noOfQuestions: noOfQuestions,
       experience: experience,
-      dsaQuestionCount: dsaQuestionCount
+      dsaQuestionCount: String(dsaQuestionCount)
     };
     const headers = {
         'Authorization': `Bearer ${jwtToken}`, // Add 'Bearer ' before the token
@@ -214,23 +214,22 @@ async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAg
       }
     try {
       const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/api/questions', { user_message: userMessage }, { headers });
+      console.log(response)
       const assistantReply = JSON.parse(response.data.assistant_reply);
-      const nonDSAQuestion:any[] = []
-      const DSAQuestion:any = [];
-      assistantReply.forEach((item:any) => {
-          if(item.question.startsWith("DSA:")){
-              DSAQuestion.push(item)
-          }else {
-              nonDSAQuestion.push(item)
-          }
-      })
-      const nonDSAQuestionsArray = nonDSAQuestion.reduce((result:any, item:any) => {
-        result.push(item.question, item['follow-up question']);
-        return result;
-      }, []);
+      const nonDSAQuestionList:any[] = []
+      const DSAQuestionList:any = [];
+
+      for (const element of assistantReply) {
+        if (typeof element === "string") {
+            nonDSAQuestionList.push(element);
+        } else {
+            DSAQuestionList.push(element);
+        }
+      }
+     
       const payload = {
-          nonDSAArray: nonDSAQuestionsArray,
-          dsaArray: DSAQuestion
+          nonDSAArray: nonDSAQuestionList,
+          dsaArray: DSAQuestionList
       }
       dispatch(addInterviewQuestionData(payload));
       navigate("/interview-text")

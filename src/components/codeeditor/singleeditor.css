@@ -65,3 +65,8 @@
     background-color:rgb(56, 175, 56);
     color: whitesmoke;
 }
+
+.css-glamorous-div--hvdu2p>div{
+    overflow-y: scroll!important;
+}
+

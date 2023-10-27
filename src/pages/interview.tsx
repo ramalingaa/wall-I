@@ -337,7 +337,9 @@ export function feedbackPostCall(dispatch:any, failedFeedbackAPICallQueue: Quest
         question: payload?.question,
         answer: payload?.answer,
         feedback: assistantReply.feedback,
-        rating: assistantReply.rating
+        rating: assistantReply.rating,
+        suggestedcode: assistantReply?.suggestedcode,
+        explanation: assistantReply?.explanation
       }
       dispatch(addQuestionAnswerFeedback(feedbackPayload));
       if(isFailedDataAlreadyAdded){
