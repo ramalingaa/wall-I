@@ -59,7 +59,8 @@ const SingleEditor = (props: any) => {
     editorRef?.current && setEditorData(editorRef?.current.getValue())
   }
   //azure hoisted url http://20.127.216.50:2358/submissions
-  const baseURL = "http://172.24.206.214:2358/submissions";
+  //aws ec2 instance url http://43.205.237.158:2358/submissions
+  const baseURL = "http://43.205.237.158:2358//submissions";
   const requestBody = {
     source_code: editorData,
     language_id: languageId,
@@ -212,9 +213,9 @@ const SingleEditor = (props: any) => {
       <div className="single-editor__consoleBtn">
         <button onClick={handleToggleConsole} className="console-btn cursor-pointer flex">Console <span className="console-btn__icon">^</span></button>
         <div className="single-editor__run">
-          <button className={`console-btn cursor-pointer run-btn ${isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={runCodeHandler} disabled = {loader || isAnswerSubmitted}>Run</button>
-          <button className={`console-btn cursor-pointer submit-btn ${isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={questionSubmitHandler} disabled = {isAnswerSubmitted}>Submit</button>
-          <button className={`console-btn cursor-pointer submit-btn ${!isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={nextQuestionClickHandler} disabled = {!isAnswerSubmitted}>Next</button>
+          <button className={`console-btn cursor-pointer run-btn ${isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={runCodeHandler}>Run</button>
+          <button className={`console-btn cursor-pointer submit-btn ${isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={questionSubmitHandler}>Submit</button>
+          <button className={`console-btn cursor-pointer submit-btn ${!isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={nextQuestionClickHandler}>Next</button>
         </div>
       </div>
 

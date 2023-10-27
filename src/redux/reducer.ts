@@ -2,7 +2,18 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from './store'
-
+const interviewQuestionExample = ["What are the different data types available in JavaScript?",
+"Can you explain the concept of type coercion in JavaScript?",
+"How do you declare a function in JavaScript?",
+"What are the different types of function declarations in JavaScript?",      {
+  question: "DSA: You are given the head of a singly linked list. Reverse the list and return its head.",
+  suggestions: "",
+  example: {
+    input: "'1 -> 2 -> 3 -> 4 -> 5'",
+    output: "'5 -> 4 -> 3 -> 2 -> 1'",
+    explanation: "The function should take in a string and return the reversed string."
+    }
+}]
 export interface QuestionAnswer {
     question: string
     answer: string
@@ -12,6 +23,8 @@ export interface QuestionAnswer {
 }
 export interface QuestionAnswerFeedback extends QuestionAnswer {
     feedback: string
+    suggestedcode?:string
+    explanation?: string
     rating:number
 }
 interface AudioAnswers {
@@ -53,32 +66,8 @@ const initialState: InitialState = {
     currentEditorData:"",
     jwtToken : "",
     audioAnswers:[],
-    nonDSAquestionDataForInterview:[
-      "What are the different data types available in JavaScript?",
-      "Can you explain the concept of type coercion in JavaScript?",
-      "How do you declare a function in JavaScript?",
-      "What are the different types of function declarations in JavaScript?"
-  ],
-  dsaQuestionDataForInterview: [
-      {
-        question: "DSA: Write a function to reverse a string in JavaScript.",
-        suggestions: "You cannot use the built-in reverse() method of the string object.",
-        example: {
-          input: "'hello'",
-          output: "'olleh'",
-          explanation: "The function should take in a string and return the reversed string."
-          }
-      },
-      {
-        question: "DSA: secondWrite a function to reverse a string in JavaScript.",
-        suggestions: "You cannot use the built-in reverse() method of the string object.",
-        example: {
-          input: "'hello'",
-          output: "'olleh'",
-          explanation: "The function should take in a string and return the reversed string."
-          }
-      }
-  ],
+    nonDSAquestionDataForInterview:[],
+  dsaQuestionDataForInterview: [],
     failedFeedbackAPICallQueue: [],
     userDetails: {
       username: '',

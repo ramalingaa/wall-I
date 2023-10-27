@@ -4,6 +4,8 @@ import { QuestionAnswerFeedback, updateUserDetails, updateUserInterviewHistoryDa
 import "./feedbackdisplay.css"
 import { feedbackPostCall } from "../../pages/interview";
 import { BallTriangle } from "react-loader-spinner";
+import { CodeBlock, dracula } from "react-code-blocks";
+
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
@@ -31,12 +33,11 @@ async function updateUserInterviewDetails(props:any) {
     setIsDataPosted(true)
   } catch (error) {
     console.error('Error:', error);
-  } finally {
   }
 }
 const FeedbackDisplay = () => {
 
-  const { allQuestionAnswerFeedbackData, failedFeedbackAPICallQueue, jwtToken, nonDSAquestionDataForInterview, userDetails } = useAppSelector((state) => state.interview)
+  const { allQuestionAnswerFeedbackData, failedFeedbackAPICallQueue, jwtToken, nonDSAquestionDataForInterview, dsaQuestionDataForInterview, userDetails } = useAppSelector((state) => state.interview)
   const { credit, userId } = userDetails
   const [isDataPosted, setIsDataPosted] = useState<boolean>(false)
 
@@ -49,9 +50,9 @@ const FeedbackDisplay = () => {
         failedFeedbackAPICallQueue.forEach((payload) => apiFeedbackCall(payload))
     }
 },[])
-
+const allQuestionLength = nonDSAquestionDataForInterview.length + dsaQuestionDataForInterview.length
 useEffect(() => {
-  if(allQuestionAnswerFeedbackData.length === nonDSAquestionDataForInterview.length && !isDataPosted){
+  if(allQuestionAnswerFeedbackData.length === allQuestionLength && !isDataPosted){
     updateUserInterviewDetails({allQuestionAnswerFeedbackData, jwtToken, userId, credit, setIsDataPosted, dispatch})
   }
 },[allQuestionAnswerFeedbackData])
@@ -120,6 +121,14 @@ useEffect(() => {
                 <ul className="feedback-step">
                   <li className={answerSegment(Number(singleInstance.rating))}><b>Your Answer: </b>{singleInstance.answer}</li>
                   <li className="feedback-feedback"><b>Agent Feedback: </b>{singleInstance.feedback}</li>
+                  { singleInstance?.suggestedcode && <li className="feedback-feedback"><b>Code: </b>
+                    <CodeBlock
+                      text={singleInstance?.suggestedcode}
+                      // language={props.language}
+                      showLineNumbers={true}
+                      theme={dracula}
+                    /></li>}
+                  { singleInstance?.explanation && <li className="feedback-feedback"><b>Code Explanation: </b>{singleInstance?.explanation}</li>}
                   <li className={answerSegment(Number(singleInstance.rating))}><b>Score: </b>{singleInstance.rating} out of 10</li>         
                 </ul>
               </div>;
