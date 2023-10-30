@@ -1,5 +1,7 @@
 import BodyContent from "../components/bodycontent/bodycontent"
-import FeaturesContent from "../components/featurescontent/featurescontent"
+import ClientSection from "../components/clientsection/clientsection"
+import ProcessFlow from "../components/featurescontent/featurescontent"
+import Footer from "../components/footer/footer"
 import HeroImage from "../components/heroimage/HeroImage"
 import Navbar from "../components/navbar/navbar"
 import "./landingpage.css"
@@ -7,21 +9,11 @@ const LandingPage = () => {
 
 
     return (
-        <div className = "landing-page-parent-container">
-           <div className="landing-page-parent">
-            <div className="landing-page-container">
-                    <HeroImage />
-                    
-            </div>
-           </div>
-           <div  className="landing-page-container">
-                <BodyContent />
-           </div>
-           <div className="landing-page-parent">
-            <div className="landing-page-container">
-                    <FeaturesContent />
-            </div>
-           </div>
+        <div className="px-6 flex flex-col landing-page-container">
+            <HeroImage />
+            <BodyContent />
+            <ProcessFlow />
+            <ClientSection />
         </div>
     )
 }

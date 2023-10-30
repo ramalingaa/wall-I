@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import LandingPage from './pages/landingpage';
 import { BrowserRouter as Router,Routes, Route} from "react-router-dom"
 import About from './pages/about';
-import Navbar from './components/navbar/navbar';
+import NavbarComponent from './components/navbar/navbar';
 import SelectLevel from './pages/selectlevel/selectlevel';
 import { Login } from './components/auth/login';
 import { RequireAuth } from './requireauth';
@@ -17,6 +17,7 @@ import { updateJwtToken, updateUserDetails } from './redux/reducer';
 import CustomerFeedback from './pages/customerfeedback/customerfeedback';
 import SingleEditor from './components/codeeditor/singleeditor';
 import CodeEditor from './components/codeeditor/codeeditor';
+import Footer from './components/footer/footer';
 function App() {
   const { route, user } = useAuthenticator((context) => [context.route, context.user]);
   const { userDetails, jwtToken } = useAppSelector((state) => state.interview)
@@ -55,7 +56,7 @@ function App() {
   return(
     <Router>
         <div className = "App">
-            <Navbar />
+            <NavbarComponent />
             <Routes >
                   <Route path = "/" element = {<LandingPage />}/>
                   <Route path = "/about" element = {<About />}/>
@@ -69,6 +70,8 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path = "*" element={<NotFound />} />
             </Routes>
+            <Footer />
+
         </div>
     </Router>
    

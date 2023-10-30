@@ -1,50 +1,11 @@
-.navbar-wrapper {  
-    position: sticky;
-    top: 0;
-    background-color: var(--white-color);
-    padding: 0.6rem 0;
-}
-.logo-design {
-    color: var(--primary-color-blue);
-   cursor: pointer;
-}
-.navbar-container {
-    width: 77%;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items:center;
-}
-.navbar-cta-container {
-    display: flex;
-    gap: 2rem;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: 450;
-}
-.profile-details {
-    position: absolute;
-    width: 15rem;
-    right: 2rem;
-    top:49px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    padding: 1rem;
-    border: 1px solid grey;
-    background-color: white;
-    color: black;
-}
-.logo-align {
-    width:8rem;
-}
-.logo-container {
-    display: flex;
-    gap:5px;
-    align-items: center;
-}
-.btn-text {
-    padding: 0;
+.logo-text {
+    font-size: 1.5rem;
     font-weight: bold;
 }
-.btn-text:hover {
+.flex-gap2 {
+    gap: 2rem!important;
+    color: #000000bf;
+    font-weight: 400;
+    font-size: 1rem!important;
+    
 }

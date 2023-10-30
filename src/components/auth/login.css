@@ -5,3 +5,7 @@
     justify-content:center;
     min-height:90vh
 }
+button[type="submit"]{
+    background-color: var(--app-primary-color)!important;
+    font-weight: normal!important;
+  }

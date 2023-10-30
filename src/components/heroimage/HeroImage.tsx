@@ -1,0 +1,47 @@
+import "./heroimage.css"
+import { useNavigate } from 'react-router-dom';
+import {Input, Image, Button} from "@nextui-org/react";
+import {  useAppSelector } from "../../hooks/redux";
+import HeroImageFile from "../../heroimage1.jpg"
+import { useState } from "react";
+const HeroImage = () => {
+        const [userEmail, setUserEmail] = useState<string>("");
+        const navigate = useNavigate();
+        const authHandler = () => {
+                navigate("select-level")     
+        }
+        const learnMoreHandler = () => {
+                navigate("about")
+        }
+        const getStartedHandler = (e:any) => {
+                setUserEmail(e.target.value)
+        }
+        const storeUserEmailAndRedirectHandler = () => {
+                localStorage.setItem("userEmail", userEmail)
+                authHandler()
+        }
+        const sizes = ["sm", "md", "lg"];
+
+    return (
+        <div className="flex flex-col justify-center gap-4 hero-container">
+                <div className="flex flex-col gap-4 ">
+                        <h1 className="hero-heading">Streamline Your Interview Process with Our platform </h1>
+                        <p>Prepare anywhere, anytime with MockMan with feedback a like a Thunder</p>
+                        <div className="flex hero-input-button gap-2">
+                                <Input size={"md"} type="email" label="" placeholder="Enter your email" onChange = {getStartedHandler}/>
+                                <Button color="primary" className = "hero-btn" onPress = {storeUserEmailAndRedirectHandler}>Get Started</Button>
+                        </div>
+                </div>
+                <div className="hero-image-container">
+                        <Image
+                                width={350}
+                                height={200}
+                                alt="MockMan hero Image with delay"
+                                src={HeroImageFile}
+                                className="hero-image-align"
+                                />
+                </div>
+        </div>    
+    )
+}
+export default HeroImage
