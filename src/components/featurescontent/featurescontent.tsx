@@ -1,29 +1,57 @@
 import featureImageOne from "../../imageDB/ideogram (9).jpeg";
 import featureImageTwo from "../../imageDB/ideogram (5).jpeg";
 import featureImageThree from "../../imageDB/ideogram (7).jpeg";
+import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
 
 
 
 import "./featurecontent.css"
-const FeaturesContent = () => {
+const ProcessFlow = () => {
     return (
-        <div className="feature-content-parent">
-            <p className="feature-content-header">Features of Mockman</p>
-            <div className = "feature-content-container">
-                <div className = "feature-content-single">
-                    <img src = {featureImageOne} alt = "interview" className="feature-image-one"/>
-                    <p className = "feature-text-one">Interactive Virtual Mock Interviews tailored for your specific industry and role</p>
-                </div>
-                <div className = "feature-content-single">
-                    <img src = {featureImageTwo} alt = "interview" className="feature-image-two"/>
-                    <p className = "feature-text-two">Detailed Interview feedback to help you improve and stand out from the competition</p>
-                </div>
-                <div className = "feature-content-single">
-                    <img src = {featureImageThree} alt = "interview" className="feature-image-three"/>
-                    <p className = "feature-text-three">Land your dream job with our state-of-art AI tools</p>
-                </div>
+        <div>
+            <h2 className="align-center text-xl font-semibold text-primary">Three Easy Steps to Prepare</h2>
+            <div className="flex process-flow-container">
+                <Card className="max-w-[400px] features-cart" shadow = "none" radius = "none">
+                    <CardHeader>
+                    <Image
+                        width={300}
+                        alt="NextUI hero Image"
+                        src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+                        />
+                    </CardHeader>
+                    <CardBody>
+                        <h1 className="text-xl font-semibold">Get Your Requirement Right</h1>
+                        <p className="font-light">Choose Your Language, Experience, number of questions and DSA if Required. This Step Will Generate Interview Questions For You.</p>
+                    </CardBody>
+                </Card>
+                <Card className="max-w-[400px] features-cart" shadow = "none" radius = "none">
+                    <CardHeader>
+                    <Image
+                        width={300}
+                        alt="NextUI hero Image"
+                        src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+                        />
+                    </CardHeader>
+                    <CardBody>
+                        <h1 className="text-xl font-semibold">Answer The Questions</h1>
+                        <p className="font-light">Once You are On the Interview Space, You can Answer the Questions, If not You can Skip the Question. Questions which are skipped will not have a feedback However If not skipped You get a feedback</p>
+                    </CardBody>
+                </Card>
+                <Card className="max-w-[400px] features-cart" shadow = "none" radius = "none">
+                    <CardHeader>
+                    <Image
+                        width={300}
+                        alt="NextUI hero Image"
+                        src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+                        />
+                    </CardHeader>
+                    <CardBody>
+                        <h1 className="text-xl font-semibold">Finally The Feedback</h1>
+                        <p className="font-light">Once You are Done With Your Interview, You can View Your Feedback for Every question. That's not all You can see Rating. This Metric helps you improving your changes in your next Interview.</p>
+                    </CardBody>
+                </Card>
             </div>
         </div>
     )
 }
-export default FeaturesContent
+export default ProcessFlow

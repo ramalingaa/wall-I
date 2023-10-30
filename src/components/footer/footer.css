@@ -1,0 +1,33 @@
+.footer-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:center;
+    gap: 1rem;
+    padding: 2rem 1rem;
+}
+.single-footer-menu{
+    width: 8rem;
+}
+.single-footer-menu>ul{
+    gap: 1rem;
+}
+@media screen and (min-width: 768px) {
+    .single-footer-menu {
+        width: 12rem;
+    }
+}
+@media screen and (min-width: 971px) {
+    .single-footer-menu {
+        width: 15rem;
+    }
+}
+@media screen and (min-width: 1270px) {
+    .single-footer-menu {
+        width: 20rem;
+    }
+}
+@media screen and (min-width: 1470px) {
+    .single-footer-menu {
+        width: 25rem;
+    }
+}
