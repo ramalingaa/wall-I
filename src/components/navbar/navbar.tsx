@@ -15,7 +15,7 @@ import { resetInterviewState } from "../../redux/reducer";
 const NavbarComponent = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-    const { userDetails } = useAppSelector((state) => state.interview)
+    const { userDetails, jwtToken } = useAppSelector((state) => state.interview)
       const handleResize = () => {
         const isMVA = window.innerWidth <= 640 ? true : false
         setIsMobile(isMVA);
@@ -43,10 +43,10 @@ const NavbarComponent = () => {
         navigate("/login")
     }
     const menuItems = [
-        "Home",
-        "About",
-        "Contact Us",
-        "Pricing",
+        {to:"/", value: "Home"},
+        {to:"about", value: "About"},
+        {to:"contact", value: "Contact"},
+        {to:"pricing", value: "Pricing"},
       ];
       const signOutHandler = () => {
         dispatch(resetInterviewState())
@@ -100,32 +100,33 @@ const NavbarComponent = () => {
                 </NavbarItem>
             </NavbarContent>
             <NavbarContent justify="end">
-                <NavbarItem className="hidden lg:flex">
-                    {route === "authenticated"?<NavbarContent as="div" justify="end">
-        <Dropdown placement="bottom-end">
-          <DropdownTrigger>
-            <Avatar
-              isBordered
-              as="button"
-              className="transition-transform"
-              color="secondary"
-              name="Jason Hughes"
-              size="sm"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-            />
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-semibold">Hey👋{userDetails?.username}</p>
-            </DropdownItem>
-            <DropdownItem key="settings">Active Credits: {userDetails?.credit}</DropdownItem>
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger" onClick={signOutHandler}>
-              Log Out
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </NavbarContent> :<Button color="primary" onPress = {loginRedirectHandler}>Get Started</Button>}
+                <NavbarItem className="lg:flex">
+                    {jwtToken ?
+                        <NavbarContent as="div" justify="end">
+                            <Dropdown placement="bottom-end">
+                            <DropdownTrigger>
+                                <Avatar
+                                isBordered
+                                as="button"
+                                className="transition-transform"
+                                color="secondary"
+                                name="Jason Hughes"
+                                size="sm"
+                                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                                />
+                            </DropdownTrigger>
+                            <DropdownMenu aria-label="Profile Actions" variant="flat">
+                                <DropdownItem key="profile" className="h-14 gap-2">
+                                <p className="font-semibold">Hey👋{userDetails?.username}</p>
+                                </DropdownItem>
+                                <DropdownItem key="settings">Active Credits: {userDetails?.credit}</DropdownItem>
+                                <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+                                <DropdownItem key="logout" color="danger" onClick={signOutHandler}>
+                                Log Out
+                                </DropdownItem>
+                            </DropdownMenu>
+                            </Dropdown>
+                        </NavbarContent> :(!isMobile && <Button color="primary" onPress = {loginRedirectHandler} className = "">Get Started</Button>)}
                 </NavbarItem>
             </NavbarContent>
             {
@@ -137,9 +138,9 @@ const NavbarComponent = () => {
                                 index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
                             }
                             className="w-full"
-                            to="#"
+                            to={item.to}
                         >
-                            {item}
+                            {item?.value}
                         </Link>
                     </NavbarMenuItem>
                 ))}

@@ -18,6 +18,12 @@
 .btn-min-width {
   width: 8rem;
 }
+.width-100 {
+  width: 100%;
+}
+.break-words {
+  overflow-wrap: anywhere!important;
+}
 *,
 *::before,
 *::after {
