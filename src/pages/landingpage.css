@@ -1,10 +1,10 @@
 .landing-page-container {
     padding-top: 2rem;
+    max-width: 1024px;
+    margin: auto;
 }
 @media screen and (min-width: 768px) {
     .landing-page-container {
-        width: 90%;
-        margin: auto;
         gap: 4rem;
     }
 }
