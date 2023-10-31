@@ -1,42 +1,64 @@
-.about-parent-container {
-    width: 75%;
-    margin: auto;
-    display: flex;
+.aboutus-hero-container {
     flex-direction: column;
-    gap: 3rem;
-    font-family: "Space Grotesk", "Space Grotesk Placeholder", sans-serif;
-}
-.about-parent-page {
-    color: var(--white-color);
-    background-color: var(--black-color);
-    overflow: hidden;
-}
-.about-hero-container {
-    height: 40rem;
-    font-size: 3rem;
-    letter-spacing: 0em;
-    line-height: 1.1;
-    text-align: center;
-    text-transform: capitalize;
-    display: flex;
     align-items: center;
-    justify-content:center;
 }
-.about-meet-container {
-    display: flex;
+.aboutus-parent-container {
+    padding: 1.25rem;
+    max-width: 1024px;
+    margin: auto;
+    gap: 2rem;
+}
+
+
+.svg-position {
+    position: relative;
+    top: 1.9rem;
+    left: -2.2rem;
+    border: 1px solid grey;
+    border-radius: 50%;
+    background-color: white;
+}
+.vertical-line {
+    border-left: 1px solid grey; /* Adjust the color and thickness as needed */
+    height: 20rem;
+    padding-right: 1rem;
+    margin-top: 1.9rem;
+  }
+  .howitworks-parent {
     flex-direction: column;
-    gap: 2rem;
-}
-.about-meet-inner {
-    display: flex;
-    gap: 2rem;
-    font-size: 1.2rem;
-    line-height: 1.5;
-}
-.about-help-inner {
-    display: flex;
+  }
+  .testimonials-svg {
+    top: 1rem;
+  }
+  .testimonial-parent {
     flex-direction: column;
-    gap: 2rem;
-    font-size: 1.2rem;
-    line-height: 1.5;
 }
+
+@media screen and (min-width: 1024px){
+    .aboutus-hero-container {
+        flex-direction: row
+    }
+    .aboutus-hero-container>div {
+        width: 100%;
+    }
+    .hero-image-align {
+        width: 100%;
+        max-width: none!important;
+        height: 100%;
+    }
+    .howitworks-parent {
+        flex-direction: row;
+        gap: 1rem;
+        align-items: center;
+    }
+    .testimonial-parent {
+        flex-direction: row;
+    }
+    .testimonial-parent>div{
+        width: 100%;
+    }
+    .testimonials-svg {
+        left: -1.2rem!important;
+        top: 1.6rem!important;
+      }
+  }

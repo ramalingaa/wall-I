@@ -4,26 +4,7 @@
 
 }
 .features-cart {
-    width: 17rem;
+    flex-grow: 1;
 }
 
-@media screen and (min-width: 1120px) {
-    .features-cart {
-        width: 18rem;
-    }
-}
-@media screen and (min-width: 1220px) {
-    .features-cart {
-        width: 21rem;
-    }
-}
-@media screen and (min-width: 1370px) {
-    .features-cart {
-        width: 24rem;
-    }
-}
-@media screen and (min-width: 1470px) {
-    .features-cart {
-        width: 27rem;
-    }
-}
+

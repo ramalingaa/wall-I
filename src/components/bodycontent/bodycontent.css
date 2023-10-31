@@ -1,30 +1,15 @@
 .features-cart {
-    border-right: 1px solid lightgrey;
     width: 17rem;
+}
+.border-right {
+    border-right: 1px solid lightgrey;
+
 }
 .features-card-container {
     padding: 3rem 0;
     flex-wrap: wrap;
 }
+.features-card-container>div {
+    flex-grow: 1
+}
 
-
-@media screen and (min-width: 1120px) {
-    .features-cart {
-        width: 18rem;
-    }
-}
-@media screen and (min-width: 1220px) {
-    .features-cart {
-        width: 21rem;
-    }
-}
-@media screen and (min-width: 1370px) {
-    .features-cart {
-        width: 24rem;
-    }
-}
-@media screen and (min-width: 1470px) {
-    .features-cart {
-        width: 27rem;
-    }
-}
