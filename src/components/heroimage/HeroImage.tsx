@@ -6,6 +6,7 @@ import HeroImageFile from "../../heroimage1.jpg"
 import { useState } from "react";
 const HeroImage = () => {
         const [userEmail, setUserEmail] = useState<string>("");
+        const { jwtToken } = useAppSelector((state) => state.interview);
         const navigate = useNavigate();
         const authHandler = () => {
                 navigate("select-level")     
@@ -17,8 +18,12 @@ const HeroImage = () => {
                 setUserEmail(e.target.value)
         }
         const storeUserEmailAndRedirectHandler = () => {
-                localStorage.setItem("userEmail", userEmail)
-                authHandler()
+                if(jwtToken){
+                        navigate("/select-level")
+                }
+                else {
+                        navigate("/login")
+                }
         }
         const sizes = ["sm", "md", "lg"];
 
@@ -28,7 +33,7 @@ const HeroImage = () => {
                         <h1 className="hero-heading">Streamline Your Interview Process with Our platform </h1>
                         <p>Prepare anywhere, anytime with MockMan with feedback a like a Thunder</p>
                         <div className="flex hero-input-button gap-2">
-                                <Input size={"md"} type="email" label="" placeholder="Enter your email" onChange = {getStartedHandler}/>
+                                {/* {!jwtToken &&<Input size={"md"} type="email" label="" placeholder="Enter your email" onChange = {getStartedHandler}/>} */}
                                 <Button color="primary" className = "hero-btn" onPress = {storeUserEmailAndRedirectHandler}>Get Started</Button>
                         </div>
                 </div>
