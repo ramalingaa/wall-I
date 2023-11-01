@@ -1,11 +1,8 @@
 import "./navbar.css"
 import { useNavigate } from "react-router"
-import { Link, NavLink } from "react-router-dom"
+import { Link, NavLink, useLocation } from "react-router-dom"
 import {  useAuthenticator } from '@aws-amplify/ui-react';
-import ProfileCard from "./profile";
-import { useLocation } from 'react-router-dom';
-import Logo from "../../imageDB/MockMan-logos-blue.jpeg"
-import {Button, ButtonGroup} from "@nextui-org/react";
+import {Button} from "@nextui-org/react";
 import {Navbar, NavbarBrand, NavbarMenuToggle,NavbarMenu, NavbarMenuItem, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
 
 import { useEffect, useState } from "react";

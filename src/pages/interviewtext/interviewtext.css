@@ -1,0 +1,19 @@
+.interview-text-parent {
+    max-width: 1024px;
+    margin: auto;
+    padding: 1.5rem;
+
+}
+.interviewtext-card-container>div {
+    padding: 1.5rem;
+}
+
+.textarea-interview>div {
+    border-radius:0!important;
+}
+.textarea-container {
+    padding: 0!important;
+}
+.textarea-interview>label{
+    padding-bottom: 0!important;
+}

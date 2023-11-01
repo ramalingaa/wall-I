@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import LandingPage from './pages/landingpage';
+import LandingPage from './pages/landingpage/landingpage';
 import { BrowserRouter as Router,Routes, Route} from "react-router-dom"
-import About from './pages/about';
+import About from './pages/about/about';
 import NavbarComponent from './components/navbar/navbar';
 import SelectLevel from './pages/selectlevel/selectlevel';
 import { Login } from './components/auth/login';
 import { RequireAuth } from './requireauth';
 import NotFound from './pages/notfound/notfound';
 import FeedbackDisplay from './components/feedback/feedbackdisplay';
-import Interview from './pages/interview';
-import InterviewText from './pages/interviewtext';
+import Interview from './pages/interviewaudio/interview';
+import InterviewText from './pages/interviewtext/interviewtext';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
 import axios from 'axios'
