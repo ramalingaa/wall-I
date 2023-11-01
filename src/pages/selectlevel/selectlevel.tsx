@@ -3,12 +3,10 @@ import axios from 'axios';
 import "./selectlevel.css"
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { addInterviewQuestionData, resetPrevInterviewFeedbackData } from '../../redux/reducer';
-import { BallTriangle  } from  'react-loader-spinner'
 import { useNavigate } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { NavigateFunction } from 'react-router-dom';
 import {Button, Spinner} from "@nextui-org/react";
-import {Select, SelectItem} from "@nextui-org/react";
 import { expertiseLevel, noOfDSAQuestionsSet, noOfQuestionsSet, programmingLanguages } from '../../constants/constant';
 import SelectComponent from '../../utils/Select';
 

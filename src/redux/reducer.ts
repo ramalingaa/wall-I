@@ -5,7 +5,8 @@ import type { RootState } from './store'
 const interviewQuestionExample = ["What are the different data types available in JavaScript?",
 "Can you explain the concept of type coercion in JavaScript?",
 "How do you declare a function in JavaScript?",
-"What are the different types of function declarations in JavaScript?",      {
+"What are the different types of function declarations in JavaScript?"]
+const dsaQuestion = [{
   question: "DSA: You are given the head of a singly linked list. Reverse the list and return its head.",
   suggestions: "",
   example: {
@@ -66,7 +67,7 @@ const initialState: InitialState = {
     currentEditorData:"",
     jwtToken : "",
     audioAnswers:[],
-    nonDSAquestionDataForInterview:[],
+    nonDSAquestionDataForInterview:[...interviewQuestionExample],
   dsaQuestionDataForInterview: [],
     failedFeedbackAPICallQueue: [],
     userDetails: {

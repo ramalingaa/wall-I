@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SpeechSegment, stateToString, useSpeechContext } from '@speechly/react-client';
-import { useAppSelector, useAppDispatch } from '../hooks/redux'
-import { QuestionAnswer, addFailedFeedbackAPIData, addQuestionAnswer, addQuestionAnswerFeedback, removeFailedFeedbackAPIData, resetInterviewState } from '../redux/reducer';
-import NonCodeInterviewDisplay from '../components/interview/noncodeinterviewdisplay';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux'
+import { QuestionAnswer, addFailedFeedbackAPIData, addQuestionAnswer, addQuestionAnswerFeedback, removeFailedFeedbackAPIData, resetInterviewState } from '../../redux/reducer';
+import NonCodeInterviewDisplay from '../../components/interview/noncodeinterviewdisplay';
 import * as monaco from 'monaco-editor';
-import RefreshTimer from '../components/timers/refreshtimer';
-import "./landingpage.css"
+import RefreshTimer from '../../components/timers/refreshtimer';
 import { useNavigate } from 'react-router-dom';
 import { Steps, Hints } from "intro.js-react";
 import "intro.js/introjs.css";
 
 import axios from 'axios';
-import CodeEditor from '../components/codeeditor/codeeditor';
+import CodeEditor from '../../components/codeeditor/codeeditor';
 
 
 const Interview = (props:any) => {

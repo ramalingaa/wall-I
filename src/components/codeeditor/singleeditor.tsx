@@ -7,7 +7,7 @@ import "./singleeditor.css"
 import EditorConsole from "./editorconsole";
 import SplitPane from 'react-split-pane';
 import './resizer.css';
-import { feedbackPostCall } from "../../pages/interview";
+import { feedbackPostCall } from "../../pages/interviewaudio/interview";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 const sampleErrorObject = {
   "stdout": null,
