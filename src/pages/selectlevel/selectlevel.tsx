@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import axios from 'axios';
 import "./selectlevel.css"
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -7,6 +7,11 @@ import { BallTriangle  } from  'react-loader-spinner'
 import { useNavigate } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { NavigateFunction } from 'react-router-dom';
+import {Button, Spinner} from "@nextui-org/react";
+import {Select, SelectItem} from "@nextui-org/react";
+import { expertiseLevel, noOfDSAQuestionsSet, noOfQuestionsSet, programmingLanguages } from '../../constants/constant';
+import SelectComponent from '../../utils/Select';
+
 
 interface ErrorState {
     language: string;
@@ -36,7 +41,16 @@ const SelectLevel = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
     const { jwtToken, userDetails } = useAppSelector((state) => state.interview)
-    
+    const loaderRef = useRef<HTMLDivElement | null>(null);
+    const scrollToLoader = () => {
+        loaderRef?.current && loaderRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+
+      useEffect(() =>{
+        if(isLoading){
+            scrollToLoader()
+        }
+    } ,[isLoading])
     const selectlevelErrorMessages = {
         language: "Select your programming language",
         experience: "Please Choose your experience",
@@ -56,11 +70,14 @@ const SelectLevel = () => {
         }else {
             if(!language && !noOfQuestions && !interviewLevel){
                 setErrorMessagesData({language:selectlevelErrorMessages.language, experience: selectlevelErrorMessages.experience, noOfQuestions:selectlevelErrorMessages.noOfQuestions, outOfCredits:''})
-            } else if (!language){
+            }
+            if (!language){
                 setErrorMessagesData((prev:ErrorState) => ({...prev, language:selectlevelErrorMessages.language}))
-            }else if (!interviewLevel){
+            } 
+            if (!interviewLevel){
                 setErrorMessagesData((prev: ErrorState) => ({...prev, experience:selectlevelErrorMessages.experience}))
-            }else if (!noOfQuestions){
+            }
+            if (!noOfQuestions){
                 setErrorMessagesData((prev: ErrorState) => ({...prev, noOfQuestions:selectlevelErrorMessages.noOfQuestions}))
             }
         }
@@ -118,67 +135,53 @@ const SelectLevel = () => {
             setErrorMessagesData((prev) => ({...prev, noOfDSAQuestions: selectlevelErrorMessages.minNoOfDSAQuestions}))
         }
     }
+
   return (
     <div>
-        { isLoading ? <div className = "loader-container">
-            <BallTriangle
-                height={100}
-                width={100}
-                radius={5}
-                color="#4fa94d"
-                ariaLabel="ball-triangle-loading"
-                wrapperClass="loading-balls-wrapper"
-                visible={true}/>
-            <p>Please wait while we configure your MockMan</p>
+        { isLoading ? <div className = "flex flex-col loader-container" ref={loaderRef}>
+                <Spinner />
+            <p className='align-center'>Please wait while we configure your MockMan</p>
         </div> :
-        <div className='selectlevel-container-parent'>
-            <h2 className = "align-center">Configure your Interview</h2>
-            <b>All fields with <span className='required-symbol'>asterisk (</span> ) are required</b>
-            <div className='lang-children-parent'>
-                <p className='required-symbol'>Choose your programming language for Interview</p>
+        <div className='flex flex-col selectlevel-container-parent'>
+            <h2 className = "text-xxl font-bold align-center">Configure your Interview</h2>
+            <div className='flex gap-4 lang-children-parent'>
                 <div>
-                    <select onChange = {languageChangeHandler} required className='userinput-width'>
-                        <option disabled = {language ? true : false} value="">Select Programming Language</option>
-                        <option value = "JavaScript">JavaScript</option>
-                        <option value = "Python">Python</option>
-                        <option value = "Java">Java</option>
-                    </select>
-                    <p className='error-visible'>{errorMessagesData.language}</p>
+                    <p className='required-symbol'>Choose your programming language for Interview</p>
+                </div>
+                <div className = "">
+                    <SelectComponent itemsData = {programmingLanguages} changeHandlerFunction = {languageChangeHandler} errorMessage={errorMessagesData?.language} placeholder="Select Programming Language"/>
                 </div>
             </div>
-            <div className='exp-children-parent'>
-                <p className='required-symbol'>Choose Your Experience Level</p>
+            <div className='flex gap-4 exp-children-parent'>
                 <div>
-                    <select onChange = {interviewLevelChangeHandler} required className='userinput-width'>
-                        <option disabled = {interviewLevel ? true : false} value="">Select Your Expertise Level</option>
-                        <option value = "Beginner">Beginner(0-6 months experience)</option>
-                        <option value = "Intermediate">Intermediate(6-12 months experience)</option>
-                        <option value = "Advanced">Advanced(more than 2 years of experience)</option>
-                    </select>
-                    <p className='error-visible'>{errorMessagesData.experience}</p>
+                    <p className='required-symbol'>Choose your experience level</p>
+                </div>
+                <div>
+                    <SelectComponent itemsData = {expertiseLevel} changeHandlerFunction = {interviewLevelChangeHandler} errorMessage={errorMessagesData?.experience} placeholder = "Select Experience Level"/>
 
                 </div>
             </div>
-            <div className='qns-children-parent'>
-                 <p className='required-symbol'>Choose No Of questions for interview</p>
+            <div className='flex gap-4 qns-children-parent'>
+                <div>
+                    <p className='required-symbol'>Choose Number of Questions</p>
+                </div>
                  <div>
-                    <input type = "number" name = "no-of-qns" onChange = {noOfQuestionsChangeHandler} className='userinput-width' placeholder='Enter question count'required min="2" max = "12"/>
-                    <p className='error-visible'>{errorMessagesData.noOfQuestions}</p>
+                    <SelectComponent itemsData = {noOfQuestionsSet} changeHandlerFunction = {noOfQuestionsChangeHandler} errorMessage={errorMessagesData?.noOfQuestions} placeholder="Choose Number of Questions"/>
                  </div>
             </div>
-            <div className='qns-children-parent'>
-                 <p>Specify DSA questions number</p>
+            <div className='flex gap-4 qns-children-parent'>
                  <div>
-                    <input type = "number" name = "no-of-qns" onChange = {noOfDSAQuestionsChangeHandler} className='userinput-width' placeholder='Enter question count'required max = "3"/>
-                    <p className='error-visible'>{errorMessagesData.noOfDSAQuestions}</p>
+                    <p>Choose Number of DSA Questions</p>
+                 </div>
+                 <div>
+                    <SelectComponent itemsData = {noOfDSAQuestionsSet} changeHandlerFunction = {noOfDSAQuestionsChangeHandler} errorMessage={errorMessagesData?.noOfDSAQuestions} placeholder="Choose Number of Questions"/>
                  </div>
             </div>
             {/* <div>
                 <p>Have JD for the Job you are applying for?</p>
             </div> */}
             <p className='error-visible align-center'>{errorMessagesData.outOfCredits}</p>
-
-            <button onClick = {interviewLevelSubmitClickHandler} className='btn primary'>Start Interview</button>
+            <Button color='primary' onPress = {interviewLevelSubmitClickHandler} className = "self-center">Start Interview</Button>
         </div>
         }
     </div>

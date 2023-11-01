@@ -3,10 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { QuestionAnswerFeedback, updateUserDetails, updateUserInterviewHistoryData } from "../../redux/reducer";
 import "./feedbackdisplay.css"
 import { feedbackPostCall } from "../../pages/interview";
-import { BallTriangle } from "react-loader-spinner";
 import {Button} from "@nextui-org/react";
-
-
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import FeedbackCard from "./feedbackcard";
