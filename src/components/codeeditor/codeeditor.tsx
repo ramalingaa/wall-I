@@ -20,12 +20,11 @@ const CodeEditor = () => {
             setCurrentQuestionIndex((prev) => prev + 1)
         }
     }
-
     return(
         <div className="editor-parent">
                 {/* @ts-ignore */}
                 <SplitPane split="vertical" minSize = "20%" defaultSize="40%" allowResize = {true}>
-                    <CodeQuestion questionData = {dsaQuestionDataForInterview[currentQuestionIndex]}/>
+                    <CodeQuestion questionData = {dsaQuestionDataForInterview[currentQuestionIndex]} currentQuestionIndex = {currentQuestionIndex}/>
                     <SingleEditor nextQuestionClickHandler = {nextQuestionClickHandler} currentQuestionIndex = { currentQuestionIndex}/>
                 </SplitPane>
 

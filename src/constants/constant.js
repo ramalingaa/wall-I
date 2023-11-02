@@ -19,3 +19,9 @@ export const noOfDSAQuestionsSet = [
     {label: "2", value: "2"},
     {label: "3", value: "3"},
 ]
+export const programmingLanguageDataForCodeEditor = [
+    {label: "Java (OpenJDK 13.0.1)", value: "62", name: "Java (OpenJDK 13.0.1)"},
+    {label: "JavaScript (Node.js 12.14.0)", value: "63", name: "JavaScript (Node.js 12.14.0)"},
+    {label: "Python (2.7.17)", value: "70", name: "Python (2.7.17)"},
+    {label: "Python (3.8.1)", value: "71", name: "Python (3.8.1)"},
+]

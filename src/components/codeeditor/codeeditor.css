@@ -1,11 +1,10 @@
 .editor-parent {
-    /* width:90%;
-    margin: auto;
-    border: 1px solid red; */
     height: calc(100% - 57px);
     border-radius: 5px;
-    margin: 5px;
-    border: 1px solid grey;
+    margin-top: 10px;
+}
+.editor-parent>div{
+    flex-direction: column;
 }
 span.Resizer.vertical {
     width: 10px;
@@ -24,3 +23,8 @@ span.Resizer.vertical {
     margin-bottom: 5px;
 }
 
+@media screen and (min-width: 1024px) {
+    .editor-parent>div{
+        flex-direction: row;
+    }
+}

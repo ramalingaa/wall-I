@@ -16,9 +16,10 @@
     border-radius: 5px;
 }
 .code-question_header {
-    height:1.7rem;
+    min-height:1.7rem;
     position: sticky;
     top:0;
     border-bottom: 1px solid lightgrey;
     background-color: white;
+    justify-content: space-between;
 }
