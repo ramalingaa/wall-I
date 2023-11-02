@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 :root {
-  --app-primary-color: #0070f3
+  --app-primary-color: #0070f3;
+  --card-header-color: rgb(72, 72, 184);
 }
 .App {
   max-width: 100vw;

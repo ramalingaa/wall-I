@@ -9,6 +9,9 @@ import SplitPane from 'react-split-pane';
 import './resizer.css';
 import { feedbackPostCall } from "../../pages/interviewaudio/interview";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import SelectComponent from "../../utils/Select";
+import { programmingLanguageDataForCodeEditor } from "../../constants/constant";
+import { Button } from "@nextui-org/react";
 const sampleErrorObject = {
   "stdout": null,
   "time": "0.096",
@@ -45,7 +48,7 @@ const SingleEditor = (props: any) => {
   const [loader, setLoader] = useState<boolean>(false)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
   const dispatch = useAppDispatch()
-  const { failedFeedbackAPICallQueue , jwtToken, dsaQuestionDataForInterview } = useAppSelector((state) => state.interview)
+  const { failedFeedbackAPICallQueue , jwtToken, dsaQuestionDataForInterview, nonDSAquestionDataForInterview } = useAppSelector((state) => state.interview)
   const apiFeedbackCall = feedbackPostCall(dispatch, failedFeedbackAPICallQueue, jwtToken)
 
   const handleEditorMount = (editor: any, monaco: any) => {
@@ -131,30 +134,14 @@ const SingleEditor = (props: any) => {
   }
   const languageChangeHandler = (e: any) => {
     if (e.target.value) {
-      setLanguageId(e.target.value)      
-      setCodingLanguage(e.nativeEvent.target[e.nativeEvent.target.selectedIndex].text)
+      setLanguageId(e.target.value)
+      const language = programmingLanguageDataForCodeEditor.find((item) => item.value === e.target.value)
+      language && setCodingLanguage(language?.label)
     }
   }
-  const LanguageData = [
-    {
-      id: 62,
-      name: "Java (OpenJDK 13.0.1)"
-    },
-    {
-      id: 63,
-      name: "JavaScript (Node.js 12.14.0)"
-    },
-    {
-      id: 70,
-      name: "Python (2.7.17)"
-    },
-    {
-      id: 71,
-      name: "Python (3.8.1)"
-    },
-  ]
+
   const questionSubmitHandler = () => {
-    if(editorData){
+    if(editorData && codingLanguage){
       setIsAnswerSubmitted(true)
       const payload = {
         question:dsaQuestionDataForInterview[currentQuestionIndex].question,
@@ -168,23 +155,15 @@ const SingleEditor = (props: any) => {
     }catch (e){
         console.log(e)
     }
+    } else {
+      alert("Please select  language and Write your code")
     }
   }
 
   return (
     <div className="single-editor">
       <div className="single-editor__header">
-        <select className="single-editor__language cursor-pointer" onChange={languageChangeHandler}>
-          <option value="" disabled={languageId ? true : false}>Select Language</option>
-          {
-            LanguageData.map((singleEle) => {
-              return (
-                <option key={singleEle.id} value={singleEle.id}>{singleEle.name}</option>
-              )
-            })
-          }
-        </select>
-
+        <SelectComponent itemsData={programmingLanguageDataForCodeEditor} changeHandlerFunction={languageChangeHandler} placeholder="Select Language" errorMessage = "" size = "sm" arialabel="Select ProgrammingLanguage"/>
       </div>
       <div className="single-editor__editor">
         {/* @ts-ignore */}
@@ -207,15 +186,13 @@ const SingleEditor = (props: any) => {
             </div>}
 
         </SplitPane>
-
-
       </div>
       <div className="single-editor__consoleBtn">
         <button onClick={handleToggleConsole} className="console-btn cursor-pointer flex">Console <span className="console-btn__icon">^</span></button>
         <div className="single-editor__run">
-          <button className={`console-btn cursor-pointer run-btn ${isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={runCodeHandler}>Run</button>
-          <button className={`console-btn cursor-pointer submit-btn ${isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={questionSubmitHandler}>Submit</button>
-          <button className={`console-btn cursor-pointer submit-btn ${!isAnswerSubmitted ? "cursor-disabled" : ""}`} onClick={nextQuestionClickHandler}>Next</button>
+          <Button color = "primary" variant="bordered" isDisabled = {isAnswerSubmitted} onPress={runCodeHandler}>Run</Button>
+          <Button color = "primary" isDisabled = {isAnswerSubmitted} onPress = {questionSubmitHandler}>Submit</Button>
+          <Button color = "primary" isDisabled = {!isAnswerSubmitted} onPress = {nextQuestionClickHandler}>{(currentQuestionIndex+1 === dsaQuestionDataForInterview.length) ? "Get Feedback" : "Proceed Next"}</Button>
         </div>
       </div>
 

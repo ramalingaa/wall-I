@@ -13,8 +13,20 @@ const dsaQuestion = [{
     input: "'1 -> 2 -> 3 -> 4 -> 5'",
     output: "'5 -> 4 -> 3 -> 2 -> 1'",
     explanation: "The function should take in a string and return the reversed string."
-    }
-}]
+    },
+    
+},
+{
+  question: "DSA: You are given the head of a singly linked list. Reverse the list and return its head.",
+  suggestions: "",
+  example: {
+    input: "'1 -> 2 -> 3 -> 4 -> 5'",
+    output: "'5 -> 4 -> 3 -> 2 -> 1'",
+    explanation: "The function should take in a string and return the reversed string."
+    },
+    
+}
+]
 export interface QuestionAnswer {
     question: string
     answer: string
@@ -68,7 +80,7 @@ const initialState: InitialState = {
     jwtToken : "",
     audioAnswers:[],
     nonDSAquestionDataForInterview:[...interviewQuestionExample],
-  dsaQuestionDataForInterview: [],
+  dsaQuestionDataForInterview: [...dsaQuestion],
     failedFeedbackAPICallQueue: [],
     userDetails: {
       username: '',

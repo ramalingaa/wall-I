@@ -87,7 +87,7 @@ const InterviewText = () => {
                             <p>{nonDSAquestionDataForInterview[currentQuestion]}</p>
                         </div>
                         <div>
-                            <p>Current Question: {currentQuestion + 1}/ {nonDSAquestionDataForInterview.length}</p>
+                            <p>Current Question: {currentQuestion + 1}/ {nonDSAquestionDataForInterview.length + dsaQuestionDataForInterview.length}</p>
                         </div>
                     </CardHeader>
                     <CardBody className = "flex flex-col gap-2 textarea-container">   

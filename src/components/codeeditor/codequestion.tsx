@@ -1,15 +1,20 @@
 import React from 'react'
 import "./codequestion.css"
-const CodeQuestion = (questionData:any) => {
-  const { question, suggestions, example } = questionData.questionData
+import { useAppSelector } from '../../hooks/redux'
+const CodeQuestion = (props:any) => {
+  const { questionData,currentQuestionIndex} = props
+  const { question, suggestions, example } = questionData
+  const { nonDSAquestionDataForInterview, dsaQuestionDataForInterview } = useAppSelector((state) => state.interview)
   let questionExample = example;
   if(typeof example === 'string'){
     questionExample = JSON.parse(example)
   }
-
   return (
     <div className = "code-question_parent">
-        <div className='code-question_header'>Description</div>
+        <div className='flex code-question_header'>
+          <p>Description</p>
+          <p>Current Question: {currentQuestionIndex + 1 + nonDSAquestionDataForInterview.length}/{nonDSAquestionDataForInterview.length + dsaQuestionDataForInterview.length}</p>
+        </div>
         <div className='code-question_description'>
             <p>{question}</p>
             <p>{suggestions}</p>
