@@ -1,6 +1,6 @@
-import featureImageOne from "../../imageDB/ideogram (9).jpeg";
-import featureImageTwo from "../../imageDB/ideogram (5).jpeg";
-import featureImageThree from "../../imageDB/ideogram (7).jpeg";
+import featureImageOne from "../../imageDB/Features_001.jpeg"
+import featureImageTwo from "../../imageDB/ideogram (2).jpeg";
+import featureImageThree from "../../imageDB/ideogram.jpeg";
 import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
 
 
@@ -16,7 +16,8 @@ const ProcessFlow = () => {
                     <Image
                         width={300}
                         alt="NextUI hero Image"
-                        src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+                        src={featureImageOne}
+                        className = "features-image"
                         />
                     </CardHeader>
                     <CardBody>
@@ -29,7 +30,9 @@ const ProcessFlow = () => {
                     <Image
                         width={300}
                         alt="NextUI hero Image"
-                        src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+                        src={featureImageTwo}
+                        className = "features-image"
+
                         />
                     </CardHeader>
                     <CardBody>
@@ -42,7 +45,9 @@ const ProcessFlow = () => {
                     <Image
                         width={300}
                         alt="NextUI hero Image"
-                        src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+                        src={featureImageThree}
+                        className = "features-image"
+
                         />
                     </CardHeader>
                     <CardBody>

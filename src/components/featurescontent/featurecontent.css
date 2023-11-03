@@ -6,5 +6,7 @@
 .features-cart {
     flex-grow: 1;
 }
-
+.features-image {
+    height: 19rem;
+}
 
