@@ -4,13 +4,13 @@ import "./customerfeedback.css"
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useNavigate } from 'react-router-dom';
 import { resetPrevInterviewFeedbackData } from '../../redux/reducer';
+import {Textarea, Button} from "@nextui-org/react";
 
 
 function CustomerFeedback() {
   // Define state variables to store user feedback
   const [worked, setWorked] = useState('');
   const [didntWork, setDidntWork] = useState('');
-  const [didntLike, setDidntLike] = useState('');
   const [canImprove, setCanImprove] = useState('');
   const { userDetails } = useAppSelector((state) => state.interview)
   const  navigate = useNavigate()
@@ -25,7 +25,6 @@ function CustomerFeedback() {
       feedback: {
         worked,
         didntWork,
-        didntLike,
         canImprove,
       }
     };
@@ -46,53 +45,61 @@ function CustomerFeedback() {
 
   return (
     <div >
-      <h2 className='align-center'>Feedback Form</h2>
+      <h2 className='text-xl font-bold  align-center p-4'>Feedback Form</h2>
       <form onSubmit={handleSubmit} className='userfeedback-parent'>
-        <div className='feedback-segement'>
-          <label htmlFor="worked">Things that worked :</label>
-          <textarea
-            id="worked"
-            value={worked}
-            onChange={(e) => setWorked(e.target.value)}
-            required
-            cols = {50}
-            rows = {5}
-          />
+        <div className='flex feedback-segement'>
+          <label htmlFor="worked">Things that worked</label>
+                          <Textarea
+                                isInvalid={false}
+                                variant="bordered"
+                                labelPlacement="outside"
+                                placeholder="Enter your Answer Here"
+                                errorMessage=""
+                                minRows = {5}
+                                maxRows = {10}
+                                fullWidth = {true}
+                                className="w-full textarea-interview"
+                                onChange = {(e) => setWorked(e.target.value)}
+                                value={worked}
+
+                                />
         </div>
-        <div className='feedback-segement'>
-          <label htmlFor="didntWork">Things that didn't work:</label>
-          <textarea
-            id="didntWork"
-            value={didntWork}
-            onChange={(e) => setDidntWork(e.target.value)}
-            required
-            cols = {50}
-            rows = {5}
-          />
+        <div className='flex feedback-segement'>
+          <label htmlFor="didntWork">Things that didn't work</label>
+           <Textarea
+                                isInvalid={false}
+                                variant="bordered"
+                                labelPlacement="outside"
+                                placeholder="Enter your Answer Here"
+                                errorMessage=""
+                                minRows = {5}
+                                maxRows = {10}
+                                fullWidth = {true}
+                                className="w-full textarea-interview"
+                                onChange = {(e) => setDidntWork(e.target.value)}
+                                value={didntWork}
+
+                                />
         </div>
-        <div className='feedback-segement'>
-          <label htmlFor="didntLike">Things that can improve:</label>
-          <textarea
-            id="didntLike"
-            value={didntLike}
-            onChange={(e) => setDidntLike(e.target.value)}
-            required
-            cols = {50}
-            rows = {5}
-          />
-        </div>
-        <div className='feedback-segement'>
+
+        <div className='flex feedback-segement'>
           <label htmlFor="canImprove">Anything you want share with our team😊</label>
-          <textarea
-            id="canImprove"
-            value={canImprove}
-            onChange={(e) => setCanImprove(e.target.value)}
-            required
-            cols = {50}
-            rows = {5}
-          />
+              <Textarea
+                                isInvalid={false}
+                                variant="bordered"
+                                labelPlacement="outside"
+                                placeholder="Enter your Answer Here"
+                                errorMessage=""
+                                minRows = {5}
+                                maxRows = {10}
+                                fullWidth = {true}
+                                className="w-full textarea-interview"
+                                onChange = {(e) => setCanImprove(e.target.value)}
+                                value={canImprove}
+
+                                />
         </div>
-        <button type="submit" className = "btn primary">Submit Feedback</button>
+        <Button color="primary" type="submit" className = "mb-4">Submit Feedback</Button>
       </form>
     </div>
   );
