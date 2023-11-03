@@ -2,6 +2,8 @@ import React from 'react'
 import "./about.css"
 import {Image, Button} from "@nextui-org/react";
 import { useNavigate } from 'react-router-dom';
+import aboutUsImage from "../../imageDB/ideogram (11).jpeg";
+
 const About = () => {
     const navigate = useNavigate()
     const redirectToLoginPage = () => {
@@ -13,13 +15,13 @@ const About = () => {
             <div>
                 <Image
                     alt="NextUI hero Image"
-                    src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+                    src={aboutUsImage}
                     className='hero-image-align'
                     />
             </div>
             <div className = "flex flex-col gap-4 align-center">
                 <h2 className = "text-xl font-bold">Ace Your Interview with MockMan: The AI-Powered Virtual Interview Platform</h2>
-                <p className = "">MockMan is revolutionizing the way interviews are conducted. As former engineers and programmers ourselves, we understand the stress and uncertainty that comes with job interviews. That's why we created a virtual interview platform that uses AI to provide end-to-end services for engineering students and professional programmers.Gone are the days of waiting anxiously for a response from a hiring manager or recruiter. With MockMan, you can practice your skills and receive detailed feedback without the need for human interaction. Our advanced technology ensures that you are fully prepared for any interview, giving you the confidence to ace it.Founded in 2018, MockMan has helped countless candidates land their dream jobs by providing personalized feedback and expert guidance. We are dedicated to helping individuals like you excel in their careers through innovative technology and exceptional services.Join thousands of satisfied users who have trusted us with their interview preparation. Let MockMan be your partner on your journey towards success.</p>
+                <p className = "">MockMan is revolutionizing the way interviews are conducted. As former engineers and programmers ourselves, we understand the stress and uncertainty that comes with job interviews. That's why we created a virtual interview platform that uses AI to provide end-to-end services for engineering students and professional programmers.Gone are the days of waiting anxiously for a response from a hiring manager or recruiter. With MockMan, you can practice your skills and receive detailed feedback without the need for human interaction. Our advanced technology ensures that you are fully prepared for any interview, giving you the confidence to ace it.Founded in 2023, MockMan has helped countless candidates land their dream jobs by providing personalized feedback and expert guidance. We are dedicated to helping individuals like you excel in their careers through innovative technology and exceptional services.Join thousands of satisfied users who have trusted us with their interview preparation. Let MockMan be your partner on your journey towards success.</p>
                 <Button color = "primary" onPress = {redirectToLoginPage}>Get Started</Button>
             </div>
        </div>
