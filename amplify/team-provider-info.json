@@ -32,6 +32,10 @@
         "updateUserInterviewDetails": {
           "deploymentBucketName": "amplify-walli-dev-103553-deployment",
           "s3Key": "amplify-builds/updateUserInterviewDetails-68474630446353634341-build.zip"
+        },
+        "userfeedback": {
+          "deploymentBucketName": "amplify-walli-dev-103553-deployment",
+          "s3Key": "amplify-builds/userfeedback-414e7a453157796c2f76-build.zip"
         }
       },
       "hosting": {
