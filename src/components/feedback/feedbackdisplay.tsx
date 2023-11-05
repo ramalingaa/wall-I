@@ -64,7 +64,7 @@ async function updateUserInterviewDetails(props:any) {
       'Content-Type': 'application/json',
     }
   try {
-    const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/update-userdetails-mockman', { ...userMessage });
+    const response = await axios.post('https://uxe3u4fjf8.execute-api.ap-south-1.amazonaws.com/dev/api/updateuserdetails', { ...userMessage });
     const payload = JSON.parse(response.data.body)
     dispatch(updateUserDetails(payload))
     dispatch(updateUserInterviewHistoryData(payload))

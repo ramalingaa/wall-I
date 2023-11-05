@@ -30,21 +30,19 @@ function App() {
   async function getUserDetails() {
     
     const apiFeedbackData = {
-      userId: user?.attributes?.sub
+      user_id: user?.attributes?.sub
     }
   
       try {
-        const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/get-userdetails-mockman', { ...apiFeedbackData }, { headers });
-        const userDetailsPayload = JSON.parse(response.data.body)
-        dispatch(updateUserDetails(userDetailsPayload))
+        const response = await axios.post('https://uxe3u4fjf8.execute-api.ap-south-1.amazonaws.com/dev/api/getuserdetails', { ...apiFeedbackData }, { headers });
+        dispatch(updateUserDetails(response.data))
       } catch (error) {
         console.error('Error:', error);
-      } finally {
-      }
+      } 
     };
   useEffect(() => {
     if(route === "authenticated"){
-        if(!userDetails.userId && user?.attributes?.sub){
+        if(!userDetails?.userId && user?.attributes?.sub){
             getUserDetails()
         }
         if(!jwtToken){

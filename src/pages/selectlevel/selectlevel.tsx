@@ -214,8 +214,7 @@ async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAg
         'Content-Type': 'application/json',
       }
     try {
-      const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/api/questions', { user_message: userMessage }, { headers });
-      console.log(response)
+      const response = await axios.post('https://uxe3u4fjf8.execute-api.ap-south-1.amazonaws.com/dev/api/questions', { user_message: userMessage }, { headers });
       const assistantReply = JSON.parse(response.data.assistant_reply);
       const nonDSAQuestionList:any[] = []
       const DSAQuestionList:any = [];

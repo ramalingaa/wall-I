@@ -1,39 +1,43 @@
 {
-  "mockman": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-walli-mockman-174222-authRole",
-      "UnauthRoleArn": "arn:aws:iam::042941107826:role/amplify-walli-mockman-174222-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::042941107826:role/amplify-walli-mockman-174222-authRole",
+      "AuthRoleName": "amplify-walli-dev-103553-authRole",
+      "UnauthRoleArn": "arn:aws:iam::542804314723:role/amplify-walli-dev-103553-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::542804314723:role/amplify-walli-dev-103553-authRole",
       "Region": "ap-south-1",
-      "DeploymentBucketName": "amplify-walli-mockman-174222-deployment",
-      "UnauthRoleName": "amplify-walli-mockman-174222-unauthRole",
-      "StackName": "amplify-walli-mockman-174222",
-      "StackId": "arn:aws:cloudformation:ap-south-1:042941107826:stack/amplify-walli-mockman-174222/73c22460-5a0a-11ee-ab33-0a88db0f99d6",
-      "AmplifyAppId": "d67v88wu3ozyo"
+      "DeploymentBucketName": "amplify-walli-dev-103553-deployment",
+      "UnauthRoleName": "amplify-walli-dev-103553-unauthRole",
+      "StackName": "amplify-walli-dev-103553",
+      "StackId": "arn:aws:cloudformation:ap-south-1:542804314723:stack/amplify-walli-dev-103553/ffc414f0-7b98-11ee-8280-0a051a4f6b62",
+      "AmplifyAppId": "d31f1bfmotgr92"
     },
     "categories": {
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d67v88wu3ozyo",
-          "type": "manual"
-        }
-      },
       "auth": {
         "wallieadcfc3c": {},
         "userPoolGroups": {}
       },
       "function": {
         "getuserdetails": {
-          "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
-          "s3Key": "amplify-builds/getuserdetails-34546161676635675941-build.zip"
+          "deploymentBucketName": "amplify-walli-dev-103553-deployment",
+          "s3Key": "amplify-builds/getuserdetails-6337474665723652474e-build.zip"
         },
         "interviewfeedback": {
-          "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
-          "s3Key": "amplify-builds/interviewfeedback-5632615a592f32484e6c-build.zip"
+          "deploymentBucketName": "amplify-walli-dev-103553-deployment",
+          "s3Key": "amplify-builds/interviewfeedback-4643753670506564456f-build.zip"
         },
         "selectlevelquestions": {
-          "deploymentBucketName": "amplify-walli-mockman-174222-deployment",
-          "s3Key": "amplify-builds/selectlevelquestions-764f524644475662552b-build.zip"
+          "deploymentBucketName": "amplify-walli-dev-103553-deployment",
+          "s3Key": "amplify-builds/selectlevelquestions-4559575365375a4e3844-build.zip"
+        },
+        "updateUserInterviewDetails": {
+          "deploymentBucketName": "amplify-walli-dev-103553-deployment",
+          "s3Key": "amplify-builds/updateUserInterviewDetails-68474630446353634341-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d31f1bfmotgr92",
+          "type": "manual"
         }
       },
       "api": {

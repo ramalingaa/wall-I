@@ -1,11 +1,16 @@
 import boto3
 import json
+from decimal import Decimal  # Import the Decimal class
 
 # Initialize DynamoDB client
 dynamodb = boto3.client('dynamodb', region_name='ap-south-1')
 boto3.resource('dynamodb')
 deserializer = boto3.dynamodb.types.TypeDeserializer()
-
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, Decimal):
+            return str(o)  # Convert Decimal to string
+        return super(DecimalEncoder, self).default(o)
 def handler(event, context):
     try:
         body = json.loads(event['body'])
@@ -30,7 +35,7 @@ def handler(event, context):
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'POST'
                      },
-                'body': json.dumps(unmarshalled_data)
+                'body': json.dumps(unmarshalled_data, cls=DecimalEncoder)
             }
         else:
             return {
