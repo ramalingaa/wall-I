@@ -21,6 +21,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/updateuserinterviewdetails": {
+      "name": "/updateuserinterviewdetails",
+      "lambdaFunction": "updateUserInterviewDetails",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

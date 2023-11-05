@@ -6,14 +6,14 @@ const awsmobile = {
     "aws_cloud_logic_custom": [
         {
             "name": "mockmanapi",
-            "endpoint": "https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman",
+            "endpoint": "https://uxe3u4fjf8.execute-api.ap-south-1.amazonaws.com/dev",
             "region": "ap-south-1"
         }
     ],
-    "aws_cognito_identity_pool_id": "ap-south-1:6c205d22-f348-4e14-ab69-3524af6a0836",
+    "aws_cognito_identity_pool_id": "ap-south-1:0e192ddc-ba1f-4aa6-bd8f-b268552578c3",
     "aws_cognito_region": "ap-south-1",
-    "aws_user_pools_id": "ap-south-1_9gCoEOdeY",
-    "aws_user_pools_web_client_id": "6nbtel1om0lqlu7n4jhprjsvkl",
+    "aws_user_pools_id": "ap-south-1_mJ6HVYy6q",
+    "aws_user_pools_web_client_id": "42tgri2a6dptj0t0ij35s360s1",
     "oauth": {},
     "aws_cognito_username_attributes": [
         "EMAIL"

@@ -25,6 +25,14 @@
           ],
           "category": "function",
           "resourceName": "getuserdetails"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "updateUserInterviewDetails"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -91,6 +99,12 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "updateUserInterviewDetails": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "hosting": {
@@ -146,6 +160,22 @@
         {
           "category": "function",
           "resourceName": "selectlevelquestions"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateUserInterviewDetails_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateUserInterviewDetails"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateUserInterviewDetails_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateUserInterviewDetails"
         }
       ]
     },

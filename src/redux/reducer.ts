@@ -2,21 +2,8 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from './store'
-const interviewQuestionExample = ["What are the different data types available in JavaScript?",
-"Can you explain the concept of type coercion in JavaScript?",
-"How do you declare a function in JavaScript?",
-"What are the different types of function declarations in JavaScript?"]
+const interviewQuestionExample = ["What are the different data types available in JavaScript?"]
 const dsaQuestion = [{
-  question: "DSA: You are given the head of a singly linked list. Reverse the list and return its head.",
-  suggestions: "",
-  example: {
-    input: "'1 -> 2 -> 3 -> 4 -> 5'",
-    output: "'5 -> 4 -> 3 -> 2 -> 1'",
-    explanation: "The function should take in a string and return the reversed string."
-    },
-    
-},
-{
   question: "DSA: You are given the head of a singly linked list. Reverse the list and return its head.",
   suggestions: "",
   example: {

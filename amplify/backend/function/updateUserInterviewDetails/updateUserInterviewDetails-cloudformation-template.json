@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "interviewfeedback",
+            "updateUserInterviewDetails",
             {
               "Fn::Join": [
                 "",
                 [
-                  "interviewfeedback",
+                  "updateUserInterviewDetails",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "walliLambdaRole89f1a4e6",
+            "walliLambdaRole2e88f19f",
             {
               "Fn::Join": [
                 "",
                 [
-                  "walliLambdaRole89f1a4e6",
+                  "walliLambdaRole2e88f19f",
                   "-",
                   {
                     "Ref": "env"
