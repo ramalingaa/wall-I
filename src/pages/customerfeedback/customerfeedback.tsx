@@ -30,7 +30,7 @@ function CustomerFeedback() {
     };
     // Send the data to the server using Axios
     try {
-      const response = await axios.post('https://08jpdfep8d.execute-api.ap-south-1.amazonaws.com/mockman/user-feedback', {...feedbackData});
+      const response = await axios.post('https://uxe3u4fjf8.execute-api.ap-south-1.amazonaws.com/dev/api/userfeedback', {...feedbackData});
       if(response?.data.statusCode === 200) {
         dispatch(resetPrevInterviewFeedbackData())
         navigate("/")
