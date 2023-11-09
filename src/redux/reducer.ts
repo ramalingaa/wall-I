@@ -26,6 +26,8 @@ export interface QuestionAnswerFeedback extends QuestionAnswer {
     suggestedcode?:string
     explanation?: string
     rating:number
+    time_complexity?: string
+    space_complexity?: string
 }
 interface AudioAnswers {
   audio: AudioBuffer

@@ -23,7 +23,7 @@
         },
         "interviewfeedback": {
           "deploymentBucketName": "amplify-walli-dev-103553-deployment",
-          "s3Key": "amplify-builds/interviewfeedback-4643753670506564456f-build.zip"
+          "s3Key": "amplify-builds/interviewfeedback-65394b4f4f6642397461-build.zip"
         },
         "selectlevelquestions": {
           "deploymentBucketName": "amplify-walli-dev-103553-deployment",
