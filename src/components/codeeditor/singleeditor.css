@@ -12,10 +12,9 @@
 .single-editor__consoleBtn {
     position: relative;
     left: 5px;
-    border-top: 1px solid lightgrey;
     display: flex;
     justify-content:space-between;
-    padding: 0 1rem;
+    padding: 0.2rem 1rem;
     align-items: center;
 }
 .single-editor__run {

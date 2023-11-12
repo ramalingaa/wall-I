@@ -18,6 +18,7 @@ import CustomerFeedback from './pages/customerfeedback/customerfeedback';
 import SingleEditor from './components/codeeditor/singleeditor';
 import CodeEditor from './components/codeeditor/codeeditor';
 import Footer from './components/footer/footer';
+import ContactUS from './pages/contact us/contactus';
 function App() {
   const { route, user } = useAuthenticator((context) => [context.route, context.user]);
   const { userDetails, jwtToken } = useAppSelector((state) => state.interview)
@@ -58,6 +59,7 @@ function App() {
             <Routes >
                   <Route path = "/" element = {<LandingPage />}/>
                   <Route path = "/about" element = {<About />}/>
+                  <Route path = "/contact" element = {<ContactUS />}/>
                   {/* protected routes */}
                   <Route path="/select-level" element={<RequireAuth><SelectLevel /></RequireAuth>} />
                   {/* <Route path="/interview" element={<RequireAuth><Interview /></RequireAuth>} /> */}

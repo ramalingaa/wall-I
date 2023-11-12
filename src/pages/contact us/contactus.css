@@ -1,0 +1,11 @@
+.contactus-container {
+    max-width: 1024px;
+    min-height: 60vh;
+    margin: auto !important;
+    justify-content: center;
+    align-items: center;
+}
+.contactus-parent {
+    min-width: 25rem;
+    
+}

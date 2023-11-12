@@ -13,6 +13,24 @@ const CodeEditor = () => {
 
     const { dsaQuestionDataForInterview } = useAppSelector((state) => state.interview)
     const navigate = useNavigate()
+    useEffect(() => {
+        window.history.pushState({}, '', window.location.href);
+        const handlePopState = (e:any) => {
+          e.preventDefault();
+          if (window.confirm('Do you want to cancel Your Interview?')) {
+            navigate('/'); // Redirects to home page if confirmed
+          } else {
+            // The user has chosen to stay, push a new state into the history
+            window.history.pushState(null, document.title, window.location.href);
+          }
+    
+        };
+        window.addEventListener('popstate', handlePopState);
+    
+        return () => {
+          window.removeEventListener('popstate', handlePopState);
+        };
+      }, [navigate]);
     const nextQuestionClickHandler = () => {
         if(dsaQuestionDataForInterview.length === currentQuestionIndex + 1){
             navigate("/feedback")

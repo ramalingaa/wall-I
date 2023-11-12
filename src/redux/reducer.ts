@@ -68,8 +68,8 @@ const initialState: InitialState = {
     currentEditorData:"",
     jwtToken : "",
     audioAnswers:[],
-    nonDSAquestionDataForInterview:[...interviewQuestionExample],
-  dsaQuestionDataForInterview: [...dsaQuestion],
+    nonDSAquestionDataForInterview:[],
+  dsaQuestionDataForInterview: [],
     failedFeedbackAPICallQueue: [],
     userDetails: {
       username: '',

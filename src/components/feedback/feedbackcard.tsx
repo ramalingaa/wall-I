@@ -9,8 +9,8 @@ const FeedbackCard = (props:any) => {
           return "text-green-700"
         }else if (rating < 7 && rating > 3) {
           return "text-yellow-700"
-        } else if (rating < 3 && rating >=0) {
-          return "danger"
+        } else if (rating < 3) {
+          return "text-red-700"
         }
       }
   return (
@@ -26,8 +26,8 @@ const FeedbackCard = (props:any) => {
                             
                             <Divider/>
                             <p className = "pt-2">{samples?.answer}</p>
-                            <p className = "pt-2">Time Complexity: {samples?.time_complexity}</p>
-                            <p className = "pt-2">Space Complexity: {samples?.space_complexity}</p>
+                            {samples?.time_complexity !== undefined && <p className = "pt-2">Time Complexity: {samples?.time_complexity}</p>}
+                            {samples?.space_complexity !== undefined && <p className = "pt-2">Space Complexity: {samples?.space_complexity}</p>}
                           </div>
                           <div className="flex flex-col pl-4 width-100">
                             <p className="font-semibold pb-2">Agent Feedback</p>

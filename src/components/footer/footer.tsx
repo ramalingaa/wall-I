@@ -1,14 +1,15 @@
 import React from 'react'
 import "./footer.css"
+import { Link } from 'react-router-dom'
 const menuOptions = [
     {
-        about: ["Contact", "Blog", "FAQ"]
+        about: [{label: "Contact", to: "/contact"}]
     },
     {
-        features: ["Benefits", "Pricing", "Get Started", "Support"]
+        features: [ {label: "Benefits", to: "/about"}, {label: "Get Started", to: "/select-level"}]
     },
     {
-        contact: ["info@mockman.com","+123456789"]
+        contact: ["ramalinga@mockman.in", "www.mockman.in"]
     }
 ]
 const Footer = () => {
@@ -21,7 +22,7 @@ const Footer = () => {
                     {
                         menuOptions[0]?.about?.map((item, index) => {
                             return (
-                                <li key={index} className="text-gray-400">{item}</li>
+                                <Link key={index} className="text-gray-400" to = {item.to}>{item.label}</Link>
                             )
                         })
                     }
@@ -33,8 +34,7 @@ const Footer = () => {
                     {
                         menuOptions[1]?.features?.map((item, index) => {
                             return (
-                                <li key={index} className="text-gray-400">{item}</li>
-                            )
+                                <Link key={index} className="text-gray-400" to = {item.to}>{item.label}</Link>                            )
                         })
                     }
                 </ul>

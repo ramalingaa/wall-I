@@ -10,6 +10,9 @@
     width: 100%;
     max-width: none!important;
 }
+.hero-container {
+    align-items: center;
+}
 .hero-container>div>div{
     max-width: 100% !important;
 }

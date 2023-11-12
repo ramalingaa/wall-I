@@ -1,5 +1,5 @@
+import { Spinner } from '@nextui-org/react';
 import React, { useEffect, useState } from 'react'
-import { BallTriangle } from "react-loader-spinner";
 
 const EditorConsole = (props: any) => {
   const { loader, codeExecutionData} = props
@@ -18,18 +18,14 @@ const EditorConsole = (props: any) => {
   
   return (
     <div>
+      <p className = "console-header">Console</p>
         {
           !loader ? (codeExecutionData?.status?.description && (codeExecutionData?.status?.description === "Accepted" ? <p dangerouslySetInnerHTML={{ __html: codeExecutionData?.stdout.replace(/\n/g, '<br>') }}></p>
           : <p className='danger'>{consoleErrorMessage}</p>)) : <div className = "align-center">
-            <BallTriangle
-                height={25}
-                width={25}
-                radius={5}
-                color="#4fa94d"
-                ariaLabel="ball-triangle-loading"
-                wrapperClass="loading-balls-wrapper"
-                visible={true}/>
-            <p>Processing your code</p>
+            <div className = "flex flex-col console-loader-container">
+                <Spinner />
+            <p className='align-center'>Processing your code</p>
+        </div>
           </div>
         }
     </div>
