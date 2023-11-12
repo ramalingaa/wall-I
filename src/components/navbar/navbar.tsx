@@ -3,12 +3,13 @@ import { useNavigate } from "react-router"
 import { Link, NavLink, useLocation } from "react-router-dom"
 import {  useAuthenticator } from '@aws-amplify/ui-react';
 import {Button} from "@nextui-org/react";
-import {Navbar, NavbarBrand, NavbarMenuToggle,NavbarMenu, NavbarMenuItem, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
-
+import {Navbar,Image, NavbarBrand, NavbarMenuToggle,NavbarMenu, NavbarMenuItem, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
+import avatar from "../../imageDB/avatar.png"
 import { useEffect, useState } from "react";
 import debounce from "../../utils/debounce";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { resetInterviewState } from "../../redux/reducer";
+import logo from "../../imageDB/logo.png"
 const NavbarComponent = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
@@ -43,7 +44,7 @@ const NavbarComponent = () => {
         {to:"/", value: "Home"},
         {to:"about", value: "About"},
         {to:"contact", value: "Contact"},
-        {to:"pricing", value: "Pricing"},
+        // {to:"pricing", value: "Pricing"},
       ];
       const signOutHandler = () => {
         dispatch(resetInterviewState())
@@ -59,8 +60,16 @@ const NavbarComponent = () => {
                     className="sm:hidden"
                 />
                 }
-                <NavbarBrand>
-                    <h2 className="font-bold text-inherit text-primary logo-text">MockMan</h2>
+                <NavbarBrand >
+                    <Image
+                            alt="NextUI hero Image"
+                            src={logo}
+                            className = "logo-align cursor-pointer"
+                            width={50}
+                            height={50}
+                            onClick={redirectHomePage}
+                            />
+                    {!isMobile && <h2 className="font-bold text-inherit text-primary logo-text cursor-pointer" onClick={redirectHomePage}>MockMan</h2>}
                 </NavbarBrand>
             </NavbarContent>
 
@@ -109,7 +118,7 @@ const NavbarComponent = () => {
                                 color="secondary"
                                 name="Jason Hughes"
                                 size="sm"
-                                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                                src={avatar}
                                 />
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -117,7 +126,7 @@ const NavbarComponent = () => {
                                 <p className="font-semibold">Hey👋{userDetails?.username}</p>
                                 </DropdownItem>
                                 <DropdownItem key="settings">Active Credits: {userDetails?.credit}</DropdownItem>
-                                <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+                                {/* <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem> */}
                                 <DropdownItem key="logout" color="danger" onClick={signOutHandler}>
                                 Log Out
                                 </DropdownItem>

@@ -9,6 +9,9 @@ const CodeQuestion = (props:any) => {
   if(typeof example === 'string'){
     questionExample = JSON.parse(example)
   }
+  // from question remove DSA: and display remaining part
+
+  const currentQuestion = question.replace("DSA: ", "")
   return (
     <div className = "code-question_parent">
         <div className='flex code-question_header'>
@@ -16,7 +19,7 @@ const CodeQuestion = (props:any) => {
           <p>Current Question: {currentQuestionIndex + 1 + nonDSAquestionDataForInterview.length}/{nonDSAquestionDataForInterview.length + dsaQuestionDataForInterview.length}</p>
         </div>
         <div className='code-question_description'>
-            <p>{question}</p>
+            <p>{currentQuestion}</p>
             <p>{suggestions}</p>
             <div>
                 <b>Example: </b>

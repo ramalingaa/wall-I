@@ -20,15 +20,14 @@ const About = () => {
                     />
             </div>
             <div className = "flex flex-col gap-4 align-center">
-                <h2 className = "text-xl font-bold">Ace Your Interview with MockMan: The AI-Powered Virtual Interview Platform</h2>
-                <p className = "">MockMan is revolutionizing the way interviews are conducted. As former engineers and programmers ourselves, we understand the stress and uncertainty that comes with job interviews. That's why we created a virtual interview platform that uses AI to provide end-to-end services for engineering students and professional programmers.Gone are the days of waiting anxiously for a response from a hiring manager or recruiter. With MockMan, you can practice your skills and receive detailed feedback without the need for human interaction. Our advanced technology ensures that you are fully prepared for any interview, giving you the confidence to ace it.Founded in 2023, MockMan has helped countless candidates land their dream jobs by providing personalized feedback and expert guidance. We are dedicated to helping individuals like you excel in their careers through innovative technology and exceptional services.Join thousands of satisfied users who have trusted us with their interview preparation. Let MockMan be your partner on your journey towards success.</p>
-                <Button color = "primary" onPress = {redirectToLoginPage}>Get Started</Button>
+                <h2 className = "text-xl font-bold">Transform Your Interview Skills with MockMan: Where Practice Meets Precision</h2>
+                <p className = "">MockMan tackles the challenges of interview preparation by providing an efficient, stress-free environment for you to hone your skills.Created by engineers for engineers, our platform ensures you're interview-ready and poised to succeed.  By simulating real interview scenarios, our platform offers instant, in-depth feedback on your performance, pinpointing areas of improvement. This targeted approach accelerates your learning curve, effectively transforming interview anxiety into confidence. With MockMan, the interview struggle is a thing of the past—practice becomes productive, and your readiness for even the most demanding interviews is assured.</p>
             </div>
        </div>
-       <div className = "align-center flex flex-col gap-4">
-            <h2 className="text-xl text-gray-900 font-bold">Ace Your Next Interview with MockMan: The AI-Powered Virtual Interview Platform</h2>
+       {/* <div className = "align-center flex flex-col gap-4">
+            <h2 className="text-xl text-gray-900 font-bold">"Ace Your Interviews with MockMan: Your AI-Driven Practice Partner"</h2>
             <p className = "text-gray-700">Unlock your full potential with MockMan, the cutting-edge Virtual Interview Platform for Engineering Students and Professional Programmers. Powered by AI, we offer a seamless end-to-end interview experience that provides detailed feedback without the need for human intervention. Sharpen your skills, boost your confidence, and conquer any technical challenge with MockMan by your side. Step into success today!</p>
-       </div>
+       </div> */}
        <div className = "flex gap-4 howitworks-parent">
             <div className = "flex flex-col gap-4">
                 <h2 className = "text-xl font-semibold">How it works</h2>
@@ -60,7 +59,7 @@ const About = () => {
                         </div>
                     </div>
                 </div>
-                
+                <Button color = "primary" onPress = {redirectToLoginPage}>Click Get Started</Button>
             </div>
             <div>
                 <Image
@@ -69,7 +68,7 @@ const About = () => {
                         />
             </div>
        </div>
-       <div className = "flex gap-4 testimonial-parent">
+       {/* <div className = "flex gap-4 testimonial-parent">
             <div className = "flex flex-col gap-4">
                 <h2 className = "font-semibold text-xl">Testimonials</h2>
                 <p className = "text-gray-600">Don't just take our word for it, read from our extensive list of case studies and customer testimonials.</p>
@@ -84,7 +83,7 @@ const About = () => {
                     <p className = "font-semibold">- John Doe CEO XYZ</p>
                 </div>
             </div>
-       </div>
+       </div> */}
     </div>
   )
 }

@@ -29,6 +29,26 @@ const InterviewText = () => {
 
 
     },[currentQuestion])
+
+    useEffect(() => {
+        window.history.pushState({}, '', window.location.href);
+        const handlePopState = (e:any) => {
+          e.preventDefault();
+          if (window.confirm('Do you want to cancel Your Interview?')) {
+            navigate('/'); // Redirects to home page if confirmed
+          } else {
+            // The user has chosen to stay, push a new state into the history
+            window.history.pushState(null, document.title, window.location.href);
+          }
+    
+        };
+    
+        window.addEventListener('popstate', handlePopState);
+    
+        return () => {
+          window.removeEventListener('popstate', handlePopState);
+        };
+      }, [navigate]);
     const textInputSubmitAnswerHandler = () => {
        if (!answerFieldErrorMsg && currentQuestionAnswer) {
         setIsAnswerSubmittedForText(true)
@@ -110,7 +130,7 @@ const InterviewText = () => {
                     <div className = "flex gap-6 justify-center">
                         <Button color="primary" onPress = {textInputSubmitAnswerHandler} isDisabled = {isAnswerSubmittedForText}>Submit</Button>
                         <Button color="primary" onClick = {textInputNextQuestionHandler} isDisabled = {!isAnswerSubmittedForText}>{(currentQuestion+1 === nonDSAquestionDataForInterview.length && dsaQuestionDataForInterview.length === 0) ? "Get Feedback" : "Proceed Next"}</Button>
-                        <Button color="primary" onClick = {textInputQuestionSkipHandler}>Skip</Button>
+                        <Button color="primary" onClick = {textInputQuestionSkipHandler} isDisabled = {isAnswerSubmittedForText}>Skip</Button>
                     </div>
               </Card>
     </div>

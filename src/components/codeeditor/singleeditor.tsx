@@ -62,7 +62,7 @@ const SingleEditor = (props: any) => {
     editorRef?.current && setEditorData(editorRef?.current.getValue())
   }
   //azure hoisted url http://20.127.216.50:2358/submissions
-  //aws ec2 instance url http://43.205.237.158:2358/submissions
+  //aws ec2 instance url http://43.205.237.158:2358/submissions- account-mockman
   const baseURL = "http://43.205.237.158:2358//submissions";
   const requestBody = {
     source_code: editorData,
@@ -188,7 +188,7 @@ const SingleEditor = (props: any) => {
         </SplitPane>
       </div>
       <div className="single-editor__consoleBtn">
-        <button onClick={handleToggleConsole} className="console-btn cursor-pointer flex">Console <span className="console-btn__icon">^</span></button>
+        <button onClick={handleToggleConsole} className="console-btn cursor-pointer flex">Console <span className="console-btn__icon">{isConsoleOpen ? "⬆️" : "⬇️"}</span></button>
         <div className="single-editor__run">
           <Button color = "primary" variant="bordered" isDisabled = {isAnswerSubmitted} onPress={runCodeHandler}>Run</Button>
           <Button color = "primary" isDisabled = {isAnswerSubmitted} onPress = {questionSubmitHandler}>Submit</Button>

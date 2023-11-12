@@ -55,7 +55,7 @@ const SelectLevel = () => {
         noOfQuestions: "Choose questions size for this interview",
         minQuestions: "Minimum 2 questions are required",
         maxQuestions: "Maximum 10 questions allowed",
-        outOfCredits: "Your ran out of Interview Credits. Mail us at teammockman@gmail.com to get more credits",
+        outOfCredits: "Your ran out of Interview Credits. Mail us at ramalinga@mockman.in to get more credits.",
         maxNoOfDSAQuestions: "Maximum 3 allowed",
         minNoOfDSAQuestions: "Minimum 1 required",
     }
@@ -64,7 +64,7 @@ const SelectLevel = () => {
        if(Number(userDetails.credit) > 0){
         setErrorMessagesData((prev:ErrorState) => ({...prev, outOfCredits:''}))
         if(language && interviewLevel && noOfQuestions && !errorMessagesData.noOfDSAQuestions){
-            getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions,dsaQuestionCount, dispatch, navigate, experience, setIsLoading, jwtToken})
+            getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions,dsaQuestionCount, dispatch, navigate, experience, setIsLoading, jwtToken, setExperience, setNoOfQuestions, setInterviewLevel, setLanguage, setDsaQuestionCount})
         }else {
             if(!language && !noOfQuestions && !interviewLevel){
                 setErrorMessagesData({language:selectlevelErrorMessages.language, experience: selectlevelErrorMessages.experience, noOfQuestions:selectlevelErrorMessages.noOfQuestions, outOfCredits:''})
@@ -178,7 +178,7 @@ const SelectLevel = () => {
             {/* <div>
                 <p>Have JD for the Job you are applying for?</p>
             </div> */}
-            <p className='error-visible align-center'>{errorMessagesData.outOfCredits}</p>
+            <p className='error-visible align-center danger'>{errorMessagesData.outOfCredits}</p>
             <Button color='primary' onPress = {interviewLevelSubmitClickHandler} className = "self-center">Start Interview</Button>
         </div>
         }
@@ -197,9 +197,14 @@ interface getInterviewQuestionsFromAgentProps {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     jwtToken: string
     dsaQuestionCount: number
+    setLanguage: React.Dispatch<React.SetStateAction<string>>
+    setInterviewLevel: React.Dispatch<React.SetStateAction<string>>
+    setNoOfQuestions: React.Dispatch<React.SetStateAction<number>>
+    setExperience: React.Dispatch<React.SetStateAction<string>>
+    setDsaQuestionCount: React.Dispatch<React.SetStateAction<number>>
 }
 async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAgentProps) {
-    const { language, interviewLevel, noOfQuestions,dsaQuestionCount, dispatch, navigate, experience, setIsLoading, jwtToken } = props 
+    const { language, interviewLevel, noOfQuestions,dsaQuestionCount, dispatch, navigate, experience, setIsLoading, jwtToken, setLanguage, setInterviewLevel, setNoOfQuestions, setExperience, setDsaQuestionCount } = props 
     setIsLoading(true)
 
     const userMessage = {
@@ -241,6 +246,11 @@ async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAg
 
     } finally {
         setIsLoading(false)
+        setLanguage('')
+        setInterviewLevel('')
+        setNoOfQuestions(0)
+        setDsaQuestionCount(0)
+        setExperience('')
     }
   }
   

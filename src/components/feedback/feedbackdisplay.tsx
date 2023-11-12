@@ -75,7 +75,7 @@ async function updateUserInterviewDetails(props:any) {
 }
 const FeedbackDisplay = () => {
 
-  const { allQuestionAnswerFeedbackData,  failedFeedbackAPICallQueue, jwtToken, nonDSAquestionDataForInterview, dsaQuestionDataForInterview, userDetails } = useAppSelector((state) => state.interview)
+  const { allQuestionAnswerFeedbackData,  failedFeedbackAPICallQueue, jwtToken, userDetails } = useAppSelector((state) => state.interview)
   const { credit, userId } = userDetails
   const [isDataPosted, setIsDataPosted] = useState<boolean>(false)
 
@@ -88,12 +88,30 @@ const FeedbackDisplay = () => {
         failedFeedbackAPICallQueue.forEach((payload) => apiFeedbackCall(payload))
     }
 },[])
-const allQuestionLength = nonDSAquestionDataForInterview.length + dsaQuestionDataForInterview.length
 useEffect(() => {
-  if(allQuestionAnswerFeedbackData.length === allQuestionLength && !isDataPosted){
+  window.history.pushState({}, '', window.location.href);
+  const handlePopState = (e:any) => {
+    e.preventDefault();
+    if (window.confirm('Your Interview is completed wanna go back to Home Page?')) {
+      navigate('/'); // Redirects to home page if confirmed
+    } else {
+      // The user has chosen to stay, push a new state into the history
+      window.history.pushState(null, document.title, window.location.href);
+    }
+
+  };
+
+  window.addEventListener('popstate', handlePopState);
+
+  return () => {
+    window.removeEventListener('popstate', handlePopState);
+  };
+}, [navigate]);
+useEffect(() => {
+  if(!isDataPosted){
     updateUserInterviewDetails({allQuestionAnswerFeedbackData, jwtToken, userId, credit, setIsDataPosted, dispatch})
   }
-},[allQuestionAnswerFeedbackData])
+},[])
 
   
 
