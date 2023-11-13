@@ -63,7 +63,7 @@ const SingleEditor = (props: any) => {
   }
   //azure hoisted url http://20.127.216.50:2358/submissions
   //aws ec2 instance url http://43.205.237.158:2358/submissions- account-mockman
-  const baseURL = "http://43.205.237.158:2358//submissions";
+  const baseURL = "http://43.205.237.158:2358/submissions";
   const requestBody = {
     source_code: editorData,
     language_id: languageId,
