@@ -3,11 +3,14 @@ import "./about.css"
 import {Image, Button} from "@nextui-org/react";
 import { useNavigate } from 'react-router-dom';
 import aboutUsImage from "../../imageDB/ideogram (11).jpeg";
+import { useAppSelector } from '../../hooks/redux';
 
 const About = () => {
+
+    const { jwtToken } = useAppSelector((state) => state.interview)
     const navigate = useNavigate()
     const redirectToLoginPage = () => {
-        navigate("/login")
+        navigate("/select-level")
     }
   return (
     <div className="flex flex-col gap-6 aboutus-parent-container">
@@ -59,7 +62,7 @@ const About = () => {
                         </div>
                     </div>
                 </div>
-                <Button color = "primary" onPress = {redirectToLoginPage}>Click Get Started</Button>
+                <Button color = "primary" onPress = {redirectToLoginPage}>Get Started</Button>
             </div>
             <div>
                 <Image
