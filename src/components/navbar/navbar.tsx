@@ -10,10 +10,13 @@ import debounce from "../../utils/debounce";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { resetInterviewState } from "../../redux/reducer";
 import logo from "../../imageDB/logo.png"
+
 const NavbarComponent = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const { userDetails, jwtToken } = useAppSelector((state) => state.interview)
+    const location = useLocation();
+
       const handleResize = () => {
         const isMVA = window.innerWidth <= 640 ? true : false
         setIsMobile(isMVA);
@@ -31,7 +34,6 @@ const NavbarComponent = () => {
       }, [debouncedResize]);
     const { route, user, authStatus, signOut  } = useAuthenticator((context) => [context.route, context.user, context.authStatus, context.signOut ]);
     const  navigate  = useNavigate()
-    const location = useLocation();
     const dispatch = useAppDispatch()
     const redirectHomePage = () => {
         navigate("/")
@@ -132,7 +134,7 @@ const NavbarComponent = () => {
                                 </DropdownItem>
                             </DropdownMenu>
                             </Dropdown>
-                        </NavbarContent> :(!isMobile && <Button color="primary" onPress = {loginRedirectHandler} className = "">Get Started</Button>)}
+                        </NavbarContent> :(!isMobile && location.pathname !== "/login" && <Button color="primary" onPress = {loginRedirectHandler} className = "">Get Started</Button>)}
                 </NavbarItem>
             </NavbarContent>
             {
