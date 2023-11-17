@@ -6,8 +6,24 @@ const CodeQuestion = (props:any) => {
   const { question, suggestions, example } = questionData
   const { nonDSAquestionDataForInterview, dsaQuestionDataForInterview } = useAppSelector((state) => state.interview)
   let questionExample = example;
+  function safeJSONParse(str:string) {
+    try {
+        // Replace single quotes with double quotes
+        const formattedStr = str.replace(/'/g, '"');
+        return JSON.parse(formattedStr);
+    } catch (e) {
+        console.error("Error parsing JSON:", e);
+        // Handle error or return a fallback
+        return null;
+    }
+}
+
+
+
   if(typeof example === 'string'){
-    questionExample = JSON.parse(example)
+    questionExample = safeJSONParse(example);
+    console.log(questionExample);
+
   }
   // from question remove DSA: and display remaining part
 

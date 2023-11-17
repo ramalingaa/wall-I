@@ -161,3 +161,16 @@ export const {
         resetPrevInterviewFeedbackData
             } = counterSlice.actions;
 export default counterSlice.reducer;
+
+
+
+// [
+//     "Explain the difference between a list and a tuple in Python?",
+//     "What is the use of the __init__ method in Python?",
+//     "How does Python handle memory management and garbage collection?",
+//     {
+//         "question": "DSA: Write a function to reverse a linked list.",
+//         "suggestions": "You may assume that the input is a non-empty linked list.",
+//         "example": "{ 'input': '1->2->3->4->5', 'output': '5->4->3->2->1' }"
+//     }
+// ]
