@@ -1,0 +1,47 @@
+{
+    "JavaScript": {
+        "Beginner": [
+            {
+              "question": "What is the use of the 'let' keyword in JavaScript?",
+              "answer": "The 'let' keyword is used to declare a block-scoped local variable, optionally initializing it to a value."
+            },
+            {
+              "question": "How do you convert a string into an integer in JavaScript?",
+              "answer": "You can convert a string into an integer using the 'parseInt()' function or by prefixing the string with a '+' operator."
+            },
+            {
+              "question": "What is the difference between '=='' and '===' in JavaScript?",
+              "answer": "The '==' operator tests for abstract equality and performs type coercion, while the '===' operator tests for strict equality without type coercion."
+            },
+            {
+              "question": "How can you add an element to the end of an array in JavaScript?",
+              "answer": "You can add an element to the end of an array using the 'push()' method."
+            },
+            {
+              "question": "Explain how 'this' keyword works in JavaScript.",
+              "answer": "The 'this' keyword refers to the object it belongs to. Its value is determined by the execution context, such as in an object's method or a global scope."
+            },
+            {
+              "question": "What is a closure in JavaScript?",
+              "answer": "A closure is a feature in JavaScript where an inner function has access to the outer (enclosing) function's variables - a scope chain."
+            },
+            {
+              "question": "What is 'undefined' in JavaScript?",
+              "answer": "'undefined' is a primitive value automatically assigned to variables that have just been declared or to formal arguments for which there are no actual arguments."
+            },
+            {
+              "question": "What is event bubbling in JavaScript?",
+              "answer": "Event bubbling is the concept in which an event starts at the most specific element and then flows upwards to the least specific element (document object)."
+            },
+            {
+              "question": "How do you prevent a default action in an event handler in JavaScript?",
+              "answer": "You can prevent the default action in an event handler by calling the 'event.preventDefault()' method."
+            },
+            {
+              "question": "What is JSON and how does it relate to JavaScript?",
+              "answer": "JSON stands for JavaScript Object Notation. It is a lightweight data-interchange format that is easy for humans to read and write, and easy for machines to parse and generate. It is based on a subset of the JavaScript Programming Language."
+            }
+          ]
+          
+    }
+}

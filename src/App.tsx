@@ -8,7 +8,6 @@ import { Login } from './components/auth/login';
 import { RequireAuth } from './requireauth';
 import NotFound from './pages/notfound/notfound';
 import FeedbackDisplay from './components/feedback/feedbackdisplay';
-import Interview from './pages/interviewaudio/interview';
 import InterviewText from './pages/interviewtext/interviewtext';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
@@ -19,6 +18,7 @@ import SingleEditor from './components/codeeditor/singleeditor';
 import CodeEditor from './components/codeeditor/codeeditor';
 import Footer from './components/footer/footer';
 import ContactUS from './pages/contact us/contactus';
+import InterviewAudio from './pages/interviewaudio/interviewaudio';
 function App() {
   const { route, user } = useAuthenticator((context) => [context.route, context.user]);
   const { userDetails, jwtToken } = useAppSelector((state) => state.interview)
@@ -58,7 +58,7 @@ function App() {
             <NavbarComponent />
             <Routes >
                   <Route path = "/" element = {<LandingPage />}/>
-                  <Route path = "/about" element = {<About />}/>
+                  <Route path = "/about" element = {<InterviewAudio />}/>
                   <Route path = "/contact" element = {<ContactUS />}/>
                   {/* protected routes */}
                   <Route path="/select-level" element={<RequireAuth><SelectLevel /></RequireAuth>} />

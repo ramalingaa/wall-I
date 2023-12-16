@@ -20,7 +20,7 @@ const NonCodeInterviewDisplay = (props:any) => {
         <div>
           {props.isQuestionCompleted && <p className = "blinking-iconText"><i className="fa fa-circle danger blink"></i> Start Speaking</p>}
           <h2 className = "current-display-question">{
-            nonDSAquestionDataForInterview[props.currentQuestionIndex.current]
+            // nonDSAquestionDataForInterview[props.currentQuestionIndex.current]
           }
           </h2>
         </div>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 import "./interviewtext.css"
-import { feedbackPostCall } from '../interviewaudio/interview'
 import { useNavigate } from 'react-router-dom'
 import {Card, CardBody, Textarea, CardHeader, Button} from "@nextui-org/react";
+import { feedbackPostCall } from '../../utils/feedbackpostcall';
 
 const InterviewText = () => {
     const { failedFeedbackAPICallQueue, jwtToken, nonDSAquestionDataForInterview, dsaQuestionDataForInterview } = useAppSelector((state) => state.interview)
@@ -53,8 +53,9 @@ const InterviewText = () => {
        if (!answerFieldErrorMsg && currentQuestionAnswer) {
         setIsAnswerSubmittedForText(true)
         const payload = {
-            question:nonDSAquestionDataForInterview[currentQuestion],
-            answer: currentQuestionAnswer
+            question:nonDSAquestionDataForInterview[currentQuestion]?.question,
+            userAnswer: currentQuestionAnswer,
+            answer: nonDSAquestionDataForInterview[currentQuestion]?.answer
         }
         try {
             apiFeedbackCall(payload)
@@ -80,9 +81,9 @@ const InterviewText = () => {
            
     }
     const textInputNextQuestionHandler = () => {
-            if(currentQuestion+1 === nonDSAquestionDataForInterview.length && dsaQuestionDataForInterview.length === 0){
+            if(currentQuestion+1 === nonDSAquestionDataForInterview.length){
                 navigate("/feedback")
-            }else if(currentQuestion+1 === nonDSAquestionDataForInterview.length && dsaQuestionDataForInterview.length > 0){
+            }else if(currentQuestion+1 === nonDSAquestionDataForInterview.length){
                 navigate("/code-editor")
             }
             else {
@@ -104,10 +105,10 @@ const InterviewText = () => {
             <Card className="w-full align-center pb-4 interviewtext-card-container">
                     <CardHeader className="feedback-header">
                         <div>
-                            <p>{nonDSAquestionDataForInterview[currentQuestion]}</p>
+                            <p>{nonDSAquestionDataForInterview[currentQuestion]?.question}</p>
                         </div>
                         <div>
-                            <p>Current Question: {currentQuestion + 1}/ {nonDSAquestionDataForInterview.length + dsaQuestionDataForInterview.length}</p>
+                            <p>Current Question: {currentQuestion + 1}/ {nonDSAquestionDataForInterview?.length}</p>
                         </div>
                     </CardHeader>
                     <CardBody className = "flex flex-col gap-2 textarea-container">   
@@ -129,7 +130,7 @@ const InterviewText = () => {
                     </CardBody>
                     <div className = "flex gap-6 justify-center">
                         <Button color="primary" onPress = {textInputSubmitAnswerHandler} isDisabled = {isAnswerSubmittedForText}>Submit</Button>
-                        <Button color="primary" onClick = {textInputNextQuestionHandler} isDisabled = {!isAnswerSubmittedForText}>{(currentQuestion+1 === nonDSAquestionDataForInterview.length && dsaQuestionDataForInterview.length === 0) ? "Get Feedback" : "Proceed Next"}</Button>
+                        <Button color="primary" onClick = {textInputNextQuestionHandler} isDisabled = {!isAnswerSubmittedForText}>{(currentQuestion+1 === nonDSAquestionDataForInterview?.length) ? "Get Feedback" : "Proceed Next"}</Button>
                         <Button color="primary" onClick = {textInputQuestionSkipHandler} isDisabled = {isAnswerSubmittedForText}>Skip</Button>
                     </div>
               </Card>

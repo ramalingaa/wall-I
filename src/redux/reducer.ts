@@ -16,10 +16,11 @@ const dsaQuestion = [{
 ]
 export interface QuestionAnswer {
     question: string
-    answer: string
+    userAnswer: string
     time?: number
     suggestions?: string
     language?: string
+    answer: string
 }
 export interface QuestionAnswerFeedback extends QuestionAnswer {
     feedback: string
@@ -45,7 +46,7 @@ interface InitialState {
   currentEditorData:String;
   jwtToken: string;
   audioAnswers: AudioAnswers[];
-  nonDSAquestionDataForInterview: string[];
+  nonDSAquestionDataForInterview: QuestionAnswer[];
   failedFeedbackAPICallQueue: QuestionAnswer[];
   userDetails: UserDetails,
   userInterviewHistoryData: [];
@@ -69,7 +70,7 @@ const initialState: InitialState = {
     jwtToken : "",
     audioAnswers:[],
     nonDSAquestionDataForInterview:[],
-  dsaQuestionDataForInterview: [],
+    dsaQuestionDataForInterview: [],
     failedFeedbackAPICallQueue: [],
     userDetails: {
       username: '',
@@ -85,13 +86,6 @@ const counterSlice = createSlice({
   name: 'interview',
   initialState,
   reducers: {
-    addQuestionAnswer(state, payload) {
-        const qnDA = {
-            question: payload.payload.question,
-            answer: payload.payload.answer,
-        }
-      state.allQuestionAnswerData = [...state.allQuestionAnswerData, qnDA]
-    },
     addQuestionAnswerFeedback(state, payload){
         state.allQuestionAnswerFeedbackData = [...state.allQuestionAnswerFeedbackData, payload.payload]
     },
@@ -149,7 +143,6 @@ const counterSlice = createSlice({
 
 export const { 
         addInterviewQuestionData,
-        addQuestionAnswer, 
         addQuestionAnswerFeedback, 
         updateJwtToken, 
         resetInterviewState, 
