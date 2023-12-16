@@ -7,11 +7,11 @@ import "./singleeditor.css"
 import EditorConsole from "./editorconsole";
 import SplitPane from 'react-split-pane';
 import './resizer.css';
-import { feedbackPostCall } from "../../pages/interviewaudio/interview";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import SelectComponent from "../../utils/Select";
 import { programmingLanguageDataForCodeEditor } from "../../constants/constant";
 import { Button } from "@nextui-org/react";
+import { feedbackPostCall } from "../../utils/feedbackpostcall";
 const sampleErrorObject = {
   "stdout": null,
   "time": "0.096",
@@ -145,9 +145,10 @@ const SingleEditor = (props: any) => {
       setIsAnswerSubmitted(true)
       const payload = {
         question:dsaQuestionDataForInterview[currentQuestionIndex].question,
-        answer: editorData,
+        userAnswer: editorData,
         suggestions: dsaQuestionDataForInterview[currentQuestionIndex].suggestions,
-        language: codingLanguage
+        language: codingLanguage,
+        answer: '' //add it later with DSA
     }
     try {
 

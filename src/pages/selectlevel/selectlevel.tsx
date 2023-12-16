@@ -2,14 +2,14 @@ import React, { useState, useRef, useEffect } from 'react'
 import axios from 'axios';
 import "./selectlevel.css"
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { addInterviewQuestionData, resetPrevInterviewFeedbackData } from '../../redux/reducer';
+import { QuestionAnswer, addInterviewQuestionData, resetPrevInterviewFeedbackData } from '../../redux/reducer';
 import { useNavigate } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { NavigateFunction } from 'react-router-dom';
 import {Button, Spinner} from "@nextui-org/react";
 import { expertiseLevel, noOfDSAQuestionsSet, noOfQuestionsSet, programmingLanguages } from '../../constants/constant';
 import SelectComponent from '../../utils/Select';
-
+import InterviewDataBase from "../../redux/db.json"
 
 interface ErrorState {
     language: string;
@@ -27,9 +27,22 @@ interface ErrorState {
     noOfDSAQuestions: ''
 
   }
+  interface InterviewQuestion {
+    question: string;
+    answer: string;
+  }
+  
+  interface InterviewLevel {
+    Beginner: InterviewQuestion[];
+    // Add other levels like Intermediate, Advanced, etc., if they exist
+  }
+  
+  interface InterviewDataBaseType {
+    [key: string]: InterviewLevel; // Add an index signature
+  }
 const SelectLevel = () => {
 
-    const [language, setLanguage] = useState<string>('')
+    const [language, setLanguage] = useState<string>("")
     const [interviewLevel, setInterviewLevel] = useState<string>('')
     const [noOfQuestions, setNoOfQuestions] = useState<number>(0) 
     const [experience, setExperience] = useState<string>('')  
@@ -59,12 +72,45 @@ const SelectLevel = () => {
         maxNoOfDSAQuestions: "Maximum 3 allowed",
         minNoOfDSAQuestions: "Minimum 1 required",
     }
+    const generateRandomIndexesForQuestionPickup = (count:number, min = 0, max:number, questions:QuestionAnswer[]) => {
+        const randomArrayIndex:number[] = [];
+    
+        while (count > 0) {
+            const randomIndex = Math.floor(Math.random() * (max - min) + min);
+    
+            // Check if the random index is already in the array
+            if (!randomArrayIndex.includes(randomIndex)) {
+                randomArrayIndex.push(randomIndex);
+                count--;
+            }
+        }
+    
+        // Map the random indexes to corresponding questions
+        const selectedQuestions = randomArrayIndex.map(index => questions[index]);
+    
+        return selectedQuestions;
+    };
+    const getInterviewQuestionsFromDatabase = (language:string, interviewLevel:string, noOfQuestions:number) => {
+        {/* @ts-ignore */}
+
+        const questions = InterviewDataBase[language][interviewLevel]
+        //pick asked number of questions from questions array
+        const randomlyGeneratedQuestions = generateRandomIndexesForQuestionPickup(noOfQuestions, 0, questions.length, questions)
+        console.log(randomlyGeneratedQuestions)
+        const payload = {
+            nonDSAArray: randomlyGeneratedQuestions,
+        }
+        dispatch(addInterviewQuestionData(payload));
+        navigate("/interview-text")
+    }
     const interviewLevelSubmitClickHandler = () => {
         dispatch(resetPrevInterviewFeedbackData())
        if(Number(userDetails.credit) > 0){
         setErrorMessagesData((prev:ErrorState) => ({...prev, outOfCredits:''}))
         if(language && interviewLevel && noOfQuestions && !errorMessagesData.noOfDSAQuestions){
-            getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions,dsaQuestionCount, dispatch, navigate, experience, setIsLoading, jwtToken, setExperience, setNoOfQuestions, setInterviewLevel, setLanguage, setDsaQuestionCount})
+            getInterviewQuestionsFromDatabase(language, interviewLevel, noOfQuestions)
+            //API call to get generated questions from AI Agent
+            // getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions,dsaQuestionCount, dispatch, navigate, experience, setIsLoading, jwtToken, setExperience, setNoOfQuestions, setInterviewLevel, setLanguage, setDsaQuestionCount})
         }else {
             if(!language && !noOfQuestions && !interviewLevel){
                 setErrorMessagesData({language:selectlevelErrorMessages.language, experience: selectlevelErrorMessages.experience, noOfQuestions:selectlevelErrorMessages.noOfQuestions, outOfCredits:''})
@@ -147,7 +193,7 @@ const SelectLevel = () => {
                     <p className='required-symbol'>Choose your programming language for Interview</p>
                 </div>
                 <div className = "">
-                    <SelectComponent itemsData = {programmingLanguages} changeHandlerFunction = {languageChangeHandler} errorMessage={errorMessagesData?.language} placeholder="Select Programming Language"/>
+                    <SelectComponent arialabel = "Select Programming Language" itemsData = {programmingLanguages} changeHandlerFunction = {languageChangeHandler} errorMessage={errorMessagesData?.language} placeholder="Select Programming Language"/>
                 </div>
             </div>
             <div className='flex gap-4 exp-children-parent'>
@@ -155,7 +201,7 @@ const SelectLevel = () => {
                     <p className='required-symbol'>Choose your experience level</p>
                 </div>
                 <div>
-                    <SelectComponent itemsData = {expertiseLevel} changeHandlerFunction = {interviewLevelChangeHandler} errorMessage={errorMessagesData?.experience} placeholder = "Select Experience Level"/>
+                    <SelectComponent itemsData = {expertiseLevel} changeHandlerFunction = {interviewLevelChangeHandler} errorMessage={errorMessagesData?.experience} placeholder = "Select Experience Level" arialabel = "Select Experience Level"/>
 
                 </div>
             </div>
@@ -164,7 +210,7 @@ const SelectLevel = () => {
                     <p className='required-symbol'>Choose Number of Questions</p>
                 </div>
                  <div>
-                    <SelectComponent itemsData = {noOfQuestionsSet} changeHandlerFunction = {noOfQuestionsChangeHandler} errorMessage={errorMessagesData?.noOfQuestions} placeholder="Choose Number of Questions"/>
+                    <SelectComponent itemsData = {noOfQuestionsSet} changeHandlerFunction = {noOfQuestionsChangeHandler} errorMessage={errorMessagesData?.noOfQuestions} placeholder="Choose Number of Questions" arialabel='Choose Number of Questions'/>
                  </div>
             </div>
             <div className='flex gap-4 qns-children-parent'>
@@ -172,7 +218,7 @@ const SelectLevel = () => {
                     <p>Choose Number of DSA Questions</p>
                  </div>
                  <div>
-                    <SelectComponent itemsData = {noOfDSAQuestionsSet} changeHandlerFunction = {noOfDSAQuestionsChangeHandler} errorMessage={errorMessagesData?.noOfDSAQuestions} placeholder="Choose Number of Questions"/>
+                    <SelectComponent itemsData = {noOfDSAQuestionsSet} changeHandlerFunction = {noOfDSAQuestionsChangeHandler} errorMessage={errorMessagesData?.noOfDSAQuestions} placeholder="Choose Number of Questions" arialabel='Choose Number of Questions'/>
                  </div>
             </div>
             {/* <div>

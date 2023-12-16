@@ -19,19 +19,12 @@ root.render(
 
         <Authenticator.Provider>
 
-            <SpeechProvider
-                appId="0eb3e030-5d97-40c7-96cd-9df5a3f0d325"
-                debug={true}
-                logSegments={false}
-                vad={{ enabled: false }}
-            >
                 <Provider store={store}>
                         <App />
 
                 </Provider>
 
 
-            </SpeechProvider>
         </Authenticator.Provider>
     </NextUIProvider>
 
