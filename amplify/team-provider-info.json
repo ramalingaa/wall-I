@@ -1,51 +1,19 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-walli-dev-103553-authRole",
-      "UnauthRoleArn": "arn:aws:iam::542804314723:role/amplify-walli-dev-103553-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::542804314723:role/amplify-walli-dev-103553-authRole",
+      "AuthRoleName": "amplify-mockman20-dev-882f0-authRole",
+      "UnauthRoleArn": "arn:aws:iam::699475955527:role/amplify-mockman20-dev-882f0-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::699475955527:role/amplify-mockman20-dev-882f0-authRole",
       "Region": "ap-south-1",
-      "DeploymentBucketName": "amplify-walli-dev-103553-deployment",
-      "UnauthRoleName": "amplify-walli-dev-103553-unauthRole",
-      "StackName": "amplify-walli-dev-103553",
-      "StackId": "arn:aws:cloudformation:ap-south-1:542804314723:stack/amplify-walli-dev-103553/ffc414f0-7b98-11ee-8280-0a051a4f6b62",
-      "AmplifyAppId": "d31f1bfmotgr92"
+      "DeploymentBucketName": "amplify-mockman20-dev-882f0-deployment",
+      "UnauthRoleName": "amplify-mockman20-dev-882f0-unauthRole",
+      "StackName": "amplify-mockman20-dev-882f0",
+      "StackId": "arn:aws:cloudformation:ap-south-1:699475955527:stack/amplify-mockman20-dev-882f0/f37794c0-ce84-11ef-8a6a-0622f1811261",
+      "AmplifyAppId": "d3c7y3qgb9kpzu"
     },
     "categories": {
       "auth": {
-        "wallieadcfc3c": {},
-        "userPoolGroups": {}
-      },
-      "function": {
-        "getuserdetails": {
-          "deploymentBucketName": "amplify-walli-dev-103553-deployment",
-          "s3Key": "amplify-builds/getuserdetails-6337474665723652474e-build.zip"
-        },
-        "interviewfeedback": {
-          "deploymentBucketName": "amplify-walli-dev-103553-deployment",
-          "s3Key": "amplify-builds/interviewfeedback-55376561694268695746-build.zip"
-        },
-        "selectlevelquestions": {
-          "deploymentBucketName": "amplify-walli-dev-103553-deployment",
-          "s3Key": "amplify-builds/selectlevelquestions-4559575365375a4e3844-build.zip"
-        },
-        "updateUserInterviewDetails": {
-          "deploymentBucketName": "amplify-walli-dev-103553-deployment",
-          "s3Key": "amplify-builds/updateUserInterviewDetails-68474630446353634341-build.zip"
-        },
-        "userfeedback": {
-          "deploymentBucketName": "amplify-walli-dev-103553-deployment",
-          "s3Key": "amplify-builds/userfeedback-414e7a453157796c2f76-build.zip"
-        }
-      },
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d31f1bfmotgr92",
-          "type": "manual"
-        }
-      },
-      "api": {
-        "mockmanapi": {}
+        "mockman20205b6bc8": {}
       }
     }
   }

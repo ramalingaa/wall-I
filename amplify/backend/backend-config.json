@@ -1,62 +1,6 @@
 {
-  "api": {
-    "mockmanapi": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "selectlevelquestions"
-        },
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "interviewfeedback"
-        },
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "getuserdetails"
-        },
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "updateUserInterviewDetails"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "API Gateway"
-    }
-  },
   "auth": {
-    "userPoolGroups": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "UserPoolId",
-            "AppClientIDWeb",
-            "AppClientID",
-            "IdentityPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "wallieadcfc3c"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Cognito-UserPool-Groups"
-    },
-    "wallieadcfc3c": {
+    "mockman20205b6bc8": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -69,8 +13,7 @@
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
-          "EMAIL",
-          "NAME"
+          "EMAIL"
         ],
         "socialProviders": [],
         "usernameAttributes": [
@@ -82,139 +25,6 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
-    }
-  },
-  "function": {
-    "getuserdetails": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "interviewfeedback": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "selectlevelquestions": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "updateUserInterviewDetails": {
-      "build": true,
-      "dependsOn": [],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "userfeedback": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  },
-  "hosting": {
-    "amplifyhosting": {
-      "providerPlugin": "awscloudformation",
-      "service": "amplifyhosting",
-      "type": "manual"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_function_getuserdetails_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "getuserdetails"
-        }
-      ]
-    },
-    "AMPLIFY_function_getuserdetails_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "getuserdetails"
-        }
-      ]
-    },
-    "AMPLIFY_function_interviewfeedback_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "interviewfeedback"
-        }
-      ]
-    },
-    "AMPLIFY_function_interviewfeedback_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "interviewfeedback"
-        }
-      ]
-    },
-    "AMPLIFY_function_selectlevelquestions_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "selectlevelquestions"
-        }
-      ]
-    },
-    "AMPLIFY_function_selectlevelquestions_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "selectlevelquestions"
-        }
-      ]
-    },
-    "AMPLIFY_function_updateUserInterviewDetails_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "updateUserInterviewDetails"
-        }
-      ]
-    },
-    "AMPLIFY_function_updateUserInterviewDetails_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "updateUserInterviewDetails"
-        }
-      ]
-    },
-    "AMPLIFY_function_userfeedback_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "userfeedback"
-        }
-      ]
-    },
-    "AMPLIFY_function_userfeedback_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "userfeedback"
-        }
-      ]
-    },
-    "AMPLIFY_hosting_amplifyhosting_appId": {
-      "usedBy": [
-        {
-          "category": "hosting",
-          "resourceName": "amplifyhosting"
-        }
-      ]
-    },
-    "AMPLIFY_hosting_amplifyhosting_type": {
-      "usedBy": [
-        {
-          "category": "hosting",
-          "resourceName": "amplifyhosting"
-        }
-      ]
     }
   }
 }

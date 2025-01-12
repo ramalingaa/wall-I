@@ -6,38 +6,36 @@ import { addInterviewQuestionData, resetPrevInterviewFeedbackData } from '../../
 import { useNavigate } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { NavigateFunction } from 'react-router-dom';
-import {Button, Spinner} from "@nextui-org/react";
+import {Button, Input, Spinner} from "@nextui-org/react";
 import { expertiseLevel, noOfDSAQuestionsSet, noOfQuestionsSet, programmingLanguages } from '../../constants/constant';
 import SelectComponent from '../../utils/Select';
 
 
 interface ErrorState {
-    language: string;
-    experience: string;
-    noOfQuestions: string;
-    outOfCredits: string;
-    noOfDSAQuestions?: string
+
+    outOfCredits?: string;
+    jobdescription?: string
 
   }
   const errorMessageInitialState = {
-    language: '',
-    experience: '',
-    noOfQuestions: '',
+  
     outOfCredits: '',
-    noOfDSAQuestions: ''
+
 
   }
+  const selectlevelErrorMessages = {
+    outOfCredits: "Your ran out of Interview Credits. Mail us at ramalinga@mockman.in to get more credits.",
+
+}
 const SelectLevel = () => {
 
-    const [language, setLanguage] = useState<string>('')
-    const [interviewLevel, setInterviewLevel] = useState<string>('')
-    const [noOfQuestions, setNoOfQuestions] = useState<number>(0) 
-    const [experience, setExperience] = useState<string>('')  
+  
     const [isLoading, setIsLoading] = useState<boolean>(false) 
     const [errorMessagesData, setErrorMessagesData] = useState<ErrorState>(errorMessageInitialState)
-    const [dsaQuestionCount, setDsaQuestionCount] = useState<number>(0)
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
+    const [jobDescription, setJobDescription] = useState<string>(""); // State to store user input
+
     const { jwtToken, userDetails } = useAppSelector((state) => state.interview)
     const loaderRef = useRef<HTMLDivElement | null>(null);
     const scrollToLoader = () => {
@@ -49,209 +47,89 @@ const SelectLevel = () => {
             scrollToLoader()
         }
     } ,[isLoading])
-    const selectlevelErrorMessages = {
-        language: "Select your programming language",
-        experience: "Please Choose your experience",
-        noOfQuestions: "Choose questions size for this interview",
-        minQuestions: "Minimum 2 questions are required",
-        maxQuestions: "Maximum 10 questions allowed",
-        outOfCredits: "Your ran out of Interview Credits. Mail us at ramalinga@mockman.in to get more credits.",
-        maxNoOfDSAQuestions: "Maximum 3 allowed",
-        minNoOfDSAQuestions: "Minimum 1 required",
-    }
-    const interviewLevelSubmitClickHandler = () => {
-        dispatch(resetPrevInterviewFeedbackData())
-       if(Number(userDetails.credit) > 0){
-        setErrorMessagesData((prev:ErrorState) => ({...prev, outOfCredits:''}))
-        if(language && interviewLevel && noOfQuestions && !errorMessagesData.noOfDSAQuestions){
-            getInterviewQuestionsFromAgent({language, interviewLevel, noOfQuestions,dsaQuestionCount, dispatch, navigate, experience, setIsLoading, jwtToken, setExperience, setNoOfQuestions, setInterviewLevel, setLanguage, setDsaQuestionCount})
-        }else {
-            if(!language && !noOfQuestions && !interviewLevel){
-                setErrorMessagesData({language:selectlevelErrorMessages.language, experience: selectlevelErrorMessages.experience, noOfQuestions:selectlevelErrorMessages.noOfQuestions, outOfCredits:''})
+    
+    const interviewLevelSubmitClickHandler = async () => {
+        if (!jobDescription.trim()) {
+          setErrorMessagesData(() => ({ jobdescription: "Please provide a valid job description." }));
+          return;
+        }
+    
+        setIsLoading(true);
+        setErrorMessagesData(errorMessageInitialState); // Reset error messages
+    
+        try {
+          const response = await axios.post(
+            "https://9lut6mmui6.execute-api.ap-south-1.amazonaws.com/Develop/getinterviewquestionswithjd", // Replace with your API endpoint
+            {
+              jobDescription,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                
+              },
             }
-            if (!language){
-                setErrorMessagesData((prev:ErrorState) => ({...prev, language:selectlevelErrorMessages.language}))
-            } 
-            if (!interviewLevel){
-                setErrorMessagesData((prev: ErrorState) => ({...prev, experience:selectlevelErrorMessages.experience}))
-            }
-            if (!noOfQuestions){
-                setErrorMessagesData((prev: ErrorState) => ({...prev, noOfQuestions:selectlevelErrorMessages.noOfQuestions}))
-            }
+          );
+    
+          // Assuming the response contains interview configuration
+          const interviewConfigData = JSON.parse(response.data.body);
+          console.log("Interview Configuration: ", JSON.parse(response.data.body));
+          dispatch(addInterviewQuestionData(interviewConfigData))
+          navigate("/interview-text")
+        } catch (error) {
+          console.error("Error during API call: ", error);
+          setErrorMessagesData({ outOfCredits: "You Ran out of Interview Credits" });
+        } finally {
+          setIsLoading(false);
         }
-       }else {
-        setErrorMessagesData((prev:ErrorState) => ({...prev, outOfCredits:selectlevelErrorMessages.outOfCredits}))
-       }
-    }
-    const languageChangeHandler = (e:any) => {
-        if(e.target.value){
-            setLanguage(e.target.value)
-            setErrorMessagesData((prev) => ({...prev, language:''}))
-        }
-    }
-    const interviewLevelChangeHandler = (e:any) => {
-        setInterviewLevel(e.target.value)
-        if(e.target.value){
-            if(e.target.value === "Beginner"){
-                setExperience("0-6 months of experience")
-            } else if(e.target.value === "Intermediate"){
-                setExperience("0.5-2 years of experience")
-            }else {
-                setExperience("more than 2 years of experience")
-            }
-            setErrorMessagesData((prev) => ({...prev, experience:''}))
-
-        }
-
-    }
-    const noOfQuestionsChangeHandler = (e:any) => {
-        if(e.target.value >1 && e.target.value < 11){
-            setNoOfQuestions(e.target.value)
-            setErrorMessagesData((prev) => ({...prev, noOfQuestions:''}))
-        }else if(!e.target.value) {
-            setNoOfQuestions(0)
-            setErrorMessagesData((prev) => ({...prev, noOfQuestions:selectlevelErrorMessages.noOfQuestions}))
-        } else if(e.target.value < 2){
-            setErrorMessagesData((prev) => ({...prev, noOfQuestions:selectlevelErrorMessages.minQuestions}))
-
-        } else if(e.target.value > 10){
-            setErrorMessagesData((prev) => ({...prev, noOfQuestions:selectlevelErrorMessages.maxQuestions}))
-
-        }
-
-    }
-    const noOfDSAQuestionsChangeHandler = (e:any) => {
-        if(e.target.value === ''){
-            setErrorMessagesData((prev) => ({...prev, noOfDSAQuestions: ''}))
-        }
-        else if(Number(e.target.value) <= 3 && Number(e.target.value) >0){
-            setErrorMessagesData((prev) => ({...prev, noOfDSAQuestions: ''}))
-            setDsaQuestionCount(e.target.value)
-        } else if(Number(e.target.value) > 3){
-            setErrorMessagesData((prev) => ({...prev, noOfDSAQuestions: selectlevelErrorMessages.maxNoOfDSAQuestions}))
-        } else if(Number(e.target.value) < 1){
-            setErrorMessagesData((prev) => ({...prev, noOfDSAQuestions: selectlevelErrorMessages.minNoOfDSAQuestions}))
-        }
-    }
+      };
+    
+   
+    
+    
+    
 
   return (
     <div>
-        { isLoading ? <div className = "flex flex-col loader-container" ref={loaderRef}>
-                <Spinner />
-            <p className='align-center'>Please wait while we configure your MockMan</p>
-        </div> :
-        <div className='flex flex-col selectlevel-container-parent'>
-            <h2 className = "text-xxl font-bold align-center">Configure your Interview</h2>
-            <div className='flex gap-4 lang-children-parent'>
-                <div>
-                    <p className='required-symbol'>Choose your programming language for Interview</p>
-                </div>
-                <div className = "">
-                    <SelectComponent itemsData = {programmingLanguages} changeHandlerFunction = {languageChangeHandler} errorMessage={errorMessagesData?.language} placeholder="Select Programming Language"/>
-                </div>
-            </div>
-            <div className='flex gap-4 exp-children-parent'>
-                <div>
-                    <p className='required-symbol'>Choose your experience level</p>
-                </div>
-                <div>
-                    <SelectComponent itemsData = {expertiseLevel} changeHandlerFunction = {interviewLevelChangeHandler} errorMessage={errorMessagesData?.experience} placeholder = "Select Experience Level"/>
-
-                </div>
-            </div>
-            <div className='flex gap-4 qns-children-parent'>
-                <div>
-                    <p className='required-symbol'>Choose Number of Questions</p>
-                </div>
-                 <div>
-                    <SelectComponent itemsData = {noOfQuestionsSet} changeHandlerFunction = {noOfQuestionsChangeHandler} errorMessage={errorMessagesData?.noOfQuestions} placeholder="Choose Number of Questions"/>
-                 </div>
-            </div>
-            <div className='flex gap-4 qns-children-parent'>
-                 <div>
-                    <p>Choose Number of DSA Questions</p>
-                 </div>
-                 <div>
-                    <SelectComponent itemsData = {noOfDSAQuestionsSet} changeHandlerFunction = {noOfDSAQuestionsChangeHandler} errorMessage={errorMessagesData?.noOfDSAQuestions} placeholder="Choose Number of Questions"/>
-                 </div>
-            </div>
-            {/* <div>
-                <p>Have JD for the Job you are applying for?</p>
-            </div> */}
-            <p className='error-visible align-center danger'>{errorMessagesData.outOfCredits}</p>
-            <Button color='primary' onPress = {interviewLevelSubmitClickHandler} className = "self-center">Start Interview</Button>
+      {isLoading ? (
+        <div className="flex flex-col loader-container" ref={loaderRef}>
+          <Spinner />
+          <p className="align-center">Please wait while we configure your MockMan</p>
         </div>
-        }
+      ) : (
+        <div className="flex flex-col selectlevel-container-parent">
+          <div>
+            <p>Have JD for the Job you are applying for? Submit here</p>
+            <Input
+              placeholder="Enter job description..."
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)} // Update state on input change
+            />
+          </div>
+          {errorMessagesData && (
+            <p className="error-visible align-center danger">{errorMessagesData.jobdescription ?? errorMessagesData.jobdescription ?? ''}</p>
+          )}
+          <Button
+            color="primary"
+            onPress={interviewLevelSubmitClickHandler}
+            className="self-center"
+            isDisabled = {!jobDescription}
+          >
+            Start Interview
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
 
 export default SelectLevel
 interface getInterviewQuestionsFromAgentProps {
-    language: string;
-    interviewLevel: string;
-    noOfQuestions: number;
-    dispatch: Dispatch;
-    navigate: NavigateFunction;
-    experience: string;
-    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-    jwtToken: string
-    dsaQuestionCount: number
-    setLanguage: React.Dispatch<React.SetStateAction<string>>
-    setInterviewLevel: React.Dispatch<React.SetStateAction<string>>
-    setNoOfQuestions: React.Dispatch<React.SetStateAction<number>>
-    setExperience: React.Dispatch<React.SetStateAction<string>>
-    setDsaQuestionCount: React.Dispatch<React.SetStateAction<number>>
+   
 }
 async function getInterviewQuestionsFromAgent(props: getInterviewQuestionsFromAgentProps) {
-    const { language, interviewLevel, noOfQuestions,dsaQuestionCount, dispatch, navigate, experience, setIsLoading, jwtToken, setLanguage, setInterviewLevel, setNoOfQuestions, setExperience, setDsaQuestionCount } = props 
-    setIsLoading(true)
-
-    const userMessage = {
-      language: language,
-      interviewLevel: interviewLevel,
-      noOfQuestions: noOfQuestions,
-      experience: experience,
-      dsaQuestionCount: String(dsaQuestionCount)
-    };
-    const headers = {
-        'Authorization': `Bearer ${jwtToken}`, // Add 'Bearer ' before the token
-        'Content-Type': 'application/json',
-      }
-    try {
-      const response = await axios.post('https://uxe3u4fjf8.execute-api.ap-south-1.amazonaws.com/dev/api/questions', { user_message: userMessage }, { headers });
-      const assistantReply = JSON.parse(response.data.assistant_reply);
-      const nonDSAQuestionList:any[] = []
-      const DSAQuestionList:any = [];
-
-      for (const element of assistantReply) {
-        if (typeof element === "string") {
-            nonDSAQuestionList.push(element);
-        } else {
-            DSAQuestionList.push(element);
-        }
-      }
-     
-      const payload = {
-          nonDSAArray: nonDSAQuestionList,
-          dsaArray: DSAQuestionList
-      }
-      dispatch(addInterviewQuestionData(payload));
-      navigate("/interview-text")
-      setIsLoading(false);
-
-    } catch (error) {
-      console.error('Error:', error);
-      setIsLoading(false)
-
-    } finally {
-        setIsLoading(false)
-        setLanguage('')
-        setInterviewLevel('')
-        setNoOfQuestions(0)
-        setDsaQuestionCount(0)
-        setExperience('')
-    }
+   
+ 
   }
   
   
