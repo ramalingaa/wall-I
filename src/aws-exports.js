@@ -3,25 +3,17 @@
 
 const awsmobile = {
     "aws_project_region": "ap-south-1",
-    "aws_cloud_logic_custom": [
-        {
-            "name": "mockmanapi",
-            "endpoint": "https://uxe3u4fjf8.execute-api.ap-south-1.amazonaws.com/dev",
-            "region": "ap-south-1"
-        }
-    ],
-    "aws_cognito_identity_pool_id": "ap-south-1:0e192ddc-ba1f-4aa6-bd8f-b268552578c3",
+    "aws_cognito_identity_pool_id": "ap-south-1:94af669b-730b-4d4a-99fb-9faf96d5f7ad",
     "aws_cognito_region": "ap-south-1",
-    "aws_user_pools_id": "ap-south-1_mJ6HVYy6q",
-    "aws_user_pools_web_client_id": "42tgri2a6dptj0t0ij35s360s1",
+    "aws_user_pools_id": "ap-south-1_ttfEsn6m5",
+    "aws_user_pools_web_client_id": "3f8rlimmifeqrbcsncge4vq7op",
     "oauth": {},
     "aws_cognito_username_attributes": [
         "EMAIL"
     ],
     "aws_cognito_social_providers": [],
     "aws_cognito_signup_attributes": [
-        "EMAIL",
-        "NAME"
+        "EMAIL"
     ],
     "aws_cognito_mfa_configuration": "OFF",
     "aws_cognito_mfa_types": [

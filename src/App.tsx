@@ -19,6 +19,7 @@ import SingleEditor from './components/codeeditor/singleeditor';
 import CodeEditor from './components/codeeditor/codeeditor';
 import Footer from './components/footer/footer';
 import ContactUS from './pages/contact us/contactus';
+import InterviewQuestions from './SampleInterviewq';
 function App() {
   const { route, user } = useAuthenticator((context) => [context.route, context.user]);
   const { userDetails, jwtToken } = useAppSelector((state) => state.interview)
@@ -28,30 +29,30 @@ function App() {
     'Authorization': `Bearer ${jwtToken || jwtTokenFetched}`, // Add 'Bearer ' before the token
     'Content-Type': 'application/json',
   }
-  async function getUserDetails() {
+  // async function getUserDetails() {
     
-    const apiFeedbackData = {
-      user_id: user?.attributes?.sub
-    }
+  //   const apiFeedbackData = {
+  //     user_id: user?.attributes?.sub
+  //   }
   
-      try {
-        const response = await axios.post('https://uxe3u4fjf8.execute-api.ap-south-1.amazonaws.com/dev/api/getuserdetails', { ...apiFeedbackData }, { headers });
-        dispatch(updateUserDetails(response.data))
-      } catch (error) {
-        console.error('Error:', error);
-      } 
-    };
-  useEffect(() => {
-    if(route === "authenticated"){
-        if(!userDetails?.userId && user?.attributes?.sub){
-            getUserDetails()
-        }
-        if(!jwtToken){
-          dispatch(updateJwtToken(jwtTokenFetched))
-        }
-    }
+  //     try {
+  //       const response = await axios.post('https://uxe3u4fjf8.execute-api.ap-south-1.amazonaws.com/dev/api/getuserdetails', { ...apiFeedbackData }, { headers });
+  //       dispatch(updateUserDetails(response.data))
+  //     } catch (error) {
+  //       console.error('Error:', error);
+  //     } 
+  //   };
+  // useEffect(() => {
+  //   if(route === "authenticated"){
+  //       if(!userDetails?.userId && user?.attributes?.sub){
+  //           getUserDetails()
+  //       }
+  //       if(!jwtToken){
+  //         dispatch(updateJwtToken(jwtTokenFetched))
+  //       }
+  //   }
  
-  },[route])
+  // },[route])
   return(
     <Router>
         <div className = "App">
@@ -64,11 +65,13 @@ function App() {
                   <Route path="/select-level" element={<RequireAuth><SelectLevel /></RequireAuth>} />
                   {/* <Route path="/interview" element={<RequireAuth><Interview /></RequireAuth>} /> */}
                   <Route path="/feedback" element={<RequireAuth><FeedbackDisplay /></RequireAuth>} />
-                  <Route path="/interview-text" element={<RequireAuth><InterviewText /></RequireAuth>} />
+                  {/* <Route path="/interview-text" element={<RequireAuth><InterviewQuestions /></RequireAuth>} /> */}
                   <Route path="/code-editor" element={<RequireAuth><CodeEditor /></RequireAuth>} />
                   <Route path="/user-feedback" element={<RequireAuth><CustomerFeedback /></RequireAuth>} />
                   <Route path="/login" element={<Login />} />
                   <Route path = "*" element={<NotFound />} />
+                  <Route path="/interview-text" element={<InterviewQuestions />} />
+
             </Routes>
             <Footer />
 

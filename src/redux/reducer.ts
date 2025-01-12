@@ -69,7 +69,7 @@ const initialState: InitialState = {
     jwtToken : "",
     audioAnswers:[],
     nonDSAquestionDataForInterview:[],
-  dsaQuestionDataForInterview: [],
+    dsaQuestionDataForInterview: [],
     failedFeedbackAPICallQueue: [],
     userDetails: {
       username: '',
@@ -99,8 +99,7 @@ const counterSlice = createSlice({
       state.currentEditorData = payload.payload;
     },
     addInterviewQuestionData(state, payload){
-      state.nonDSAquestionDataForInterview = payload.payload.nonDSAArray;
-      state.dsaQuestionDataForInterview = payload.payload.dsaArray;
+      state.nonDSAquestionDataForInterview = payload.payload;
     },
     updateJwtToken(state, payload){
       state.jwtToken = payload.payload
